@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{4370BAAD-9F57-4F43-B266-D7E640EF7604}</ProjectGuid>
+    <RootNamespace>CubeExplorer</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\;$(SolutionDir)..\..\Windows;$(SolutionDir)..\..\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/std:c++17 /FS /MP4 %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\Windows\glfw\x86;$(SolutionDir)..\..\Windows\glew\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>100000000</StackReserveSize>
+      <StackCommitSize>100000000</StackCommitSize>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\;$(SolutionDir)..\..\Windows;$(SolutionDir)..\..\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/std:c++17 /FS /MP4</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\Windows\glfw\x64;$(SolutionDir)..\..\Windows\glew\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <StackReserveSize>536870912</StackReserveSize>
+      <StackCommitSize>536870912</StackCommitSize>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\;$(SolutionDir)..\..\Windows;$(SolutionDir)..\..\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/std:c++17 /FS /MP4 %(AdditionalOptions)</AdditionalOptions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\Windows\glfw\x86;$(SolutionDir)..\..\Windows\glew\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <StackReserveSize>100000000</StackReserveSize>
+      <StackCommitSize>100000000</StackCommitSize>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\include\;$(SolutionDir)..\..\Windows;$(SolutionDir)..\..\lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/std:c++17 /FS /MP4</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)..\..\Windows\glfw\x64;$(SolutionDir)..\..\Windows\glew\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <StackReserveSize>536870912</StackReserveSize>
+      <StackCommitSize>536870912</StackCommitSize>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\lib\nanovg\nanovg.c" />
+    <ClCompile Include="..\..\src\application.cc" />
+    <ClCompile Include="..\..\src\camera.cc" />
+    <ClCompile Include="..\..\src\entities\entity.cc" />
+    <ClCompile Include="..\..\src\entities\player.cc" />
+    <ClCompile Include="..\..\src\framebuffer.cc" />
+    <ClCompile Include="..\..\src\game.cc" />
+    <ClCompile Include="..\..\src\gl.cc" />
+    <ClCompile Include="..\..\src\hud\hud_texture.cc" />
+    <ClCompile Include="..\..\src\hud\hud_renderer.cc" />
+    <ClCompile Include="..\..\src\main.cc" />
+    <ClCompile Include="..\..\src\misc\white_noise_generator.cc" />
+    <ClCompile Include="..\..\src\models\block_model.cc" />
+    <ClCompile Include="..\..\src\models\chunk_model.cc" />
+    <ClCompile Include="..\..\src\models\model.cc" />
+    <ClCompile Include="..\..\src\models\quad2d_model.cc" />
+    <ClCompile Include="..\..\src\models\skybox_model.cc" />
+    <ClCompile Include="..\..\src\renderers\block_renderer.cc" />
+    <ClCompile Include="..\..\src\renderers\chunk_renderer.cc" />
+    <ClCompile Include="..\..\src\renderers\postfx_renderer.cc" />
+    <ClCompile Include="..\..\src\renderers\skybox_renderer.cc" />
+    <ClCompile Include="..\..\src\renderers\water_renderer.cc" />
+    <ClCompile Include="..\..\src\resources.cc" />
+    <ClCompile Include="..\..\src\shaders\block_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\butterfly_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\chunk_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\clip_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\extension_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\h0k_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\hkt_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\hud_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\inversion_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\invert_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\mvp_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\normal_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\postfx\lowpass_x_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\postfx\plain_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\shader.cc" />
+    <ClCompile Include="..\..\src\shaders\skybox_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\tex_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\twiddle_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\water_shader.cc" />
+    <ClCompile Include="..\..\src\texture\ftexture.cc" />
+    <ClCompile Include="..\..\src\texture\itexture.cc" />
+    <ClCompile Include="..\..\src\world\block.cc" />
+    <ClCompile Include="..\..\src\world\block_map.cc" />
+    <ClCompile Include="..\..\src\world\chunk.cc" />
+    <ClCompile Include="..\..\src\world\world.cc" />
+    <ClCompile Include="..\..\Windows\glew\src\glew.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\application.h" />
+    <ClInclude Include="..\..\include\camera.h" />
+    <ClInclude Include="..\..\include\entities\entity.h" />
+    <ClInclude Include="..\..\include\entities\physics_const.h" />
+    <ClInclude Include="..\..\include\entities\player.h" />
+    <ClInclude Include="..\..\include\framebuffer.h" />
+    <ClInclude Include="..\..\include\game.h" />
+    <ClInclude Include="..\..\include\gl.h" />
+    <ClInclude Include="..\..\include\hud\hud_texture.h" />
+    <ClInclude Include="..\..\include\hud\hud_renderer.h" />
+    <ClInclude Include="..\..\include\misc\fft_noise.h" />
+    <ClInclude Include="..\..\include\misc\fft_noise_generator.h" />
+    <ClInclude Include="..\..\include\misc\white_noise_generator.h" />
+    <ClInclude Include="..\..\include\models\block_model.h" />
+    <ClInclude Include="..\..\include\models\chunk_model.h" />
+    <ClInclude Include="..\..\include\models\model.h" />
+    <ClInclude Include="..\..\include\models\quad2d_model.h" />
+    <ClInclude Include="..\..\include\models\skybox_model.h" />
+    <ClInclude Include="..\..\include\renderers\block_renderer.h" />
+    <ClInclude Include="..\..\include\renderers\chunk_renderer.h" />
+    <ClInclude Include="..\..\include\renderers\postfx_renderer.h" />
+    <ClInclude Include="..\..\include\renderers\renderer.h" />
+    <ClInclude Include="..\..\include\renderers\skybox_renderer.h" />
+    <ClInclude Include="..\..\include\renderers\water_renderer.h" />
+    <ClInclude Include="..\..\include\resources.h" />
+    <ClInclude Include="..\..\include\shaders\block_shader.h" />
+    <ClInclude Include="..\..\include\shaders\chunk_shader.h" />
+    <ClInclude Include="..\..\include\shaders\clip_shader.h" />
+    <ClInclude Include="..\..\include\shaders\extension_shader.h" />
+    <ClInclude Include="..\..\include\shaders\h0k_shader.h" />
+    <ClInclude Include="..\..\include\shaders\butterfly_shader.h" />
+    <ClInclude Include="..\..\include\shaders\hkt_shader.h" />
+    <ClInclude Include="..\..\include\shaders\hud_shader.h" />
+    <ClInclude Include="..\..\include\shaders\inversion_shader.h" />
+    <ClInclude Include="..\..\include\shaders\invert_shader.h" />
+    <ClInclude Include="..\..\include\shaders\multi_tex_shader.h" />
+    <ClInclude Include="..\..\include\shaders\mvp_shader.h" />
+    <ClInclude Include="..\..\include\shaders\normal_shader.h" />
+    <ClInclude Include="..\..\include\shaders\postfx\lowpass_x_shader.h" />
+    <ClInclude Include="..\..\include\shaders\postfx\plain_shader.h" />
+    <ClInclude Include="..\..\include\shaders\shader.h" />
+    <ClInclude Include="..\..\include\shaders\skybox_shader.h" />
+    <ClInclude Include="..\..\include\shaders\tex_shader.h" />
+    <ClInclude Include="..\..\include\shaders\twiddle_shader.h" />
+    <ClInclude Include="..\..\include\shaders\water_shader.h" />
+    <ClInclude Include="..\..\include\texture\ftexture.h" />
+    <ClInclude Include="..\..\include\texture\itexture.h" />
+    <ClInclude Include="..\..\include\texture\mtexture.h" />
+    <ClInclude Include="..\..\include\texture\texture_storage.h" />
+    <ClInclude Include="..\..\include\texture\texture_atlas.h" />
+    <ClInclude Include="..\..\include\world\block.h" />
+    <ClInclude Include="..\..\include\world\block_map.h" />
+    <ClInclude Include="..\..\include\world\chunk.h" />
+    <ClInclude Include="..\..\include\world\light.h" />
+    <ClInclude Include="..\..\include\world\world.h" />
+    <ClInclude Include="..\..\include\world\world_const.h" />
+    <ClInclude Include="..\..\lib\simple_fft\check_fft.hpp" />
+    <ClInclude Include="..\..\lib\simple_fft\copy_array.hpp" />
+    <ClInclude Include="..\..\lib\simple_fft\error_handling.hpp" />
+    <ClInclude Include="..\..\lib\simple_fft\fft.h" />
+    <ClInclude Include="..\..\lib\simple_fft\fft.hpp" />
+    <ClInclude Include="..\..\lib\simple_fft\fft_impl.hpp" />
+    <ClInclude Include="..\..\lib\simple_fft\fft_settings.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\res\shaders\blockshader.frag" />
+    <None Include="..\..\res\shaders\blockshader.vert" />
+    <None Include="..\..\res\shaders\butterflyshader.comp" />
+    <None Include="..\..\res\shaders\chunkshader.frag" />
+    <None Include="..\..\res\shaders\chunkshader.vert" />
+    <None Include="..\..\res\shaders\h0kshader.comp" />
+    <None Include="..\..\res\shaders\hktshader.comp" />
+    <None Include="..\..\res\shaders\hudshader.frag" />
+    <None Include="..\..\res\shaders\hudshader.vert" />
+    <None Include="..\..\res\shaders\inversionshader.comp" />
+    <None Include="..\..\res\shaders\invertshader.comp" />
+    <None Include="..\..\res\shaders\normalshader.comp" />
+    <None Include="..\..\res\shaders\postfx\lowpassxshader.frag" />
+    <None Include="..\..\res\shaders\postfx\plainshader.frag" />
+    <None Include="..\..\res\shaders\postfx\plainshader.vert" />
+    <None Include="..\..\res\shaders\skyboxshader.frag" />
+    <None Include="..\..\res\shaders\skyboxshader.vert" />
+    <None Include="..\..\res\shaders\twiddleshader.comp" />
+    <None Include="..\..\res\shaders\watershader.frag" />
+    <None Include="..\..\res\shaders\watershader.geom" />
+    <None Include="..\..\res\shaders\watershader.tcs" />
+    <None Include="..\..\res\shaders\watershader.tes" />
+    <None Include="..\..\res\shaders\watershader.vert" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

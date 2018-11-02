@@ -1,0 +1,499 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="glew">
+      <UniqueIdentifier>{3b2c93b9-8907-4df5-8f0d-191d5501353c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib">
+      <UniqueIdentifier>{41734f6f-189e-433d-8dac-a9a9c4c6bb0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\nanovg">
+      <UniqueIdentifier>{b317f0d6-e4f2-4467-962d-36226cf180a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\hud">
+      <UniqueIdentifier>{ae9c6102-cc8d-499c-afd4-f5e897dd841f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\hud">
+      <UniqueIdentifier>{6e4078bd-90c5-4cb2-a107-a37e32ea1e0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\models">
+      <UniqueIdentifier>{19ab0ba3-6c11-48af-8ce7-83701e99793a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\models">
+      <UniqueIdentifier>{929762f2-948c-495e-a55a-9a5ddf700f07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\shaders">
+      <UniqueIdentifier>{08e3ef43-9ca9-4b8d-9d2c-f2fb1f00c04d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shaders">
+      <UniqueIdentifier>{0d591c2a-36ee-43c2-a646-65e120f4d7a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res">
+      <UniqueIdentifier>{f2feb0b2-c3c5-4137-afe1-798306db3ca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\renderers">
+      <UniqueIdentifier>{bdcd5c2b-698b-47bf-913d-3451ae41a3e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\renderers">
+      <UniqueIdentifier>{476743ec-f65e-4b0e-9661-a75b87089fe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\shaders">
+      <UniqueIdentifier>{0f35412e-cd4d-4887-84f9-93bfb6361eff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\world">
+      <UniqueIdentifier>{5eb95230-9f22-4f70-9609-808ea6c11f86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\world">
+      <UniqueIdentifier>{882e0f08-5f32-4169-acc8-3f0ea4f6b580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\texture">
+      <UniqueIdentifier>{83c1409f-56ff-4493-977e-de74a276e924}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\texture">
+      <UniqueIdentifier>{2d32c735-02cf-42b0-b77e-f1d408459181}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\misc">
+      <UniqueIdentifier>{a8877e95-f29c-4b25-a44e-7a0f0e9f0ec5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\misc">
+      <UniqueIdentifier>{56dbdc6f-b562-42c2-81bf-8fc64c7f9681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\simple_fft">
+      <UniqueIdentifier>{3ae67c0a-7c87-418d-abe2-094119f72ee7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\entities">
+      <UniqueIdentifier>{5098be2c-f6e7-467d-b7e4-739d71e7e7e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\entities">
+      <UniqueIdentifier>{b7d40770-7b87-4110-a55b-67cce7a24d3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="res\shaders\postfx">
+      <UniqueIdentifier>{f4b0a9db-a04b-4493-866a-92b7b393a8fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\shaders\postfx">
+      <UniqueIdentifier>{f321c489-0f70-4c70-94f3-4c61b8434c30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\shaders\postfx">
+      <UniqueIdentifier>{8ca0d76e-a8a7-458a-b9f3-5587bbcf1395}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\application.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\gl.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\game.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Windows\glew\src\glew.c">
+      <Filter>glew</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\lib\nanovg\nanovg.c">
+      <Filter>lib\nanovg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\hud\hud_renderer.cc">
+      <Filter>src\hud</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\resources.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\camera.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\models\model.cc">
+      <Filter>src\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\block_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\block_renderer.cc">
+      <Filter>src\renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\models\block_model.cc">
+      <Filter>src\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\world\world.cc">
+      <Filter>src\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\texture\itexture.cc">
+      <Filter>src\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\mvp_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\tex_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\extension_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\world\chunk.cc">
+      <Filter>src\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\chunk_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\chunk_renderer.cc">
+      <Filter>src\renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\models\chunk_model.cc">
+      <Filter>src\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\hud\hud_texture.cc">
+      <Filter>src\hud</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\hud_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\texture\ftexture.cc">
+      <Filter>src\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\world\block_map.cc">
+      <Filter>src\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\world\block.cc">
+      <Filter>src\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entities\entity.cc">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entities\player.cc">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\water_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\water_renderer.cc">
+      <Filter>src\renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\models\quad2d_model.cc">
+      <Filter>src\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\invert_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\misc\white_noise_generator.cc">
+      <Filter>src\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\h0k_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\hkt_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\twiddle_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\butterfly_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\inversion_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\normal_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\clip_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\models\skybox_model.cc">
+      <Filter>src\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\skybox_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\skybox_renderer.cc">
+      <Filter>src\renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\postfx_renderer.cc">
+      <Filter>src\renderers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\postfx\plain_shader.cc">
+      <Filter>src\shaders\postfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\framebuffer.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\postfx\lowpass_x_shader.cc">
+      <Filter>src\shaders\postfx</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\application.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gl.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\game.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\hud\hud_renderer.h">
+      <Filter>include\hud</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\resources.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\models\model.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\renderers\renderer.h">
+      <Filter>include\renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\camera.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\block_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\renderers\block_renderer.h">
+      <Filter>include\renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\models\block_model.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\world\world.h">
+      <Filter>include\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\texture\itexture.h">
+      <Filter>include\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\texture\texture_atlas.h">
+      <Filter>include\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\mvp_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\tex_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\extension_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\world\chunk.h">
+      <Filter>include\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\models\chunk_model.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\chunk_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\renderers\chunk_renderer.h">
+      <Filter>include\renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\texture\mtexture.h">
+      <Filter>include\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\hud\hud_texture.h">
+      <Filter>include\hud</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\hud_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\texture\ftexture.h">
+      <Filter>include\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\simple_fft\check_fft.hpp">
+      <Filter>lib\simple_fft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\simple_fft\copy_array.hpp">
+      <Filter>lib\simple_fft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\simple_fft\error_handling.hpp">
+      <Filter>lib\simple_fft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\simple_fft\fft.h">
+      <Filter>lib\simple_fft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\simple_fft\fft.hpp">
+      <Filter>lib\simple_fft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\simple_fft\fft_impl.hpp">
+      <Filter>lib\simple_fft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\lib\simple_fft\fft_settings.h">
+      <Filter>lib\simple_fft</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\world\world_const.h">
+      <Filter>include\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\misc\fft_noise_generator.h">
+      <Filter>include\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\misc\fft_noise.h">
+      <Filter>include\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\world\block_map.h">
+      <Filter>include\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\world\block.h">
+      <Filter>include\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\entities\entity.h">
+      <Filter>include\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\entities\player.h">
+      <Filter>include\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\entities\physics_const.h">
+      <Filter>include\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\water_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\renderers\water_renderer.h">
+      <Filter>include\renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\models\quad2d_model.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\invert_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\multi_tex_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\misc\white_noise_generator.h">
+      <Filter>include\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\h0k_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\hkt_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\twiddle_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\butterfly_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\inversion_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\framebuffer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\texture\texture_storage.h">
+      <Filter>include\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\normal_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\clip_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\models\skybox_model.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\renderers\skybox_renderer.h">
+      <Filter>include\renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\skybox_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\world\light.h">
+      <Filter>include\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\renderers\postfx_renderer.h">
+      <Filter>include\renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\postfx\plain_shader.h">
+      <Filter>include\shaders\postfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\postfx\lowpass_x_shader.h">
+      <Filter>include\shaders\postfx</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\res\shaders\blockshader.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\blockshader.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\chunkshader.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\chunkshader.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\hudshader.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\hudshader.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\watershader.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\watershader.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\watershader.tes">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\watershader.tcs">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\invertshader.comp">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\h0kshader.comp">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\hktshader.comp">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\twiddleshader.comp">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\butterflyshader.comp">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\inversionshader.comp">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\watershader.geom">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\normalshader.comp">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\skyboxshader.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\skyboxshader.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\postfx\plainshader.vert">
+      <Filter>res\shaders\postfx</Filter>
+    </None>
+    <None Include="..\..\res\shaders\postfx\plainshader.frag">
+      <Filter>res\shaders\postfx</Filter>
+    </None>
+    <None Include="..\..\res\shaders\postfx\lowpassxshader.frag">
+      <Filter>res\shaders\postfx</Filter>
+    </None>
+  </ItemGroup>
+</Project>

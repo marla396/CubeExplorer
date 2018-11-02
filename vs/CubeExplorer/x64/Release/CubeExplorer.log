@@ -1,0 +1,27 @@
+﻿  water_renderer.cc
+..\..\src\renderers\water_renderer.cc(152): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+L:\CubeExplorer\CubeExplorer\include\framebuffer.h(72): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  L:\CubeExplorer\CubeExplorer\include\framebuffer.h(68): note: while compiling class template member function 'void FrameBuffer<float,3>::attach_renderbuffer(void)'
+  L:\CubeExplorer\CubeExplorer\include\framebuffer.h(86): note: see reference to function template instantiation 'void FrameBuffer<float,3>::attach_renderbuffer(void)' being compiled
+  ..\..\src\renderers\water_renderer.cc(30): note: see reference to class template instantiation 'FrameBuffer<float,3>' being compiled
+L:\CubeExplorer\CubeExplorer\include\framebuffer.h(135): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  ..\..\src\renderers\water_renderer.cc(341): note: see reference to function template instantiation 'void bind_fbo<float,3>(const std::shared_ptr<FrameBuffer<float,3>> &)' being compiled
+L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data
+  L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(8): note: while compiling class template member function 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)'
+          with
+          [
+              T=uint8_t
+          ]
+  L:\Visual Studio\VC\Tools\MSVC\14.12.25827\include\memory(2585): note: see reference to function template instantiation 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)' being compiled
+          with
+          [
+              T=uint8_t
+          ]
+  ..\..\src\renderers\water_renderer.cc(134): note: see reference to class template instantiation 'MTexture<uint8_t>' being compiled
+L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data
+  Generating code
+  3 of 3875 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    3 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  CubeExplorer.vcxproj -> L:\CubeExplorer\CubeExplorer\vs\CubeExplorer\x64\Release\CubeExplorer.exe

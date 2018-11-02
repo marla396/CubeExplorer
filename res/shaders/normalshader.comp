@@ -1,0 +1,39 @@
+layout (local_size_x = 16, local_size_y = 16) in;
+
+layout (binding = 0, rgba32f) uniform writeonly image2D tex_unit0;
+
+uniform sampler2D tex_unit1;
+uniform int N;
+uniform float normal_strength;
+
+void main(void)
+{
+	// z0 -- z1 -- z2
+	// |	 |     |
+	// z3 -- h  -- z4
+	// |     |     |
+	// z5 -- z6 -- z7
+	
+	ivec2 x = ivec2(gl_GlobalInvocationID.xy);
+	vec2 tex_coord = gl_GlobalInvocationID.xy/float(N);
+	
+	float texel_size = 1.0/N;
+	
+	float z0 = texture(tex_unit1, tex_coord + vec2(-texel_size,-texel_size)).r;
+	float z1 = texture(tex_unit1, tex_coord + vec2(0,-texel_size)).r;
+	float z2 = texture(tex_unit1, tex_coord + vec2(texel_size,-texel_size)).r;
+	float z3 = texture(tex_unit1, tex_coord + vec2(-texel_size,0)).r;
+	float z4 = texture(tex_unit1, tex_coord + vec2(texel_size,0)).r;
+	float z5 = texture(tex_unit1, tex_coord + vec2(-texel_size,texel_size)).r;
+	float z6 = texture(tex_unit1, tex_coord + vec2(0,texel_size)).r;
+	float z7 = texture(tex_unit1, tex_coord + vec2(texel_size,texel_size)).r;
+	 
+	vec3 normal;
+	
+	// Sobel Filter
+	normal.z = 1.0/normal_strength;
+	normal.x = z0 + 2*z3 + z5 - z2 - 2*z4 - z7;
+	normal.y = z0 + 2*z1 + z2 -z5 - 2*z6 - z7;
+	
+	imageStore(tex_unit0, x, vec4(normalize(normal),1));
+}

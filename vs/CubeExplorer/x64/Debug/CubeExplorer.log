@@ -1,0 +1,14 @@
+﻿  application.cc
+l:\cubeexplorer\cubeexplorer\src\application.cc(145): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  world.cc
+  water_renderer.cc
+  chunk_model.cc
+  main.cc
+  hud_renderer.cc
+  game.cc
+  player.cc
+  entity.cc
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  CubeExplorer.vcxproj -> L:\CubeExplorer\CubeExplorer\vs\CubeExplorer\x64\Debug\CubeExplorer.exe

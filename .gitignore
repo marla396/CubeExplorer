@@ -1,0 +1,14 @@
+build/*
+.vscode
+*.obj
+*.ipch
+*.pdb
+*.exe
+*.db
+*.idb
+*.tlog
+vs/CubeExplorer/.vs/CubeExplorer/v15/.suo
+vs/CubeExplorer/Debug/CubeExplorer.Build.CppClean.log
+vs/CubeExplorer/Debug/CubeExplorer.ilk
+vs/CubeExplorer/Debug/CubeExplorer.log
+*.opendb

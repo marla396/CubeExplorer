@@ -1,0 +1,30 @@
+layout(vertices = 3) out;
+
+in vec3 world_position_tcs[];
+in vec2 tex_coords_tcs[];
+
+out vec3 world_position_tes[];
+out vec2 tex_coords_tes[];
+
+uniform vec3 camera_position;
+
+float get_tess_level(float a, float b){
+	return gl_MaxTessGenLevel;
+}
+
+void main(void) {
+	//Pass-through to evaluation shader
+    world_position_tes[gl_InvocationID] = world_position_tcs[gl_InvocationID];
+    tex_coords_tes[gl_InvocationID] = tex_coords_tcs[gl_InvocationID];
+
+	// Calculate the distance from the camera to the three control points
+    float camera_to_vertex_dist0 = distance(camera_position, world_position_tes[0]);
+    float camera_to_vertex_dist1 = distance(camera_position, world_position_tes[1]);
+    float camera_to_vertex_dist2 = distance(camera_position, world_position_tes[2]);
+
+	// Calculate the tessellation levels
+    gl_TessLevelOuter[0] = get_tess_level(camera_to_vertex_dist1, camera_to_vertex_dist2);
+    gl_TessLevelOuter[1] = get_tess_level(camera_to_vertex_dist2, camera_to_vertex_dist0);
+    gl_TessLevelOuter[2] = get_tess_level(camera_to_vertex_dist0, camera_to_vertex_dist1);
+    gl_TessLevelInner[0] = gl_TessLevelOuter[2];
+}

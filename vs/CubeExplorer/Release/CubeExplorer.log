@@ -1,0 +1,15 @@
+﻿  application.cc
+  camera.cc
+  player.cc
+  game.cc
+  hud_renderer.cc
+  main.cc
+  water_renderer.cc
+  resources.cc
+..\..\src\resources.cc(40): warning C4244: 'argument': conversion from 'std::streamoff' to 'const unsigned int', possible loss of data
+  Generating code
+  8 of 3891 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    6 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  CubeExplorer.vcxproj -> L:\CubeExplorer\CubeExplorer\vs\CubeExplorer\Release\CubeExplorer.exe

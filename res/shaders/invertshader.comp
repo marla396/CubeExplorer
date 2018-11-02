@@ -1,0 +1,14 @@
+layout(local_size_x = 16, local_size_y = 16) in;
+layout(binding = 0, rgba32f) writeonly uniform image2D tex_unit0; //output texture
+layout(binding = 1, rgba32f) readonly uniform image2D tex_unit1; //input texture
+
+void main(void){
+
+	ivec2 pixel_coords = ivec2(gl_GlobalInvocationID.xy);
+
+	vec4 input_pixel = imageLoad(tex_unit1, pixel_coords);
+	vec4 output_pixel = vec4(1.0) - input_pixel;
+	output_pixel.a = 1.0;
+
+	imageStore(tex_unit0, pixel_coords, output_pixel);
+}

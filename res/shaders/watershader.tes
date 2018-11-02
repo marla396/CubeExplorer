@@ -1,0 +1,58 @@
+layout(triangles, equal_spacing, ccw) in;
+
+in vec3 world_position_tes[];
+in vec2 tex_coords_tes[];
+
+out vec3 world_position_frag;
+out vec2 tex_coords_frag;
+out vec4 clip_space;
+
+uniform mat4 view_matrix;
+uniform mat4 projection_matrix;
+
+uniform sampler2D tex_unit0; //displacement map dy
+uniform sampler2D tex_unit1; //height map
+uniform sampler2D tex_unit5; //displacement map dx
+uniform sampler2D tex_unit6; //displacement map dz
+
+uniform float water_height;
+uniform float displacement_factor;
+
+vec2 lerp2D(vec2 v0, vec2 v1, vec2 v2)
+{
+   	return vec2(gl_TessCoord.x) * v0 + vec2(gl_TessCoord.y) * v1 + vec2(gl_TessCoord.z) * v2;
+}
+
+vec3 lerp3D(vec3 v0, vec3 v1, vec3 v2)
+{
+   	return vec3(gl_TessCoord.x) * v0 + vec3(gl_TessCoord.y) * v1 + vec3(gl_TessCoord.z) * v2;
+}
+
+void main(void){
+
+   	world_position_frag = lerp3D(world_position_tes[0], world_position_tes[1], world_position_tes[2]);
+	tex_coords_frag = lerp2D(tex_coords_tes[0], tex_coords_tes[1], tex_coords_tes[2]);
+
+	vec2 height_coords = vec2(tex_coords_frag.y, tex_coords_frag.x);
+
+	float water_depth = water_height - texture(tex_unit1, height_coords).r;
+	
+	water_depth = max(0.0, water_depth);
+
+	if (water_depth > 0.0){
+		water_depth = 1.0;
+	}
+
+	float displacement_y = texture(tex_unit0, tex_coords_frag).r;
+	float displacement_x = texture(tex_unit5, tex_coords_frag).r;
+	float displacement_z = texture(tex_unit6, tex_coords_frag).r;
+
+	world_position_frag.y += displacement_y * water_depth * displacement_factor;
+	world_position_frag.x += displacement_x * water_depth * displacement_factor;
+	world_position_frag.z += displacement_z * water_depth * displacement_factor;
+
+
+	clip_space = projection_matrix * view_matrix * vec4(world_position_frag, 1.0);
+
+	gl_Position = clip_space;
+}
