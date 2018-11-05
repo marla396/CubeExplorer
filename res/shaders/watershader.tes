@@ -51,7 +51,6 @@ void main(void){
 	world_position_frag.x += displacement_x * water_depth * displacement_factor;
 	world_position_frag.z += displacement_z * water_depth * displacement_factor;
 
-
 	clip_space = projection_matrix * view_matrix * vec4(world_position_frag, 1.0);
 
 	gl_Position = clip_space;

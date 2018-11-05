@@ -71,9 +71,6 @@ Game::Game(NVGcontext* nvg_ctx)
 	m_skybox_renderer = std::make_unique<SkyboxRenderer>();
 	m_postfx_renderer = std::make_unique<PostFXRenderer>();
 
-	m_water_renderer->compute_h0k();
-	m_water_renderer->compute_hkt();
-	m_water_renderer->compute_twiddle();
 }
 
 void Game::on_render() {
@@ -112,7 +109,7 @@ void Game::on_render() {
 
 	m_hud_textures.clear();
 
-	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_water_renderer->get_tilde_hkt_dy());
+	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_water_renderer->get_refraction());
 	hud->set_position({ 0.6f, 0.6f });
 	hud->set_size({ 0.4f, 0.4f });
 	m_hud_textures.insert(std::make_pair("ComputeShader", hud));
@@ -124,7 +121,7 @@ void Game::on_render() {
 void Game::on_update(float time, float dt) {
 	UNUSED(time);
 
-	m_water_renderer->update(time);
+	m_water_renderer->update(m_camera, time);
 
 	if (m_free_cam)
 		m_camera.process_keyboard(dt);
@@ -199,7 +196,7 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 			return;
 		}
 
-		if (key == GLFW_KEY_F12) {
+		if (key == GLFW_KEY_F11) {
 			m_water_renderer->toggle_wireframe();
 		}
 	}

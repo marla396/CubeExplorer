@@ -47,7 +47,11 @@ bool Application::initialize(int argc, char** argv){
 	glfwSwapInterval(1);
 
 #ifdef _WIN32
-	if (glewInit() != GLEW_OK) {
+	/*if (glewInit() != GLEW_OK) {
+		return false;
+	}*/
+
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		return false;
 	}
 #endif

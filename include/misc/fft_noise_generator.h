@@ -51,7 +51,7 @@ public:
 		for (size_t x = 0; x < W; x++) {
 			for (size_t z = 0; z < D; z++) { 
 				
-				float f = static_cast<float>(x + z);
+				float f = static_cast<float>(x) / static_cast<float>(W) + static_cast<float>(z) / static_cast<float>(D);
 				
 				freq_domain[x][z] *= lowpass_filter(f, time_constant, m_order, m_gain);
 			}

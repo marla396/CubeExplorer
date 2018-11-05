@@ -11,7 +11,8 @@
 #endif
 
 #ifdef _WIN32
-#include <glew/include/glew.h>
+//#include <glew/include/glew.h>
+#include <glad/include/glad.h>
 #include <gl/gl.h>
 #include <glfw/include/glfw3.h>
 

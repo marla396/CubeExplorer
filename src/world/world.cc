@@ -4,7 +4,7 @@
 
 World::World(uint32_t seed) : m_seed(seed) {
 
-	m_generator = std::make_shared<FFTNoiseGenerator>(seed, 0.3f, 2.0f, 1.0f);
+	m_generator = std::make_shared<FFTNoiseGenerator>(seed, 0.005f, 2.0f, 1.0f);
 }
 
 World::~World() {

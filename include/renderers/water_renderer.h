@@ -55,7 +55,7 @@ public:
 	std::shared_ptr<ITexture> get_refraction() const;
 
 	void render(const std::vector<std::shared_ptr<Quad2DModel>>& models, Camera& camera);
-	void update(float time);
+	void update(Camera& camera, float time);
 	void compute_h0k() const;
 	void compute_hkt() const;
 	void compute_twiddle() const;
@@ -112,6 +112,7 @@ private:
 	float m_capillar_supress_factor;
 	float m_wave_strength;
 	bool m_wireframe;
+	bool m_below_water;
 
 	std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>> m_terrain_renderers;
 

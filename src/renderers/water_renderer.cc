@@ -4,7 +4,8 @@
 
 WaterRenderer::WaterRenderer(const std::shared_ptr<World>& world)
 	: m_generator(std::random_device{}()), m_time(0.0f), m_L(1250), m_amplitude(2.0f), m_wind_speed(50.0f),
-	m_wind_direction({ 1.0f, 1.0f }), m_capillar_supress_factor(0.1f), m_wave_strength(1.0f), m_wireframe(false) {
+	m_wind_direction({ 1.0f, 1.0f }), m_capillar_supress_factor(0.1f), m_wave_strength(1.0f), m_wireframe(false),
+	m_below_water(false){
 
 	auto height_map = world->get_height_map();
 	uint8_t *buffer = height_map->to_texture_buffer();
@@ -153,14 +154,16 @@ void WaterRenderer::render(const std::vector<std::shared_ptr<Quad2DModel>>& mode
 
 	if (m_wireframe)
 		GLC(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
-
+		
 
 	GLC(glDisable(GL_DEPTH_TEST));
 	GLC(glDisable(GL_BLEND));
 }
 
-void WaterRenderer::update(float time) {
+void WaterRenderer::update(Camera& camera, float time) {
 	m_time = 3.0f * time;
+
+	m_below_water = camera.get_position().y < WORLD_WATER_HEIGHT;
 
 	compute_hkt();
 	compute_fft();
@@ -371,8 +374,16 @@ void WaterRenderer::render_refraction(Camera& camera) {
 
 	GLC(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
+	float clip_offset = static_cast<float>(WORLD_WATER_HEIGHT);
+	float clip_direction = -1.0f;
+
+	if (m_below_water) {
+		clip_offset *= -1.0f;
+		clip_direction *= -1.0f;
+	}
+
 	for (const auto& renderer : m_terrain_renderers) {
-		renderer.second({ 0.0f, -1.0f, 0.0f, static_cast<float>(WORLD_WATER_HEIGHT) });
+		renderer.second({ 0.0f, clip_direction, 0.0f, clip_offset });
 		renderer.first(camera);
 		renderer.second({ 0.0f, 0.0f, 0.0f, 0.0f });
 	}

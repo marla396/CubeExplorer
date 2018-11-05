@@ -9,9 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="glew">
-      <UniqueIdentifier>{3b2c93b9-8907-4df5-8f0d-191d5501353c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="lib">
       <UniqueIdentifier>{41734f6f-189e-433d-8dac-a9a9c4c6bb0a}</UniqueIdentifier>
     </Filter>
@@ -84,6 +81,9 @@
     <Filter Include="include\shaders\postfx">
       <UniqueIdentifier>{8ca0d76e-a8a7-458a-b9f3-5587bbcf1395}</UniqueIdentifier>
     </Filter>
+    <Filter Include="glad">
+      <UniqueIdentifier>{cf431c70-a0ac-44af-9b3c-9b3a7dbed833}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\application.cc">
@@ -97,9 +97,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\game.cc">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Windows\glew\src\glew.c">
-      <Filter>glew</Filter>
     </ClCompile>
     <ClCompile Include="..\..\lib\nanovg\nanovg.c">
       <Filter>lib\nanovg</Filter>
@@ -232,6 +229,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\shaders\postfx\lowpass_x_shader.cc">
       <Filter>src\shaders\postfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Windows\glad\src\glad.c">
+      <Filter>glad</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

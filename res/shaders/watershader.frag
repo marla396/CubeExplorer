@@ -29,7 +29,6 @@ void main(void){
 
 	normal = normalize(normal);
 
-
 	reflect_coords += dudv;
 	refract_coords += dudv;
 
@@ -43,7 +42,7 @@ void main(void){
 
 	vec3 view_vector = normalize(camera_position - world_position_frag);
 	float refractive_factor = dot(view_vector, vec3(0.0, 1.0, 0.0));
-	refractive_factor = pow(refractive_factor, 1.5);
+	refractive_factor = max(0.0, pow(refractive_factor, 1.5));
 
 
 	vec3 reflected_light = reflect(normalize(world_position_frag - light_position), normal);
@@ -52,6 +51,11 @@ void main(void){
 	specular = pow(specular, 15.0);
 	vec4 specular_highlight = vec4(vec3(specular), 0.0);
 
-	color = mix(reflection, refraction, refractive_factor);
-	color = mix(color, vec4(0.0, 0.2, 0.3, 1.0) + specular_highlight, 0.5);
+	if (refractive_factor > 0.0)
+		color = mix(reflection, refraction, refractive_factor);
+	else
+		color = refraction;
+
+
+	color = mix(color, vec4(0.0, 0.15, 0.25, 1.0) + specular_highlight, 0.8);
 }

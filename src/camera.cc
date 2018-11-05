@@ -83,16 +83,16 @@ void Camera::set_pitch(float pitch) {
 	m_rotation.x = pitch; //?????
 }
 
-void Camera::set_near(float near) {
-	m_near = near;
+void Camera::set_near(float znear) {
+	m_near = znear;
 }
 
 float Camera::get_near() const {
 	return m_near;
 }
 
-void Camera::set_far(float far) {
-	m_far = far;
+void Camera::set_far(float zfar) {
+	m_far = zfar;
 }
 
 float Camera::get_far() const {
