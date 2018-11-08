@@ -56,6 +56,5 @@ void main(void){
 	else
 		color = refraction;
 
-
-	color = mix(color, vec4(0.0, 0.15, 0.25, 1.0) + specular_highlight, 0.8);
+	color = mix(color, vec4(0.0, 0.15, 0.25, 1.0) + specular_highlight, 0.4);
 }

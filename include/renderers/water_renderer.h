@@ -8,7 +8,7 @@
 #include "shaders/butterfly_shader.h"
 #include "shaders/inversion_shader.h"
 #include "shaders/normal_shader.h"
-#include "models/quad2d_model.h"
+#include "models/water_model.h"
 #include "texture/ftexture.h"
 #include "texture/mtexture.h"
 #include "texture/texture_storage.h"
@@ -28,7 +28,7 @@ constexpr size_t REFLECTION_HEIGHT = 600;
 constexpr size_t REFRACTION_WIDTH = 800;
 constexpr size_t REFRACTION_HEIGHT = 600;
 
-class WaterRenderer : public Renderer<WaterShader, Quad2DModel> {
+class WaterRenderer : public Renderer<WaterShader, WaterModel> {
 public:
 	WaterRenderer(const std::shared_ptr<World>& world);
 
@@ -41,7 +41,7 @@ public:
 	float get_wave_strength() const;
 	void toggle_wireframe();
 
-	void set_reflection_render(const std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>>& renderers);
+	void set_terrain_renderers(const std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>>& renderers);
 
 	TexStoragePtr get_tilde_h0k() const;
 	TexStoragePtr get_tilde_h0minusk() const;
@@ -54,7 +54,7 @@ public:
 	std::shared_ptr<ITexture> get_reflection() const;
 	std::shared_ptr<ITexture> get_refraction() const;
 
-	void render(const std::vector<std::shared_ptr<Quad2DModel>>& models, Camera& camera);
+	void render(const std::vector<std::shared_ptr<WaterModel>>& models, Camera& camera);
 	void update(Camera& camera, float time);
 	void compute_h0k() const;
 	void compute_hkt() const;

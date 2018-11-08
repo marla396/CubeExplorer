@@ -11,6 +11,7 @@
 #include "texture/ftexture.h"
 #include "texture/mtexture.h"
 #include "models/chunk_model.h"
+#include "models/water_model.h"
 #include "renderers/chunk_renderer.h"
 #include "misc/fft_noise_generator.h"
 #include "renderers/renderer.h"
@@ -18,7 +19,7 @@
 #include "shaders/invert_shader.h"
 
 std::shared_ptr<TextureAtlas<32, 32>> texture_atlas;
-std::shared_ptr<Quad2DModel> water_model;
+std::vector<std::shared_ptr<WaterModel>> water_models;
 std::shared_ptr<SkyboxModel> skybox_model;
 std::shared_ptr<FTexture> skybox_texture;
 
@@ -59,9 +60,21 @@ Game::Game(NVGcontext* nvg_ctx)
 	m_height_map_texture->set_position({ 0.6f, 0.6f });
 	m_height_map_texture->set_size({ 0.4f, 0.4f });
 
-	water_model = std::make_shared<Quad2DModel>();
-	water_model->set_position({ -0.5f, WORLD_WATER_HEIGHT, -0.5f });
-	water_model->set_scale({ static_cast<float>(WORLD_SIZE * CHUNK_SIZE), 1.0f, static_cast<float>(WORLD_SIZE * CHUNK_SIZE)});
+	for (int x = 0; x < WATER_QUAD_DIMENSION; x++){
+		for (int y = 0; y < WATER_QUAD_DIMENSION; y++){
+			glm::vec2 pos = { 
+						static_cast<float>(x) / static_cast<float>(WATER_QUAD_DIMENSION),
+		      				static_cast<float>(y) / static_cast<float>(WATER_QUAD_DIMENSION)
+					};
+
+			float world_size = static_cast<float>(WORLD_SIZE * CHUNK_SIZE);
+			auto water_model = std::make_shared<WaterModel>(pos);
+			water_model->set_position({ -0.5f + pos.x * world_size, WORLD_WATER_HEIGHT, -0.5f + pos.y * world_size });
+			water_model->set_scale({ world_size / static_cast<float>(WATER_QUAD_DIMENSION), 1.0f, world_size / static_cast<float>(WATER_QUAD_DIMENSION)});
+
+			water_models.push_back(water_model);
+		}
+	}
 
 	skybox_model = std::make_shared<SkyboxModel>(skybox_texture);
 
@@ -75,41 +88,21 @@ Game::Game(NVGcontext* nvg_ctx)
 
 void Game::on_render() {
 
-	using namespace std::placeholders;
-
 	//bind_fbo(m_postfx_fbo);
 
 	GLC(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 
-
-	std::vector<std::shared_ptr<ChunkModel>> chunks;
-
-	for (const auto& c : *m_world->get_chunks()) {
-		chunks.push_back(c.second);
-	}
+	auto chunks = m_world->get_chunks();
 
 	m_skybox_renderer->render({ skybox_model }, m_camera);
-
-
-	m_chunk_renderer->render(chunks, m_camera);
-
-	std::function<void(Camera&)> a = std::bind(&ChunkRenderer::render, m_chunk_renderer.get(), chunks, _1);
-	std::function<void(const glm::vec4&)> b = std::bind(&ChunkRenderer::set_clip_plane, m_chunk_renderer.get(), _1);
-
-	std::vector<std::shared_ptr<SkyboxModel>> sky_boxes = { skybox_model };
-
-	std::function<void(Camera&)> c = std::bind(&SkyboxRenderer::render, m_skybox_renderer.get(), sky_boxes, _1);
-	std::function<void(const glm::vec4&)> d = std::bind(&SkyboxRenderer::set_clip_plane, m_skybox_renderer.get(), _1);
-
-
-	m_water_renderer->set_reflection_render({ std::make_pair(c, d), std::make_pair(a, b) });
-	m_water_renderer->render({ water_model }, m_camera);
+	m_chunk_renderer->render(*chunks, m_camera);
+	m_water_renderer->render(water_models, m_camera);
 	
 	//m_postfx_renderer->render(m_postfx_fbo);
 
 	m_hud_textures.clear();
 
-	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_water_renderer->get_refraction());
+	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_water_renderer->get_tilde_hkt_dy());
 	hud->set_position({ 0.6f, 0.6f });
 	hud->set_size({ 0.4f, 0.4f });
 	m_hud_textures.insert(std::make_pair("ComputeShader", hud));
@@ -119,8 +112,20 @@ void Game::on_render() {
 }
 
 void Game::on_update(float time, float dt) {
-	UNUSED(time);
+	using namespace std::placeholders;
+	
+	auto chunks = m_world->get_chunks();
+	
+	std::function<void(Camera&)> a = std::bind(&ChunkRenderer::render, m_chunk_renderer.get(), *chunks, _1);
+	std::function<void(const glm::vec4&)> b = std::bind(&ChunkRenderer::set_clip_plane, m_chunk_renderer.get(), _1);
 
+	std::vector<std::shared_ptr<SkyboxModel>> sky_boxes = { skybox_model };
+
+	std::function<void(Camera&)> c = std::bind(&SkyboxRenderer::render, m_skybox_renderer.get(), sky_boxes, _1);
+	std::function<void(const glm::vec4&)> d = std::bind(&SkyboxRenderer::set_clip_plane, m_skybox_renderer.get(), _1);
+
+	m_water_renderer->set_terrain_renderers({ std::make_pair(c, d), std::make_pair(a, b) });
+	
 	m_water_renderer->update(m_camera, time);
 
 	if (m_free_cam)

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <unordered_map>
 #include <memory>
 
@@ -20,12 +21,12 @@ public:
 	float height_at(float x, float z) const;
 
 	std::shared_ptr<FFTNoise<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>> get_height_map() const;
-	std::shared_ptr<std::unordered_map<glm::ivec3, std::shared_ptr<ChunkModel>, ChunkVector3Hash>> get_chunks() const;
-private:
+	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> get_chunks() const;
+	private:
 	std::shared_ptr<FFTNoiseGenerator> m_generator;
 	std::shared_ptr<FFTNoise<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>> m_height_map;
 
-	std::shared_ptr<std::unordered_map<glm::ivec3, std::shared_ptr<ChunkModel>, ChunkVector3Hash>> m_chunks;
+	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> m_chunks;
 
 	uint32_t m_seed;
 };

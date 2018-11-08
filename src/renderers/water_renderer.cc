@@ -63,7 +63,7 @@ void WaterRenderer::toggle_wireframe() {
 	m_wireframe = !m_wireframe;
 }
 
-void WaterRenderer::set_reflection_render(const std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>>& renderers) {
+void WaterRenderer::set_terrain_renderers(const std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>>& renderers) {
 	m_terrain_renderers = renderers;
 }
 
@@ -107,13 +107,10 @@ std::shared_ptr<ITexture> WaterRenderer::get_refraction() const {
 	return m_refraction_fbo->get_texture();
 }
 
-void WaterRenderer::render(const std::vector<std::shared_ptr<Quad2DModel>>& models, Camera& camera) {
+void WaterRenderer::render(const std::vector<std::shared_ptr<WaterModel>>& models, Camera& camera) {
 	if (models.empty()) {
 		return;
 	}
-
-	render_refraction(camera);
-	render_reflection(camera);
 
 	m_shader->bind();
 
@@ -122,7 +119,7 @@ void WaterRenderer::render(const std::vector<std::shared_ptr<Quad2DModel>>& mode
 	m_shader->upload_displacement_factor(m_wave_strength);
 	m_shader->upload_water_height(WORLD_WATER_HEIGHT / static_cast<float>(WORLD_MAX_HEIGHT));
 	m_shader->upload_light_position({ WORLD_SIZE * CHUNK_SIZE * 100.0f, WORLD_WATER_HEIGHT * 2.0f, WORLD_SIZE * CHUNK_SIZE * 100.0f });
-
+	m_shader->upload_quad_dimension(WATER_QUAD_DIMENSION);
 
 	m_shader->upload_view_matrix(camera.get_view_matrix());
 	m_shader->upload_projection_matrix(camera.get_projection_matrix());
@@ -146,9 +143,12 @@ void WaterRenderer::render(const std::vector<std::shared_ptr<Quad2DModel>>& mode
 		GLC(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
 	}
 
+
 	for (const auto& model : models) {
 		model->bind();
 		m_shader->upload_model_matrix(model->get_model_matrix());
+		m_shader->upload_quad_instance(model->get_instance_position());
+		
 		DRAW_CALL(GLC(glDrawElements(GL_PATCHES, model->get_indices_count(), GL_UNSIGNED_INT, nullptr)));
 	}
 
@@ -164,6 +164,9 @@ void WaterRenderer::update(Camera& camera, float time) {
 	m_time = 3.0f * time;
 
 	m_below_water = camera.get_position().y < WORLD_WATER_HEIGHT;
+
+	render_refraction(camera);
+	render_reflection(camera);
 
 	compute_hkt();
 	compute_fft();

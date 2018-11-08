@@ -11,7 +11,7 @@ void set_stack_size(const rlim_t size);
 int main(int argc, char** argv){
 
 #ifndef _WIN32
-	set_stack_size(32 * 1024 * 1024); //32MB must be enough, right?
+	set_stack_size(128 * 1024 * 1024); //32MB must be enough, right?
 #endif
 
 	Application app;

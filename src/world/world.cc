@@ -21,7 +21,7 @@ float World::height_at(float x, float z) const {
 void World::generate_world(const std::shared_ptr<ITexture>& chunk_texture) {
 
 	m_height_map = m_generator->generate_height_map<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>(0.0f, static_cast<float>(WORLD_MAX_HEIGHT));
-	m_chunks = std::make_shared<std::unordered_map<glm::ivec3, std::shared_ptr<ChunkModel>, ChunkVector3Hash>>();
+	m_chunks = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
 
 	for (int x = 0; x < WORLD_SIZE; x++) {
 		for (int z = 0; z < WORLD_SIZE; z++) {
@@ -50,10 +50,10 @@ void World::generate_world(const std::shared_ptr<ITexture>& chunk_texture) {
 				}
 
 
-				std::shared_ptr<ChunkModel> chunk = std::make_shared<ChunkModel>(chunk_texture, chunk_pos, block_map);
-
-				if (n_blocks < CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) //is not solid?
-					m_chunks->insert(std::make_pair(glm::ivec3{ x, y, z }, chunk));
+				if (n_blocks < CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE){ //is not solid?	
+					std::shared_ptr<ChunkModel> chunk = std::make_shared<ChunkModel>(chunk_texture, chunk_pos, block_map);
+					m_chunks->push_back(chunk);
+				}
 			}
 		}
 	}
@@ -63,6 +63,6 @@ std::shared_ptr<FFTNoise<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>> Worl
 	return m_height_map;
 }
 
-std::shared_ptr<std::unordered_map<glm::ivec3, std::shared_ptr<ChunkModel>, ChunkVector3Hash>> World::get_chunks() const {
+std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> World::get_chunks() const {
 	return m_chunks;
 }

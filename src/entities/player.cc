@@ -91,20 +91,3 @@ void Player::update(const std::shared_ptr<World>& world, Camera& camera, float d
 
 	camera.set_position(m_position);
 }
-
-bool Player::find_chunk_below(const glm::ivec3& pos, glm::ivec3& out, const std::shared_ptr<World>& world) const {
-	const int MAX_TRIES_Y = 5;
-	out = pos;
-
-	auto chunks = world->get_chunks();
-
-	for (int i = 0; i < MAX_TRIES_Y; i++) {
-		out.y -= i;
-		auto it = chunks->find(out);
-
-		if (it != chunks->end()) {
-			return true;
-		}
-	}
-	return false;
-}

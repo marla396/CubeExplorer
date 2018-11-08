@@ -1,4 +1,4 @@
-layout(triangles, equal_spacing, ccw) in;
+layout(triangles, fractional_odd_spacing, ccw) in;
 
 in vec3 world_position_tes[];
 in vec2 tex_coords_tes[];
@@ -17,6 +17,8 @@ uniform sampler2D tex_unit6; //displacement map dz
 
 uniform float water_height;
 uniform float displacement_factor;
+uniform vec2 quad_instance;
+uniform int quad_dimension;
 
 vec2 lerp2D(vec2 v0, vec2 v1, vec2 v2)
 {
@@ -33,6 +35,8 @@ void main(void){
    	world_position_frag = lerp3D(world_position_tes[0], world_position_tes[1], world_position_tes[2]);
 	tex_coords_frag = lerp2D(tex_coords_tes[0], tex_coords_tes[1], tex_coords_tes[2]);
 
+	tex_coords_frag = tex_coords_frag / quad_dimension + quad_instance;
+
 	vec2 height_coords = vec2(tex_coords_frag.y, tex_coords_frag.x);
 
 	float water_depth = water_height - texture(tex_unit1, height_coords).r;
@@ -42,6 +46,8 @@ void main(void){
 	if (water_depth > 0.0){
 		water_depth = 1.0;
 	}
+
+	//vec2 displacement_coords = tex_coords_frag / quad_dimension + quad_instance;
 
 	float displacement_y = texture(tex_unit0, tex_coords_frag).r;
 	float displacement_x = texture(tex_unit5, tex_coords_frag).r;

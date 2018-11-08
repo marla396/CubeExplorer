@@ -7,7 +7,7 @@
 #define GLX_GLXEXT_PROTOTYPES
 #include <GL/glext.h>
 #include <GL/glx.h>
-#include <GLFW/glfw3.h>
+#include "../Windows/glfw/include/glfw3.h"
 #endif
 
 #ifdef _WIN32

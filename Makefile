@@ -34,7 +34,7 @@ DEPS = $(OBJECTS:.o=.d) $(LIB_OBJECTS:.o=.d) $(LIB_OBJECTS_CXX:.o=.d)
 COMPILE_FLAGS = -std=c++17 -Wall -Wextra -pedantic -g -DGL_GLEXT_PROTOTYPES
 INCLUDES = -I include/ -I common/ -I common/Linux/ -I lib
 # Space-separated pkg-config libraries used by this project
-LIBS = -DGL_GLEXT_PROTOTYPES -lGL -lglfw -pthread -ldl -lrt -lXrandr -lXxf86vm -lXi -lXinerama -lX11 -lm
+LIBS = -DGL_GLEXT_PROTOTYPES -lglfw -lGL -pthread -ldl -lrt -lXxf86vm -lX11 -lm
 
 
 .PHONY: default_target
@@ -73,7 +73,7 @@ all: $(BIN_PATH)/$(BIN_NAME)
 $(BIN_PATH)/$(BIN_NAME): $(OBJECTS) $(LIB_OBJECTS_C) $(LIB_OBJECTS_CXX)
 	@echo "Linking: $@"
 	@echo $(BUILD_PATH)/nanovg.cc: $(LIB_PATH)/nanovg/nanovg.cc
-	$(CXX) $(LIB_OBJECTS_C) $(LIB_OBJECTS_CXX) $(OBJECTS) $(LIBS) -o $@
+	$(CXX) $(LIB_OBJECTS_C) $(LIB_OBJECTS_CXX) $(OBJECTS) $(LIBS) -Lshared -o $@
 
 # Add dependency files, if they exist
 -include $(DEPS)

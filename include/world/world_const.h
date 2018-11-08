@@ -9,7 +9,7 @@ constexpr float WORLD_WATER_HEIGHT = 5.5f;
 constexpr float WORLD_BEACH_HEIGHT = WORLD_WATER_HEIGHT + 1.0f;
 constexpr size_t WATER_FFT_DIMENSION = 256;
 constexpr size_t WATER_FFT_DIMENSION_LOG2 = 8;
-
+constexpr int WATER_QUAD_DIMENSION = 4;
 
 class ChunkVector3Hash {
 public:
