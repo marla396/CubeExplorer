@@ -22,12 +22,6 @@ using TexStoragePtr = std::shared_ptr<TexStorage>;
 using TexStorageLog2 = TextureStorage<float, WATER_FFT_DIMENSION_LOG2, WATER_FFT_DIMENSION>;
 using TexStorageLog2Ptr = std::shared_ptr<TexStorageLog2>;
 
-constexpr size_t REFLECTION_WIDTH = 800;
-constexpr size_t REFLECTION_HEIGHT = 600;
-
-constexpr size_t REFRACTION_WIDTH = 800;
-constexpr size_t REFRACTION_HEIGHT = 600;
-
 class WaterRenderer : public Renderer<WaterShader, WaterModel> {
 public:
 	WaterRenderer(const std::shared_ptr<World>& world);
@@ -48,6 +42,9 @@ public:
 	TexStoragePtr get_tilde_hkt_dx() const;
 	TexStoragePtr get_tilde_hkt_dy() const;
 	TexStoragePtr get_tilde_hkt_dz() const;
+	TexStoragePtr get_dx() const;
+	TexStoragePtr get_dy() const;
+	TexStoragePtr get_dz() const;
 	TexStorageLog2Ptr get_twiddle_factors() const;
 	TexStoragePtr get_pingpong() const;
 	TexStoragePtr get_normal_map() const;

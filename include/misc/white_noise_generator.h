@@ -11,7 +11,7 @@ public:
 	template<typename T, size_t W, size_t D> 
 	std::array<std::array<T, D>, W> generate(T min, T max) {
 		std::array<std::array<T, D>, W> ret;
-
+		std::mt19937 m_rng { std::random_device{}() };
 		auto dist = get_distribution<T>(min, max);
 
 		for (size_t x = 0; x < W; x++) {

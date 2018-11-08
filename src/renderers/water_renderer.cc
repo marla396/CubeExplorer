@@ -1,9 +1,10 @@
 #include "renderers/water_renderer.h"
 #include "resources.h"
 
+#include <thread>
 
 WaterRenderer::WaterRenderer(const std::shared_ptr<World>& world)
-	: m_generator(std::random_device{}()), m_time(0.0f), m_L(1250), m_amplitude(2.0f), m_wind_speed(50.0f),
+	: m_generator(std::random_device{}()), m_time(0.0f), m_L(5000), m_amplitude(1.0f), m_wind_speed(50.0f),
 	m_wind_direction({ 1.0f, 1.0f }), m_capillar_supress_factor(0.1f), m_wave_strength(1.0f), m_wireframe(false),
 	m_below_water(false){
 
@@ -76,15 +77,27 @@ TexStoragePtr WaterRenderer::get_tilde_h0minusk() const {
 }
 
 TexStoragePtr WaterRenderer::get_tilde_hkt_dx() const {
-	return m_dx;
+	return m_tilde_hkt_dx;
 }
 
 TexStoragePtr WaterRenderer::get_tilde_hkt_dy() const {
-	return m_dy;
+	return m_tilde_hkt_dy;
 }
 
 TexStoragePtr WaterRenderer::get_tilde_hkt_dz() const {
-	return m_dz;
+	return m_tilde_hkt_dz;
+}
+
+TexStoragePtr WaterRenderer::get_dx() const{
+	return m_dx;
+}
+
+TexStoragePtr WaterRenderer::get_dy() const{
+	return m_dy;
+}
+
+TexStoragePtr WaterRenderer::get_dz() const{
+	return m_dx;
 }
 
 TexStorageLog2Ptr WaterRenderer::get_twiddle_factors() const {
@@ -171,7 +184,6 @@ void WaterRenderer::update(Camera& camera, float time) {
 	compute_hkt();
 	compute_fft();
 }
-
 
 void WaterRenderer::compute_h0k() const {
 	m_h0k_shader->bind();

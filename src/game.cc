@@ -151,11 +151,6 @@ void Game::on_update(float time, float dt) {
 	if (Application::key_down(GLFW_KEY_SLASH)) {
 		Application::add_time_warp_factor(-0.1f);
 	}
-
-	if (Application::key_down(GLFW_KEY_PAGE_DOWN)) {
-		auto strength = m_water_renderer->get_wave_strength();
-		m_water_renderer->set_wave_strength(strength - 0.05f);
-	}
 }
 
 void Game::on_resize(size_t width, size_t height) {

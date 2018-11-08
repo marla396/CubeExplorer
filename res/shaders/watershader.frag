@@ -48,7 +48,7 @@ void main(void){
 	vec3 reflected_light = reflect(normalize(world_position_frag - light_position), normal);
 	float specular = max(dot(reflected_light, view_vector), 0.0);
 
-	specular = pow(specular, 15.0);
+	specular = pow(specular, 30.0);
 	vec4 specular_highlight = vec4(vec3(specular), 0.0);
 
 	if (refractive_factor > 0.0)

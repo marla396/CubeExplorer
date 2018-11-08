@@ -45,7 +45,8 @@ private:
 	uint32_t m_render_buffer;
 };
 
+void bind_top_fbo();
+
 void bind_fbo(const std::shared_ptr<FrameBuffer>& fbo);
 void unbind_fbo();
 
-static void bind_top_fbo();
