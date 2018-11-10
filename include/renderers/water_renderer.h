@@ -51,7 +51,8 @@ public:
 	std::shared_ptr<ITexture> get_reflection() const;
 	std::shared_ptr<ITexture> get_refraction() const;
 
-	void render(const std::vector<std::shared_ptr<WaterModel>>& models, Camera& camera);
+	void render(const std::vector<std::shared_ptr<WaterModel>>& models, Camera& camera, const std::shared_ptr<Light>& light);
+	void render_depth(const std::vector<std::shared_ptr<WaterModel>>& models, Camera& camera, const std::shared_ptr<Light>& light);
 	void update(Camera& camera, float time);
 	void compute_h0k() const;
 	void compute_hkt() const;
@@ -70,6 +71,7 @@ private:
 	void initialize_inversion();
 
 	WhiteNoiseGenerator m_generator;
+	std::unique_ptr<WaterShader> m_depth_shader;
 
 	std::unique_ptr<H0kShader> m_h0k_shader;
 	TexStoragePtr m_tilde_h0k;

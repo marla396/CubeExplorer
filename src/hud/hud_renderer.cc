@@ -58,7 +58,12 @@ void HUDRenderer::render(const std::map<std::string, std::shared_ptr<HUDTexture>
     log.str("");
     log.clear();
 
-    log << "FPS: " << Application::get_fps();
+	static float previous_fps = 0.0f;
+
+	float fps = 0.95f * previous_fps + 0.05f * Application::get_fps();
+	if (fps != INFINITY)
+		previous_fps = fps;
+    log << "FPS: " << fps;
     render_shadow_text(log.str(), 10.0f, 45.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
 	log.str("");

@@ -44,5 +44,6 @@ private:
 	uint32_t get_shader_type(const std::string& file) const;
 	bool compiler_error(const std::string& file, uint32_t s) const;
 
+
 	uint32_t m_program;
 };

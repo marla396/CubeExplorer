@@ -80,7 +80,7 @@ void Camera::set_yaw(float yaw) {
 	m_rotation.y = yaw;
 }
 void Camera::set_pitch(float pitch) {
-	m_rotation.x = pitch; //?????
+	m_rotation.x = pitch;
 }
 
 void Camera::set_near(float znear) {

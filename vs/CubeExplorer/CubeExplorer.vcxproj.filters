@@ -233,6 +233,15 @@
     <ClCompile Include="..\..\Windows\glad\src\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\models\water_model.cc">
+      <Filter>src\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\world\light.cc">
+      <Filter>src\world</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\light_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\application.h">
@@ -412,9 +421,6 @@
     <ClInclude Include="..\..\include\shaders\skybox_shader.h">
       <Filter>include\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\world\light.h">
-      <Filter>include\world</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\renderers\postfx_renderer.h">
       <Filter>include\renderers</Filter>
     </ClInclude>
@@ -423,6 +429,15 @@
     </ClInclude>
     <ClInclude Include="..\..\include\shaders\postfx\lowpass_x_shader.h">
       <Filter>include\shaders\postfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\models\water_model.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\world\light.h">
+      <Filter>include\world</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\light_shader.h">
+      <Filter>include\shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -494,6 +509,9 @@
     </None>
     <None Include="..\..\res\shaders\postfx\lowpassxshader.frag">
       <Filter>res\shaders\postfx</Filter>
+    </None>
+    <None Include="..\..\res\shaders\depthshader.frag">
+      <Filter>res\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

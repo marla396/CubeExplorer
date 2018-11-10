@@ -23,6 +23,8 @@ public:
 	void on_cursor(float dx, float dy);
 	void on_key(int key, int scan_code, int action, int mods);
 private:
+	void render_shadow_maps();
+
 	NVGcontext* m_nvg_ctx;
 
 	bool m_show_height_map;
@@ -36,6 +38,7 @@ private:
 	std::shared_ptr<World> m_world;
 
 	std::shared_ptr<FrameBuffer> m_postfx_fbo;
+	std::shared_ptr<FrameBuffer> m_shadow_fbo;
 
 	std::unique_ptr<ChunkRenderer> m_chunk_renderer;
 	std::unique_ptr<WaterRenderer> m_water_renderer;

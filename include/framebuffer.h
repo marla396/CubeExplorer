@@ -9,7 +9,7 @@
 enum FrameBufferAttachment{
 	FBO_TEXTURE = 1,
 	FBO_RENDERBUFFER = 2,
-	FBO_DEPTH_TEXTURE = 3
+	FBO_DEPTH_TEXTURE = 4
 };
 
 
@@ -24,8 +24,10 @@ public:
 
 	void set_resolution(size_t width, size_t height);
 	std::shared_ptr<ITexture> get_texture() const;
+	std::shared_ptr<ITexture> get_depth_texture() const;
 
 	void attach_texture();
+	void attach_depth_texture();
 	void attach_renderbuffer();
 private:
 	void create();

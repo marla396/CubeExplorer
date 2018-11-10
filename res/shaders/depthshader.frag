@@ -1,5 +1,5 @@
-out vec4 color;
+layout(location = 0) out float depth;
 
 void main(void){
-	color = vec4(gl_FragCoord.z);
+	depth = gl_FragCoord.z;
 }

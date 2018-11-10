@@ -4,7 +4,7 @@ SkyboxRenderer::SkyboxRenderer() {
 
 }
 
-void SkyboxRenderer::render(const std::vector<std::shared_ptr<SkyboxModel>>& models, Camera& camera) {
+void SkyboxRenderer::render(const std::vector<std::shared_ptr<SkyboxModel>>& models, Camera& camera, const std::shared_ptr<Light>&) {
 
 	if (models.empty()) {
 		return;

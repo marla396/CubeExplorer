@@ -23,7 +23,7 @@ PostFXRenderer::PostFXRenderer() {
 
 void PostFXRenderer::render(const std::shared_ptr<FrameBuffer>& input_fbo) {
 	
-	for (int i = 0; i < 20; i++) {
+	/*for (int i = 0; i < 20; i++) {
 		lowpass_x(input_fbo, m_pingpong_fbo);
 		lowpass_x(m_pingpong_fbo, input_fbo);
 	}
@@ -31,7 +31,7 @@ void PostFXRenderer::render(const std::shared_ptr<FrameBuffer>& input_fbo) {
 	unbind_fbo();
 
 	m_plain_shader->bind();
-	m_plain_shader->upload_tex_unit(0);
+	m_plain_shader->upload_tex_unit(0);*/
 
 	input_fbo->get_texture()->bind(GL_TEXTURE0);
 

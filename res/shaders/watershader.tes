@@ -6,6 +6,7 @@ in vec2 tex_coords_tes[];
 out vec3 world_position_frag;
 out vec2 tex_coords_frag;
 out vec4 clip_space;
+out vec4 shadow_coords;
 
 uniform mat4 view_matrix;
 uniform mat4 projection_matrix;
@@ -19,6 +20,8 @@ uniform float water_height;
 uniform float displacement_factor;
 uniform vec2 quad_instance;
 uniform int quad_dimension;
+
+uniform mat4 shadow_transform;
 
 vec2 lerp2D(vec2 v0, vec2 v1, vec2 v2)
 {
@@ -58,6 +61,7 @@ void main(void){
 	world_position_frag.z += displacement_z * water_depth * displacement_factor;
 
 	clip_space = projection_matrix * view_matrix * vec4(world_position_frag, 1.0);
+	shadow_coords = shadow_transform * vec4(world_position_frag, 1.0);
 
 	gl_Position = clip_space;
 }

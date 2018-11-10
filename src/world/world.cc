@@ -4,11 +4,26 @@
 
 World::World(uint32_t seed) : m_seed(seed) {
 
+	m_sun = std::make_shared<Light>( glm::vec3 { WORLD_SIZE * CHUNK_SIZE * 1.2f, WORLD_MAX_HEIGHT * 1.5f, WORLD_SIZE * CHUNK_SIZE * 1.2f}, glm::vec3 { 1.0f, 1.0f, 1.0f });
+
 	m_generator = std::make_shared<FFTNoiseGenerator>(seed, 0.005f, 2.0f, 1.0f);
 }
 
 World::~World() {
 
+}
+
+void World::update(float time) {
+	UNUSED(time);
+
+	auto pos = m_sun->get_position();
+
+	float r = WORLD_CENTER.x * 1.6f;
+
+	//glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time), WORLD_CENTER.y + r + std::sin(time) * WORLD_CENTER.y / 2.0f, WORLD_CENTER.z + r * std::sin(time) };
+	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time), WORLD_CENTER.y + r * std::sin(time), pos.z };
+
+	m_sun->set_position(new_pos);
 }
 
 float World::height_at(float x, float z) const {
@@ -65,4 +80,8 @@ std::shared_ptr<FFTNoise<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>> Worl
 
 std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> World::get_chunks() const {
 	return m_chunks;
+}
+
+std::shared_ptr<Light> World::get_sun() const {
+	return m_sun;
 }

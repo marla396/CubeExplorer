@@ -5,7 +5,6 @@
 l:\cubeexplorer\cubeexplorer\src\application.cc(151): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   hud_renderer.cc
   main.cc
-  chunk_model.cc
 l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\game.cc)
   l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(8): note: while compiling class template member function 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)'
           with
@@ -39,21 +38,22 @@ l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(9): warning C4267: '=': 
               _Ty=MTexture<uint8_t>,
               _Dx=std::default_delete<MTexture<uint8_t>>
           ] (compiling source file ..\..\src\game.cc)
-  l:\cubeexplorer\cubeexplorer\include\renderers\water_renderer.h(119): note: see reference to class template instantiation 'std::unique_ptr<MTexture<uint8_t>,std::default_delete<_Ty>>' being compiled
+  l:\cubeexplorer\cubeexplorer\include\renderers\water_renderer.h(116): note: see reference to class template instantiation 'std::unique_ptr<MTexture<uint8_t>,std::default_delete<_Ty>>' being compiled
           with
           [
               _Ty=MTexture<uint8_t>
           ] (compiling source file ..\..\src\game.cc)
 l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\game.cc)
+  chunk_model.cc
   chunk_renderer.cc
-l:\cubeexplorer\cubeexplorer\src\models\chunk_model.cc(208): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
   water_renderer.cc
   twiddle_shader.cc
-  block.cc
+l:\cubeexplorer\cubeexplorer\src\models\chunk_model.cc(208): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
 l:\cubeexplorer\cubeexplorer\src\renderers\chunk_renderer.cc(30): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  block.cc
   block_map.cc
   world.cc
-l:\cubeexplorer\cubeexplorer\src\renderers\water_renderer.cc(152): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+l:\cubeexplorer\cubeexplorer\src\renderers\water_renderer.cc(165): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\water_renderer.cc)
   l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(8): note: while compiling class template member function 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)'
           with
@@ -65,7 +65,7 @@ l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(9): warning C4267: '=': 
           [
               T=uint8_t
           ] (compiling source file ..\..\src\renderers\water_renderer.cc)
-  l:\cubeexplorer\cubeexplorer\src\renderers\water_renderer.cc(131): note: see reference to class template instantiation 'MTexture<uint8_t>' being compiled
+  l:\cubeexplorer\cubeexplorer\src\renderers\water_renderer.cc(141): note: see reference to class template instantiation 'MTexture<uint8_t>' being compiled
 l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\water_renderer.cc)
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   CubeExplorer.vcxproj -> L:\CubeExplorer\CubeExplorer\vs\CubeExplorer\x64\Debug\CubeExplorer.exe

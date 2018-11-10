@@ -8,5 +8,5 @@ class SkyboxRenderer : public Renderer<SkyboxShader, SkyboxModel> {
 public:
 	SkyboxRenderer();
 
-	void render(const std::vector<std::shared_ptr<SkyboxModel>>& models, Camera& camera) override;
+	void render(const std::vector<std::shared_ptr<SkyboxModel>>& models, Camera& camera, const std::shared_ptr<Light>& light) override;
 };

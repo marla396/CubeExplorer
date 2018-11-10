@@ -9,7 +9,10 @@ constexpr float WORLD_WATER_HEIGHT = 5.5f;
 constexpr float WORLD_BEACH_HEIGHT = WORLD_WATER_HEIGHT + 1.0f;
 constexpr size_t WATER_FFT_DIMENSION = 256;
 constexpr size_t WATER_FFT_DIMENSION_LOG2 = 8;
-constexpr int WATER_QUAD_DIMENSION = 4;
+constexpr int WATER_QUAD_DIMENSION = 2;
+
+
+const glm::vec3 WORLD_CENTER = glm::vec3 { static_cast<float>(WORLD_SIZE * CHUNK_SIZE), static_cast<float>(WORLD_MAX_HEIGHT), static_cast<float>(WORLD_SIZE * CHUNK_SIZE) } * 0.5f;
 
 class ChunkVector3Hash {
 public:

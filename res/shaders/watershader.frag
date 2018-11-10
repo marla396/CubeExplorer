@@ -3,14 +3,17 @@ out vec4 color;
 in vec3 world_position_frag;
 in vec2 tex_coords_frag;
 in vec4 clip_space;
+in vec4 shadow_coords;
 
 uniform sampler2D tex_unit0; //displacement_map
 uniform sampler2D tex_unit2; //reflection_texture
-uniform sampler2D tex_unit3; //refraction_texture;
-uniform sampler2D tex_unit4; //normal_map;
+uniform sampler2D tex_unit3; //refraction_texture
+uniform sampler2D tex_unit4; //normal_map
+uniform sampler2D tex_unit7; //shadow_map
 
 uniform vec3 camera_position;
 uniform vec3 light_position;
+uniform vec3 light_color;
 
 uniform mat4 view_matrix;
 uniform mat4 projection_matrix;
@@ -47,14 +50,25 @@ void main(void){
 
 	vec3 reflected_light = reflect(normalize(world_position_frag - light_position), normal);
 	float specular = max(dot(reflected_light, view_vector), 0.0);
-
-	specular = pow(specular, 30.0);
-	vec4 specular_highlight = vec4(vec3(specular), 0.0);
+	float diffuse = 0.0;//max(dot(normalize(world_position_frag - light_position), normal), 0.0);
+	specular = pow(specular, 15.0);
+	vec4 shade = vec4((diffuse * 0.3 + specular) * light_color, 0.0);
 
 	if (refractive_factor > 0.0)
 		color = mix(reflection, refraction, refractive_factor);
 	else
 		color = refraction;
 
-	color = mix(color, vec4(0.0, 0.15, 0.25, 1.0) + specular_highlight, 0.4);
+	float shadow_occlusion = 1.0;
+
+	vec3 sndc = (shadow_coords.xyz / shadow_coords.w) * 0.5 + 0.5;
+
+	if (texture(tex_unit7, sndc.xy).r + 0.001 < sndc.z){
+		shadow_occlusion -= 0.3;
+		shade = vec4(0.0);
+	}
+
+	color = mix(shadow_occlusion * color, vec4(0.0, 0.15, 0.25, 1.0) + shade, 0.6);
+	color = color * shadow_occlusion;
+	color.a = 1.0;
 }

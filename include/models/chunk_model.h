@@ -31,6 +31,7 @@ private:
 	void generate_block(const BlockMap& height_map, int x, int y, int z, bool is_top_block);
 	void generate_face(int x, int y, int z, FaceDirection dir, const std::array<float, 12>& face_vertices);
 	void generate_face_texture(BlockTexture texture);
+	void generate_normals(const std::array<float, 3>& normals);
 
 	BlockMap m_block_map;
 };

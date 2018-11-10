@@ -4,7 +4,7 @@ BlockRenderer::BlockRenderer() {
 	
 }
 
-void BlockRenderer::render(const std::vector<std::shared_ptr<BlockModel>>& models, Camera& camera) {
+void BlockRenderer::render(const std::vector<std::shared_ptr<BlockModel>>& models, Camera& camera, const std::shared_ptr<Light>&) {
 
 	if (models.empty()) {
 		return;

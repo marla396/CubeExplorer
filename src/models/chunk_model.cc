@@ -155,7 +155,7 @@ void ChunkModel::generate_block(const BlockMap& block_map, int x, int y, int z, 
 			generate_face_texture(SOIL);
 		else
 			generate_face_texture(GRASS_SOIL_BORDER);
-		//generate_normals(right_normal);
+		generate_normals(right_normal);
 	}
 
 	if (!(x > 0 && block_map(x - 1, y, z))) {
@@ -166,7 +166,7 @@ void ChunkModel::generate_block(const BlockMap& block_map, int x, int y, int z, 
 			generate_face_texture(SOIL);
 		else
 			generate_face_texture(GRASS_SOIL_BORDER);
-		//generate_normals(left_normal);
+		generate_normals(left_normal);
 	}
 
 	if (!(y < CHUNK_SIZE - 1 && block_map(x, y + 1, z))) {
@@ -175,7 +175,7 @@ void ChunkModel::generate_block(const BlockMap& block_map, int x, int y, int z, 
 			generate_face_texture(SAND);
 		else
 			generate_face_texture(GRASS);
-		//generate_normals(top_normal);
+		generate_normals(top_normal);
 
 	}
 
@@ -187,7 +187,7 @@ void ChunkModel::generate_block(const BlockMap& block_map, int x, int y, int z, 
 			generate_face_texture(SOIL);
 		else
 			generate_face_texture(GRASS_SOIL_BORDER);
-		//generate_normals(front_normal);
+		generate_normals(front_normal);
 
 
 	}
@@ -200,7 +200,16 @@ void ChunkModel::generate_block(const BlockMap& block_map, int x, int y, int z, 
 			generate_face_texture(SOIL);
 		else
 			generate_face_texture(GRASS_SOIL_BORDER);
-		//generate_normals(back_normal);
+		generate_normals(back_normal);
+	}
+
+	if (!(y > 0 && block_map(x, y - 1, z))) {
+		generate_face(x, y, z, NEGATIVE, bottom_face);
+		if (block_map.get_global_height() + y < WORLD_BEACH_HEIGHT)
+			generate_face_texture(SAND);
+		else
+			generate_face_texture(SOIL);
+		generate_normals(back_normal);
 	}
 }
 
@@ -262,4 +271,9 @@ void ChunkModel::generate_face_texture(ChunkModel::BlockTexture texture) {
 	auto coords = m_texture->get_texture_coords(texture_x, texture_y);
 	m_tex_coords.insert(m_tex_coords.end(), coords.begin(), coords.end());
 	
+}
+
+void ChunkModel::generate_normals(const std::array<float, 3>& normals) {
+	for (int i = 0; i < 4; i++)
+		m_normals.insert(m_normals.end(), normals.begin(), normals.end());
 }

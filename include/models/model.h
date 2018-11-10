@@ -31,16 +31,12 @@ public:
 
 	size_t get_indices_count() const;
 
-	void set_dirty(bool dirty);
-
-	virtual bool has_normals() const;
-	virtual bool has_tex_coords() const;
-
 protected:
 
 	std::vector<float> m_vertices;
 	std::vector<uint32_t> m_indices;
 	std::vector<float> m_tex_coords;
+	std::vector<float> m_normals;
 
 	std::shared_ptr<ITexture> m_texture;
 	glm::vec3 m_position;
@@ -53,14 +49,13 @@ private:
 
 
 	size_t m_indices_count;
-	bool m_has_normals;
 	bool m_has_tex_coords;
-
-	bool m_dirty;
+	bool m_has_normals;
 
     uint32_t m_vao;
     uint32_t m_vbo;
 	uint32_t m_tbo;
+	uint32_t m_nbo;
     uint32_t m_ibo;
 	uint32_t m_vbo_index;
 	uint32_t m_ibo_index;
