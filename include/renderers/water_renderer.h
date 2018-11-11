@@ -33,7 +33,6 @@ public:
 	void set_capillar_supress_factor(float factor);
 	void set_wave_strength(float strength);
 	float get_wave_strength() const;
-	void toggle_wireframe();
 
 	void set_terrain_renderers(const std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>>& renderers);
 
@@ -110,7 +109,6 @@ private:
 	glm::vec2 m_wind_direction;
 	float m_capillar_supress_factor;
 	float m_wave_strength;
-	bool m_wireframe;
 	bool m_below_water;
 
 	std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>> m_terrain_renderers;

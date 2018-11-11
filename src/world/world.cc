@@ -21,7 +21,7 @@ void World::update(float time) {
 	float r = WORLD_CENTER.x * 1.6f;
 
 	//glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time), WORLD_CENTER.y + r + std::sin(time) * WORLD_CENTER.y / 2.0f, WORLD_CENTER.z + r * std::sin(time) };
-	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time), WORLD_CENTER.y + r * std::sin(time), pos.z };
+	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time/10.0f), WORLD_CENTER.y + r * std::sin(time/10.0f), WORLD_CENTER.z + r * std::cos(time / 10.0f) };
 
 	m_sun->set_position(new_pos);
 }

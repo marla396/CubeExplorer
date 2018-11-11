@@ -214,9 +214,12 @@ void Game::render_shadow_maps() {
 	bind_fbo(m_shadow_fbo);
 
 	GLC(glClear(GL_DEPTH_BUFFER_BIT));
-	
-	m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun());
+	GLC(glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE));
+
 	m_water_renderer->render_depth(water_models, m_camera, m_world->get_sun());
+	m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun());
+
+	GLC(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE));
 
 	unbind_fbo();
 

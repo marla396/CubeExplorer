@@ -50,8 +50,6 @@ void main(void){
 		water_depth = 1.0;
 	}
 
-	//vec2 displacement_coords = tex_coords_frag / quad_dimension + quad_instance;
-
 	float displacement_y = texture(tex_unit0, tex_coords_frag).r;
 	float displacement_x = texture(tex_unit5, tex_coords_frag).r;
 	float displacement_z = texture(tex_unit6, tex_coords_frag).r;

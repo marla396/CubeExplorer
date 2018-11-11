@@ -18,6 +18,15 @@ uniform vec3 light_color;
 uniform mat4 view_matrix;
 uniform mat4 projection_matrix;
 
+uniform float displacement_factor;
+
+const vec2 poisson_disk[4] = vec2[](
+  vec2( -0.94201624, -0.39906216 ),
+  vec2( 0.94558609, -0.76890725 ),
+  vec2( -0.094184101, -0.92938870 ),
+  vec2( 0.34495938, 0.29387760 )
+);
+
 void main(void){
 
 	vec2 ndc = (clip_space.xy / clip_space.w) / 2.0 + 0.5;
@@ -25,10 +34,9 @@ void main(void){
 	vec2 reflect_coords = vec2(ndc.x, -ndc.y);
 	vec2 refract_coords = vec2(ndc.x, ndc.y);
 
-	vec4 normal_map = texture(tex_unit4, tex_coords_frag);
-	vec3 normal = vec3(normal_map.r, normal_map.b, normal_map.g);
+	vec3 normal = texture(tex_unit4, tex_coords_frag).rbg;
 
-	vec2 dudv = vec2(dFdx(normal).r, dFdy(normal).g);
+	vec2 dudv = vec2(dFdx(normal).r, dFdy(normal).b) * displacement_factor;
 
 	normal = normalize(normal);
 
@@ -63,12 +71,16 @@ void main(void){
 
 	vec3 sndc = (shadow_coords.xyz / shadow_coords.w) * 0.5 + 0.5;
 
-	if (texture(tex_unit7, sndc.xy).r + 0.001 < sndc.z){
-		shadow_occlusion -= 0.3;
-		shade = vec4(0.0);
+	for (int i = 0; i < 4; i++){
+		if (texture(tex_unit7, sndc.xy + poisson_disk[i]/3500.0).z + 0.005 < sndc.z){
+			shadow_occlusion -= 0.15;
+		}
 	}
 
-	color = mix(shadow_occlusion * color, vec4(0.0, 0.15, 0.25, 1.0) + shade, 0.6);
+	shadow_occlusion = max(shadow_occlusion, 0.4);
+
+
+	color = mix(shadow_occlusion * color, vec4(0.0, 0.15, 0.25, 1.0) + shade, 0.4);
 	color = color * shadow_occlusion;
 	color.a = 1.0;
 }

@@ -1,6 +1,6 @@
 #include "shaders/chunk_shader.h"
 
-ChunkShader::ChunkShader() : Shader({ "chunkshader.vert", "chunkshader.frag" }), MVPShader(this), MultiTexShader(this), ClipShader(this), LightShader(this), m_depth(false) {
+ChunkShader::ChunkShader() : Shader({ "chunkshader.vert", "chunkshader.frag" }), MVPShader(this), MultiTexShader(this), ClipShader(this), LightShader(this) {
 	bind();
 	get_uniform_locations();
 }

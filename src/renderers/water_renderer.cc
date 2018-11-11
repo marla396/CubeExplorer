@@ -5,8 +5,7 @@
 
 WaterRenderer::WaterRenderer(const std::shared_ptr<World>& world)
 	: m_generator(std::random_device{}()), m_time(0.0f), m_L(5000), m_amplitude(1.0f), m_wind_speed(50.0f),
-	m_wind_direction({ 1.0f, 1.0f }), m_capillar_supress_factor(0.1f), m_wave_strength(1.0f), m_wireframe(false),
-	m_below_water(false){
+	m_wind_direction({ 1.0f, 1.0f }), m_capillar_supress_factor(0.1f), m_wave_strength(1.0f), m_below_water(false){
 
 	m_depth_shader = std::make_unique<WaterShader>(true);
 
@@ -60,10 +59,6 @@ void WaterRenderer::set_wave_strength(float strength) {
 
 float WaterRenderer::get_wave_strength() const {
 	return m_wave_strength;
-}
-
-void WaterRenderer::toggle_wireframe() {
-	m_wireframe = !m_wireframe;
 }
 
 void WaterRenderer::set_terrain_renderers(const std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>>& renderers) {

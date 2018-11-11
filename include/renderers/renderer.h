@@ -11,7 +11,7 @@
 template<typename ShaderProgram, typename M>
 class Renderer{
 public:
-	Renderer() {
+	Renderer() : m_wireframe(false) {
 		m_shader = std::make_unique<ShaderProgram>();
 	}
 	virtual void render(const std::vector<std::shared_ptr<M>>& models, Camera& camera, const std::shared_ptr<Light>& light) = 0;
@@ -24,8 +24,14 @@ public:
 		m_shadow_map = shadow_map;
 	}
 
+	void toggle_wireframe() {
+		m_wireframe = !m_wireframe;
+	}
+
 protected:
 	glm::vec4 m_clip_plane;
 	std::shared_ptr<ITexture> m_shadow_map;
 	std::unique_ptr<ShaderProgram> m_shader;
+
+	bool m_wireframe;
 };

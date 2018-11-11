@@ -37,15 +37,26 @@ void check_framebuffer_status();
 
 #define GL_ASSERT(stmt)	if (!(stmt)) TRAP;
 
+#ifdef _DEBUG
+
 #define GLC(stmt)			clear_OpenGL_errors(); \
 							stmt; \
 							GL_ASSERT(check_OpenGL_errors(#stmt, __FILE__, __LINE__));
 
 #define CHECK_FRAME_BUFFER() check_framebuffer_status()
 
+#define LOG(msg) std::cout << msg << std::endl;
+
+#else
+
+#define GLC(stmt) stmt;
+#define CHECK_FRAME_BUFFER() NOP;
+#define LOG(msg) NOP;
+
+#endif
+
 #define DRAW_CALL(stmt) increment_draw_calls(); \
 						stmt;
 
-#define LOG(msg) std::cout << msg << std::endl;
 
 #define UNUSED(x) (void)x;
