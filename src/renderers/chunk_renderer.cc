@@ -16,7 +16,7 @@ void ChunkRenderer::render(const std::vector<std::shared_ptr<ChunkModel>>& model
 	m_shader->upload_projection_matrix(camera.get_projection_matrix());
 	m_shader->upload_clip_plane(m_clip_plane);
 	m_shader->upload_light_source(light);
-	m_shader->upload_shadow_transform(light->get_transform_matrix(camera));
+	m_shader->upload_shadow_transform(light->get_transform_matrix());
 
 	if (m_shadow_map)
 		m_shadow_map->bind(GL_TEXTURE1);
@@ -29,6 +29,11 @@ void ChunkRenderer::render(const std::vector<std::shared_ptr<ChunkModel>>& model
 
 	for (const auto& model : models) {
 		if (model->get_indices_count() > 0) {
+
+			if (!intersects_frustum(model, camera)) {
+				continue;
+			}
+
 			model->bind();
 			model->bind_texture(GL_TEXTURE0);
 			m_shader->upload_model_matrix(model->get_model_matrix());
@@ -48,8 +53,8 @@ void ChunkRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>&
 
 	m_depth_shader->bind();
 
-	m_depth_shader->upload_view_matrix(light->get_view_matrix(camera));
-	m_depth_shader->upload_projection_matrix(light->get_projection_matrix(camera));
+	m_depth_shader->upload_view_matrix(light->get_view_matrix());
+	m_depth_shader->upload_projection_matrix(light->get_projection_matrix());
 	m_depth_shader->upload_clip_plane(m_clip_plane);
 
 

@@ -15,7 +15,22 @@ public:
 		m_shader = std::make_unique<ShaderProgram>();
 	}
 	virtual void render(const std::vector<std::shared_ptr<M>>& models, Camera& camera, const std::shared_ptr<Light>& light) = 0;
-	
+
+	bool intersects_frustum(const std::shared_ptr<M>& model, const Camera& camera) {
+		auto p = camera.get_frustum_planes();
+
+		auto center = model->get_center();
+		auto radius = model->get_bounding_radius();
+
+		for (int i : {FRUSTUM_BOTTOM, FRUSTUM_LEFT, FRUSTUM_TOP, FRUSTUM_BOTTOM, FRUSTUM_FAR}){
+			if (glm::dot(p[i].n, center) + p[i].d + radius <= 0.0f) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
 	void set_clip_plane(const glm::vec4& clip_plane) {
 		m_clip_plane = clip_plane;
 	}

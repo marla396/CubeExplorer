@@ -98,7 +98,7 @@ void ChunkModel::generate_geometry(const BlockMap& block_map) {
 	for (int x = 0; x < CHUNK_SIZE; x++) {
 		for (int z = 0; z < CHUNK_SIZE; z++) {
 			for (int y = 0; y < CHUNK_SIZE; y++) {
-				if (!ocluded(block_map, x, y, z)) {
+				if (!occluded(block_map, x, y, z)) {
 
 					bool is_top = y == CHUNK_SIZE - 1 || !block_map(x, y + 1, z);
 
@@ -113,7 +113,15 @@ BlockMap ChunkModel::get_block_map() const {
 	return m_block_map;
 }
 
-bool ChunkModel::ocluded(const BlockMap& block_map, int x, int y, int z) const{
+glm::vec3 ChunkModel::get_center() const {
+	return m_position + glm::vec3{ static_cast<float>(CHUNK_SIZE / 2), static_cast<float>(CHUNK_SIZE / 2), static_cast<float>(CHUNK_SIZE / 2) };
+}
+
+float ChunkModel::get_bounding_radius() const {
+	return std::sqrt(2.0f) * CHUNK_SIZE;
+}
+
+bool ChunkModel::occluded(const BlockMap& block_map, int x, int y, int z) const{
 
 	if (!block_map(x, y, z))
 		return true;

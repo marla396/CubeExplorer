@@ -44,8 +44,8 @@ Game::Game(NVGcontext* nvg_ctx)
 	texture_atlas = std::make_shared<TextureAtlas<32, 32>>("blocktextures.png");
 	skybox_texture = std::make_shared<FTexture>("skybox.png");
 	 
-	auto seed = std::random_device{}();
-	//auto seed = 1337;
+	//auto seed = std::random_device{}();
+	auto seed = 1337;
 
 	std::cout << "Seed: " << seed << std::endl;
 
@@ -205,6 +205,10 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 
 		if (key == GLFW_KEY_F4) {
 			m_camera.set_position(m_world->get_sun()->get_position());
+		}
+
+		if (key == GLFW_KEY_F5) {
+			m_camera.toggle_lock_frustum();
 		}
 
 		if (key == GLFW_KEY_ESCAPE) {

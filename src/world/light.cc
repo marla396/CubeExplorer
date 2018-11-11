@@ -27,17 +27,17 @@ void Light::set_color(const glm::vec3& color) {
 	m_color = color;
 }
 
-glm::mat4 Light::get_view_matrix(const Camera& camera) const {
+glm::mat4 Light::get_view_matrix() const {
 	return glm::lookAt(m_position, WORLD_CENTER, { 0.0f, 1.0f, 0.0f });
 }
 
-glm::mat4 Light::get_projection_matrix(const Camera& camera) const {
+glm::mat4 Light::get_projection_matrix() const {
 
 	float diagnoal_size = 1.1f * std::sqrt(2.0f) * static_cast<float>(CHUNK_SIZE * WORLD_SIZE);
 
 	return glm::ortho(-diagnoal_size / 2.0f, diagnoal_size / 2.0f, -diagnoal_size / 2.0f, diagnoal_size / 2.0f, 0.1f, diagnoal_size);
 }
 
-glm::mat4 Light::get_transform_matrix(const Camera& camera) const {
-	return get_projection_matrix(camera) * get_view_matrix(camera);
+glm::mat4 Light::get_transform_matrix() const {
+	return get_projection_matrix() * get_view_matrix();
 }

@@ -213,6 +213,7 @@
     <ClInclude Include="..\..\include\gl.h" />
     <ClInclude Include="..\..\include\hud\hud_texture.h" />
     <ClInclude Include="..\..\include\hud\hud_renderer.h" />
+    <ClInclude Include="..\..\include\lazy_object.h" />
     <ClInclude Include="..\..\include\misc\fft_noise.h" />
     <ClInclude Include="..\..\include\misc\fft_noise_generator.h" />
     <ClInclude Include="..\..\include\misc\white_noise_generator.h" />

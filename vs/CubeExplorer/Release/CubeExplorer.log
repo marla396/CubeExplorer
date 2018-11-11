@@ -1,29 +1,57 @@
-﻿  application.cc
+﻿  nanovg.c
+  glad.c
+  application.cc
   camera.cc
   entity.cc
   player.cc
   framebuffer.cc
   game.cc
+  gl.cc
+  hud_texture.cc
   hud_renderer.cc
   main.cc
+  white_noise_generator.cc
+  block_model.cc
   chunk_model.cc
+  model.cc
+  quad2d_model.cc
+  skybox_model.cc
+  water_model.cc
   block_renderer.cc
   chunk_renderer.cc
   postfx_renderer.cc
   skybox_renderer.cc
   water_renderer.cc
+  resources.cc
+  block_shader.cc
+  butterfly_shader.cc
+..\..\src\resources.cc(40): warning C4244: 'argument': conversion from 'std::streamoff' to 'const unsigned int', possible loss of data
   chunk_shader.cc
+  clip_shader.cc
+  extension_shader.cc
+  h0k_shader.cc
+  hkt_shader.cc
+  hud_shader.cc
+  inversion_shader.cc
+  invert_shader.cc
   light_shader.cc
+  mvp_shader.cc
+  normal_shader.cc
+  lowpass_x_shader.cc
+  plain_shader.cc
   shader.cc
+  skybox_shader.cc
+  tex_shader.cc
   twiddle_shader.cc
   water_shader.cc
+  ftexture.cc
+  itexture.cc
   block.cc
   block_map.cc
+  chunk.cc
   light.cc
   world.cc
   Generating code
-  420 of 3638 functions (11.5%) were compiled, the rest were copied from previous compilation.
-    172 functions were new in current compilation
-    179 functions had inline decision re-evaluated but remain unchanged
+  All 3736 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   CubeExplorer.vcxproj -> L:\CubeExplorer\CubeExplorer\vs\CubeExplorer\Release\CubeExplorer.exe

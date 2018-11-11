@@ -31,6 +31,9 @@ public:
 
 	size_t get_indices_count() const;
 
+	virtual float get_bounding_radius() const;
+	virtual glm::vec3 get_center() const;
+
 protected:
 	void late_init();
 

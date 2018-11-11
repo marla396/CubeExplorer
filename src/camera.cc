@@ -6,7 +6,20 @@
 #include "application.h"
 
 
-Camera::Camera() : m_position(0.0f, 0.0f, 0.0f), m_rotation({ 0.0f, 0.0f, 0.0f }) {
+Camera::Camera() 
+	: m_position(0.0f, 0.0f, 0.0f), m_rotation({ 0.0f, 0.0f, 0.0f }), m_lock_frustum(false) {
+
+	m_view_matrix = std::make_unique<LazyObject<glm::mat4>>([this]() {
+		return update_view_matrix();
+	});
+
+	m_projection_matrix = std::make_unique<LazyObject<glm::mat4>>([this]() {
+		return update_projection_matrix();
+	});
+
+	m_frustum_planes = std::make_unique<LazyObject<std::array<FrustumPlane, 6>>>([this]() {
+		return update_frustum_planes();
+	});
 
 }
 
@@ -15,7 +28,6 @@ Camera::~Camera() {
 }
 
 void Camera::process_mouse(float dx, float dy) {
-	//return;
 	m_rotation.x += (dy / static_cast<float>(Application::get_height())) * MAX_PITCH * 2;
 	m_rotation.x = std::max(-MAX_PITCH, std::min(MAX_PITCH, m_rotation.x));
 
@@ -25,6 +37,8 @@ void Camera::process_mouse(float dx, float dy) {
 		m_rotation.y -= PI * 2;
 	else if (m_rotation.y < 0)
 		m_rotation.y += PI * 2;
+
+	notify_view();
 }
 
 void Camera::process_keyboard(float dt) {
@@ -58,10 +72,13 @@ void Camera::process_keyboard(float dt) {
 		m_position.x += cos_rot_y;
 		m_position.z += sin_rot_y;
 	}
+
+	notify_view();
 }
 
 void Camera::set_position(const glm::vec3& position) {
 	m_position = position;
+	notify_view();
 }
 
 glm::vec3 Camera::get_position() const {
@@ -70,6 +87,7 @@ glm::vec3 Camera::get_position() const {
 
 void Camera::set_rotation(const glm::vec3& rotation) {
 	m_rotation = rotation;
+	notify_projection();
 }
 
 glm::vec3 Camera::get_rotation() const {
@@ -78,13 +96,16 @@ glm::vec3 Camera::get_rotation() const {
 
 void Camera::set_yaw(float yaw) {
 	m_rotation.y = yaw;
+	notify_view();
 }
 void Camera::set_pitch(float pitch) {
 	m_rotation.x = pitch;
+	notify_view();
 }
 
 void Camera::set_near(float znear) {
 	m_near = znear;
+	notify_projection();
 }
 
 float Camera::get_near() const {
@@ -93,6 +114,7 @@ float Camera::get_near() const {
 
 void Camera::set_far(float zfar) {
 	m_far = zfar;
+	notify_projection();
 }
 
 float Camera::get_far() const {
@@ -101,6 +123,7 @@ float Camera::get_far() const {
 
 void Camera::set_aspect(float aspect) {
 	m_aspect = aspect;
+	notify_projection();
 }
 
 float Camera::get_aspect() const {
@@ -109,68 +132,103 @@ float Camera::get_aspect() const {
 
 void Camera::set_fov(float fov) {
 	m_fov = fov;
+	notify_projection();
 }
 
 float Camera::get_fov() const {
 	return m_fov;
 }
 
-std::array<glm::vec4, 6> Camera::get_frustum_planes() const {
+void Camera::toggle_lock_frustum() {
+	m_lock_frustum = !m_lock_frustum;
 
-	std::array<glm::vec4, 6> ret;
-
-	ret[0].x = m_projection_matrix[0][3] + m_projection_matrix[0][0];
-	ret[0].y = m_projection_matrix[1][3] + m_projection_matrix[1][0];
-	ret[0].z = m_projection_matrix[2][3] + m_projection_matrix[2][0];
-	ret[0].w = m_projection_matrix[3][3] + m_projection_matrix[3][0];
-
-	ret[1].x = m_projection_matrix[0][3] - m_projection_matrix[0][0];
-	ret[1].y = m_projection_matrix[1][3] - m_projection_matrix[1][0];
-	ret[1].z = m_projection_matrix[2][3] - m_projection_matrix[2][0];
-	ret[1].w = m_projection_matrix[3][3] - m_projection_matrix[3][0];
-
-	ret[2].x = m_projection_matrix[0][3] - m_projection_matrix[0][1];
-	ret[2].y = m_projection_matrix[1][3] - m_projection_matrix[1][1];
-	ret[2].z = m_projection_matrix[2][3] - m_projection_matrix[2][1];
-	ret[2].w = m_projection_matrix[3][3] - m_projection_matrix[3][1];
-
-	ret[3].x = m_projection_matrix[0][3] + m_projection_matrix[0][1];
-	ret[3].y = m_projection_matrix[1][3] + m_projection_matrix[1][1];
-	ret[3].z = m_projection_matrix[2][3] + m_projection_matrix[2][1];
-	ret[3].w = m_projection_matrix[3][3] + m_projection_matrix[3][1];
-
-	ret[4].x = m_projection_matrix[0][2];
-	ret[4].y = m_projection_matrix[1][2];
-	ret[4].z = m_projection_matrix[2][2];
-	ret[4].w = m_projection_matrix[3][2];
-
-	ret[5].x = m_projection_matrix[0][3] - m_projection_matrix[0][2];
-	ret[5].y = m_projection_matrix[1][3] - m_projection_matrix[1][2];
-	ret[5].z = m_projection_matrix[2][3] - m_projection_matrix[2][2];
-	ret[5].w = m_projection_matrix[3][3] - m_projection_matrix[3][2];
-
-	return ret;
+	if (m_lock_frustum) {
+		m_locked_view_matrix = m_view_matrix->get();
+	}
 }
 
+std::array<FrustumPlane, 6> Camera::get_frustum_planes() const {
+	return m_frustum_planes->get();
+}
 
 glm::mat4 Camera::get_view_matrix() {
-	update_view_matrix();
-	return m_view_matrix;
+	return m_view_matrix->get();
 }
 
-glm::mat4 Camera::get_projection_matrix() {
-	update_projection_matrix();
-	return m_projection_matrix;
+glm::mat4 Camera::get_projection_matrix() {	
+	return m_projection_matrix->get();
 }
 
-void Camera::update_view_matrix() {
-	m_view_matrix = glm::rotate(glm::identity<glm::mat4>(), m_rotation.x, { 1, 0, 0 });
-	m_view_matrix = glm::rotate(m_view_matrix, m_rotation.y, { 0, 1, 0 });
-	m_view_matrix = glm::rotate(m_view_matrix, m_rotation.z, { 0, 0, 1 });
+glm::mat4 Camera::update_view_matrix() {
 
-	m_view_matrix = glm::translate(m_view_matrix, -m_position);
+	glm::mat4 view_matrix = glm::identity<glm::mat4>();
+
+	view_matrix = glm::rotate(view_matrix, m_rotation.x, { 1, 0, 0 });
+	view_matrix = glm::rotate(view_matrix, m_rotation.y, { 0, 1, 0 });
+	view_matrix = glm::rotate(view_matrix, m_rotation.z, { 0, 0, 1 });
+
+	return glm::translate(view_matrix, -m_position);
 }
 
-void Camera::update_projection_matrix() {
-	m_projection_matrix = glm::perspective(m_fov, m_aspect, m_near, m_far);
+glm::mat4 Camera::update_projection_matrix() {
+	return glm::perspective(m_fov, m_aspect, m_near, m_far);
+}
+
+std::array<FrustumPlane, 6> Camera::update_frustum_planes() {
+	std::array<FrustumPlane, 6> p;
+
+	glm::mat4 view = m_lock_frustum ? m_locked_view_matrix : m_view_matrix->get();
+
+	glm::mat4 m = glm::transpose(m_projection_matrix->get() * view);
+
+	p[FRUSTUM_LEFT].n.x = m[3][0] + m[0][0];
+	p[FRUSTUM_LEFT].n.y = m[3][1] + m[0][1];
+	p[FRUSTUM_LEFT].n.z = m[3][2] + m[0][2];
+	p[FRUSTUM_LEFT].d = m[3][3] + m[0][3];
+
+	p[FRUSTUM_RIGHT].n.x = m[3][0] - m[0][0];
+	p[FRUSTUM_RIGHT].n.y = m[3][1] - m[0][1];
+	p[FRUSTUM_RIGHT].n.z = m[3][2] - m[0][2];
+	p[FRUSTUM_RIGHT].d = m[3][3] - m[0][3];
+
+	p[FRUSTUM_BOTTOM].n.x = m[3][0] + m[1][0];
+	p[FRUSTUM_BOTTOM].n.y = m[3][1] + m[1][1];
+	p[FRUSTUM_BOTTOM].n.z = m[3][2] + m[1][2];
+	p[FRUSTUM_BOTTOM].d = m[3][3] + m[1][3];
+
+	p[FRUSTUM_TOP].n.x = m[3][0] - m[1][0];
+	p[FRUSTUM_TOP].n.y = m[3][1] - m[1][1];
+	p[FRUSTUM_TOP].n.z = m[3][2] - m[1][2];
+	p[FRUSTUM_TOP].d = m[3][3] - m[1][3];
+
+	p[FRUSTUM_NEAR].n.x = m[3][0] + m[2][0];
+	p[FRUSTUM_NEAR].n.y = m[3][1] + m[2][1];
+	p[FRUSTUM_NEAR].n.z = m[3][2] + m[2][2];
+	p[FRUSTUM_NEAR].d = m[3][3] + m[2][3];
+
+	p[FRUSTUM_FAR].n.x = m[3][0] - m[2][0];
+	p[FRUSTUM_FAR].n.y = m[3][1] - m[2][1];
+	p[FRUSTUM_FAR].n.z = m[3][2] - m[2][2];
+	p[FRUSTUM_FAR].d = m[3][3] - m[2][3];
+
+
+
+	for (int i = 0; i < 6; i++) {
+		float mag = std::sqrt(p[i].n.x * p[i].n.x + p[i].n.y * p[i].n.y + p[i].n.z * p[i].n.z);
+		p[i].n /= mag;
+		p[i].d /= mag;
+	}
+
+	return p;
+}
+
+void Camera::notify_projection() const {
+	m_projection_matrix->notify();
+	m_frustum_planes->notify();
+}
+
+void Camera::notify_view() const {
+	m_view_matrix->notify();
+	if (!m_lock_frustum)
+		m_frustum_planes->notify();
 }

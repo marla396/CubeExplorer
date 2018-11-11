@@ -14,10 +14,10 @@ public:
 	glm::vec3 get_color() const;
 	void set_color(const glm::vec3& color);
 
-	glm::mat4 get_view_matrix(const Camera& camera) const;
-	glm::mat4 get_projection_matrix(const Camera& camera) const;
+	glm::mat4 get_view_matrix() const;
+	glm::mat4 get_projection_matrix() const;
 
-	glm::mat4 get_transform_matrix(const Camera& camera) const;
+	glm::mat4 get_transform_matrix() const;
 private:
 	glm::vec3 m_position;
 	glm::vec3 m_color;

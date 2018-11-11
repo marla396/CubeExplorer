@@ -2,8 +2,23 @@
 
 #include <array>
 #include <glm/glm.hpp>
+#include <memory>
+
 
 #include "gl.h"
+#include "lazy_object.h"
+
+struct FrustumPlane {
+	glm::vec3 n;
+	float d;
+};
+
+constexpr int FRUSTUM_RIGHT = 0;
+constexpr int FRUSTUM_LEFT = 1;
+constexpr int FRUSTUM_BOTTOM = 2;
+constexpr int FRUSTUM_TOP = 3;
+constexpr int FRUSTUM_NEAR = 4;
+constexpr int FRUSTUM_FAR = 5;
 
 class Camera {
 public:
@@ -36,13 +51,19 @@ public:
 	void set_fov(float fov);
 	float get_fov() const;
 
-	std::array<glm::vec4, 6> get_frustum_planes() const;
+	void toggle_lock_frustum();
+
+	std::array<FrustumPlane, 6> get_frustum_planes() const;
 
 	glm::mat4 get_view_matrix();
 	glm::mat4 get_projection_matrix();
 private:
-	void update_view_matrix();
-	void update_projection_matrix();
+	glm::mat4 update_view_matrix();
+	glm::mat4 update_projection_matrix();
+	std::array<FrustumPlane, 6> update_frustum_planes();
+
+	void notify_projection() const;
+	void notify_view() const;
 
 	glm::vec3 m_position;
 	glm::vec3 m_rotation;
@@ -52,6 +73,10 @@ private:
 	float m_fov;
 	float m_aspect;
 
-	glm::mat4 m_view_matrix;
-	glm::mat4 m_projection_matrix;
+	bool m_lock_frustum;
+	glm::mat4 m_locked_view_matrix;
+
+	std::unique_ptr<LazyObject<glm::mat4>> m_view_matrix;
+	std::unique_ptr<LazyObject<glm::mat4>> m_projection_matrix;
+	std::unique_ptr<LazyObject<std::array<FrustumPlane, 6>>> m_frustum_planes;
 };

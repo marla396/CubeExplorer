@@ -15,6 +15,9 @@ public:
 	void generate_geometry(const BlockMap& block_map);
 
 	BlockMap get_block_map() const;
+
+	glm::vec3 get_center() const override;
+	float get_bounding_radius() const override;
 private:
 
 	enum FaceDirection {
@@ -29,7 +32,7 @@ private:
 		SAND
 	};
 
-	bool ocluded(const BlockMap& height_map, int x, int y, int z) const;
+	bool occluded(const BlockMap& height_map, int x, int y, int z) const;
 	void generate_block(const BlockMap& height_map, int x, int y, int z, bool is_top_block);
 	void generate_face(int x, int y, int z, FaceDirection dir, const std::array<float, 12>& face_vertices);
 	void generate_face_texture(BlockTexture texture);

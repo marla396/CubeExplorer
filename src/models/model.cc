@@ -92,6 +92,14 @@ size_t Model::get_indices_count() const {
 	return m_indices_count;
 }
 
+float Model::get_bounding_radius() const {
+	return 0.0f;
+}
+
+glm::vec3 Model::get_center() const {
+	return { 0.0f, 0.0f, 0.0f };
+}
+
 void Model::late_init() {
 	GLC(glGenVertexArrays(1, &m_vao));
 }

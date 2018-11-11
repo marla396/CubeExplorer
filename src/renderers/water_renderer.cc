@@ -133,7 +133,7 @@ void WaterRenderer::render(const std::vector<std::shared_ptr<WaterModel>>& model
 
 	m_shader->upload_view_matrix(camera.get_view_matrix());
 	m_shader->upload_projection_matrix(camera.get_projection_matrix());
-	m_shader->upload_shadow_transform(light->get_transform_matrix(camera));
+	m_shader->upload_shadow_transform(light->get_transform_matrix());
 
 	m_dy->bind(GL_TEXTURE0);
 	m_height_map->bind(GL_TEXTURE1);
@@ -161,11 +161,17 @@ void WaterRenderer::render(const std::vector<std::shared_ptr<WaterModel>>& model
 
 
 	for (const auto& model : models) {
-		model->bind();
-		m_shader->upload_model_matrix(model->get_model_matrix());
-		m_shader->upload_quad_instance(model->get_instance_position());
-		
-		DRAW_CALL(GLC(glDrawElements(GL_PATCHES, model->get_indices_count(), GL_UNSIGNED_INT, nullptr)));
+		if (model->get_indices_count() > 0) {
+
+			if (!intersects_frustum(model, camera))
+				continue;
+
+			model->bind();
+			m_shader->upload_model_matrix(model->get_model_matrix());
+			m_shader->upload_quad_instance(model->get_instance_position());
+
+			DRAW_CALL(GLC(glDrawElements(GL_PATCHES, model->get_indices_count(), GL_UNSIGNED_INT, nullptr)));
+		}
 	}
 
 	if (m_wireframe)
@@ -189,8 +195,8 @@ void WaterRenderer::render_depth(const std::vector<std::shared_ptr<WaterModel>>&
 	m_depth_shader->upload_water_height(WORLD_WATER_HEIGHT / static_cast<float>(WORLD_MAX_HEIGHT));
 	m_depth_shader->upload_quad_dimension(WATER_QUAD_DIMENSION);
 
-	m_depth_shader->upload_view_matrix(light->get_view_matrix(camera));
-	m_depth_shader->upload_projection_matrix(light->get_projection_matrix(camera));
+	m_depth_shader->upload_view_matrix(light->get_view_matrix());
+	m_depth_shader->upload_projection_matrix(light->get_projection_matrix());
 
 	m_dy->bind(GL_TEXTURE0);
 	m_height_map->bind(GL_TEXTURE1);
@@ -201,11 +207,14 @@ void WaterRenderer::render_depth(const std::vector<std::shared_ptr<WaterModel>>&
 	GLC(glEnable(GL_DEPTH_TEST));
 
 	for (const auto& model : models) {
-		model->bind();
-		m_depth_shader->upload_model_matrix(model->get_model_matrix());
-		m_depth_shader->upload_quad_instance(model->get_instance_position());
+		if (model->get_indices_count() > 0) {
 
-		DRAW_CALL(GLC(glDrawElements(GL_PATCHES, model->get_indices_count(), GL_UNSIGNED_INT, nullptr)));
+			model->bind();
+			m_depth_shader->upload_model_matrix(model->get_model_matrix());
+			m_depth_shader->upload_quad_instance(model->get_instance_position());
+
+			DRAW_CALL(GLC(glDrawElements(GL_PATCHES, model->get_indices_count(), GL_UNSIGNED_INT, nullptr)));
+		}
 	}
 
 	GLC(glDisable(GL_DEPTH_TEST));

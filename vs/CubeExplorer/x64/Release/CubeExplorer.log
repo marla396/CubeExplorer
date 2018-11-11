@@ -9,11 +9,11 @@
   game.cc
   gl.cc
   hud_texture.cc
-  hud_renderer.cc
 ..\..\src\framebuffer.cc(65): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 ..\..\src\framebuffer.cc(78): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 ..\..\src\framebuffer.cc(117): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 ..\..\src\framebuffer.cc(136): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  hud_renderer.cc
   main.cc
   white_noise_generator.cc
 l:\cubeexplorer\cubeexplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\game.cc)
@@ -61,24 +61,23 @@ l:\cubeexplorer\cubeexplorer\include\texture/mtexture.h(10): warning C4267: '=':
   quad2d_model.cc
   skybox_model.cc
   water_model.cc
-..\..\src\models\chunk_model.cc(227): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
+..\..\src\models\chunk_model.cc(235): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
   block_renderer.cc
   chunk_renderer.cc
   postfx_renderer.cc
-  skybox_renderer.cc
 ..\..\src\renderers\block_renderer.cc(27): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-..\..\src\renderers\chunk_renderer.cc(35): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-..\..\src\renderers\chunk_renderer.cc(65): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  skybox_renderer.cc
   water_renderer.cc
+..\..\src\renderers\chunk_renderer.cc(40): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\renderers\chunk_renderer.cc(70): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   resources.cc
-..\..\src\renderers\skybox_renderer.cc(31): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 ..\..\src\renderers\postfx_renderer.cc(39): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 ..\..\src\renderers\postfx_renderer.cc(51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\renderers\skybox_renderer.cc(31): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   block_shader.cc
   butterfly_shader.cc
-..\..\src\renderers\water_renderer.cc(168): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-..\..\src\renderers\water_renderer.cc(208): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  chunk_shader.cc
+..\..\src\renderers\water_renderer.cc(173): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\renderers\water_renderer.cc(216): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\water_renderer.cc)
   L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(8): note: while compiling class template member function 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)'
           with
@@ -92,6 +91,7 @@ L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': 
           ] (compiling source file ..\..\src\renderers\water_renderer.cc)
   ..\..\src\renderers\water_renderer.cc(139): note: see reference to class template instantiation 'MTexture<uint8_t>' being compiled
 L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\water_renderer.cc)
+  chunk_shader.cc
   clip_shader.cc
   extension_shader.cc
   h0k_shader.cc
@@ -121,6 +121,6 @@ L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=':
   light.cc
   world.cc
   Generating code
-  All 3722 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  All 3899 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   CubeExplorer.vcxproj -> L:\CubeExplorer\CubeExplorer\vs\CubeExplorer\x64\Release\CubeExplorer.exe

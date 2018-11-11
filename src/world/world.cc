@@ -51,7 +51,7 @@ void World::generate_world(const std::shared_ptr<ITexture>& chunk_texture) {
 	m_height_map = m_generator->generate_height_map<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>(1.0f, static_cast<float>(WORLD_MAX_HEIGHT));
 	m_chunks = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
 
-	int n_workers = 4;
+	int n_workers = WORLD_GENERATOR_THREADS;
 	for (int i = 0; i < n_workers; i++) {
 		std::thread t(&World::generate_world_part, this, n_workers, i, chunk_texture);
 		t.detach();

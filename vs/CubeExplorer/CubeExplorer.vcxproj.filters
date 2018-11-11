@@ -439,6 +439,9 @@
     <ClInclude Include="..\..\include\shaders\light_shader.h">
       <Filter>include\shaders</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\lazy_object.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\res\shaders\blockshader.frag">
