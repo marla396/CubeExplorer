@@ -4,7 +4,7 @@
 
 constexpr int CHUNK_SIZE = 16;
 constexpr int WORLD_SIZE = 8;
-constexpr int WORLD_MAX_HEIGHT = 64;
+constexpr int WORLD_MAX_HEIGHT = 48;
 constexpr float WORLD_WATER_HEIGHT = 25.5f;
 constexpr float WORLD_BEACH_HEIGHT = WORLD_WATER_HEIGHT + 1.0f;
 constexpr size_t WATER_FFT_DIMENSION = 1024;

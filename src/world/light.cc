@@ -33,17 +33,9 @@ glm::mat4 Light::get_view_matrix(const Camera& camera) const {
 
 glm::mat4 Light::get_projection_matrix(const Camera& camera) const {
 
-	/*float height = std::tan(camera.get_fov() / 2.0f) * (camera.get_far() + camera.get_near()) / 4.0f;
-	float left = -height * camera.get_aspect();
-	float right = height * camera.get_aspect();
-	float bottom = -height;
-	float top = height;
+	float diagnoal_size = 1.1f * std::sqrt(2.0f) * static_cast<float>(CHUNK_SIZE * WORLD_SIZE);
 
-	return glm::ortho(left, right, bottom, top, camera.get_near(), camera.get_far());*/
-
-	return glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, 0.1f, 400.0f);
-
-	//return glm::perspective(PI / 4.0f, 1.0f, 0.01f, 1024.0f);
+	return glm::ortho(-diagnoal_size / 2.0f, diagnoal_size / 2.0f, -diagnoal_size / 2.0f, diagnoal_size / 2.0f, 0.1f, diagnoal_size);
 }
 
 glm::mat4 Light::get_transform_matrix(const Camera& camera) const {

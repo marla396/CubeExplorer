@@ -25,7 +25,7 @@ void main(void){
 	float occlusion = 1.0;
 
 	for (int i = 0; i < 4; i++){
-		if (texture(tex_unit1, ndc.xy + poisson_disk[i]/3500.0).z + 0.005 < ndc.z){
+		if (texture(tex_unit1, ndc.xy + poisson_disk[i]/3500.0).z + 0.05 < ndc.z){
 			occlusion -= 0.15;
 		}
 	}

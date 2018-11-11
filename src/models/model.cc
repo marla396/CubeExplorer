@@ -1,11 +1,13 @@
 #include "models/model.h"
 
-Model::Model() :
+Model::Model(bool lazy_init) :
 	m_vertices_dimensions(3), m_indices_count(0), m_has_tex_coords(false), m_has_normals(false), m_vbo_index(0), m_ibo_index(0) {
 
 	m_position = { 0.0f, 0.0f, 0.0f };
 	m_scale = { 1.0f, 1.0f, 1.0f };
-    GLC(glGenVertexArrays(1, &m_vao));
+	
+	if (!lazy_init)
+		late_init();
 }
 
 Model::~Model(){
@@ -88,6 +90,10 @@ void Model::set_scale(const glm::vec3& scale) {
 
 size_t Model::get_indices_count() const {
 	return m_indices_count;
+}
+
+void Model::late_init() {
+	GLC(glGenVertexArrays(1, &m_vao));
 }
 
 uint32_t Model::add_vbo(int dimension, const std::vector<float>& data){

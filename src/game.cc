@@ -44,8 +44,8 @@ Game::Game(NVGcontext* nvg_ctx)
 	texture_atlas = std::make_shared<TextureAtlas<32, 32>>("blocktextures.png");
 	skybox_texture = std::make_shared<FTexture>("skybox.png");
 	 
-	//auto seed = std::random_device{}();
-	auto seed = 1337;
+	auto seed = std::random_device{}();
+	//auto seed = 1337;
 
 	std::cout << "Seed: " << seed << std::endl;
 
@@ -90,6 +90,8 @@ void Game::on_render() {
 
 	//bind_fbo(m_postfx_fbo);
 
+	m_world->lock_chunks();
+
 	render_shadow_maps();
 
 	GLC(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
@@ -100,6 +102,8 @@ void Game::on_render() {
 	m_chunk_renderer->render(*chunks, m_camera, m_world->get_sun());
 	m_water_renderer->render(water_models, m_camera, m_world->get_sun());
 	
+	m_world->unlock_chunks();
+
 	//m_postfx_renderer->render(m_postfx_fbo);
 
 	m_hud_textures.clear();
@@ -116,6 +120,8 @@ void Game::on_render() {
 void Game::on_update(float time, float dt) {
 	using namespace std::placeholders;
 	
+	m_world->lock_chunks();
+
 	m_world->update(time);
 
 	auto chunks = m_world->get_chunks();
@@ -155,6 +161,8 @@ void Game::on_update(float time, float dt) {
 	if (Application::key_down(GLFW_KEY_SLASH)) {
 		Application::add_time_warp_factor(-0.1f);
 	}
+
+	m_world->unlock_chunks();
 }
 
 void Game::on_resize(size_t width, size_t height) {
@@ -216,7 +224,7 @@ void Game::render_shadow_maps() {
 	GLC(glClear(GL_DEPTH_BUFFER_BIT));
 	GLC(glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE));
 
-	m_water_renderer->render_depth(water_models, m_camera, m_world->get_sun());
+	//m_water_renderer->render_depth(water_models, m_camera, m_world->get_sun());
 	m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun());
 
 	GLC(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE));

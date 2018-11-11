@@ -10,6 +10,8 @@ public:
 	ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position, const BlockMap& block_map);
 	~ChunkModel();
 
+	void gpu_init();
+	bool is_initialized() const;
 	void generate_geometry(const BlockMap& block_map);
 
 	BlockMap get_block_map() const;
@@ -34,4 +36,5 @@ private:
 	void generate_normals(const std::array<float, 3>& normals);
 
 	BlockMap m_block_map;
+	bool m_initialized;
 };

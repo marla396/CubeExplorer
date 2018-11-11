@@ -72,8 +72,9 @@ void main(void){
 	vec3 sndc = (shadow_coords.xyz / shadow_coords.w) * 0.5 + 0.5;
 
 	for (int i = 0; i < 4; i++){
-		if (texture(tex_unit7, sndc.xy + poisson_disk[i]/3500.0).z + 0.005 < sndc.z){
+		if (texture(tex_unit7, sndc.xy + poisson_disk[i]/3500.0).z + 0.05 < sndc.z){
 			shadow_occlusion -= 0.15;
+			shade *= 0.15;
 		}
 	}
 

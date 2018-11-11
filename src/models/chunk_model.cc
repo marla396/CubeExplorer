@@ -70,17 +70,27 @@ const std::array<float, 3> right_normal = {
 };
 
 ChunkModel::ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position, const BlockMap& block_map)
-	: m_block_map(block_map) {
+	: Model(true), m_block_map(block_map), m_initialized(false) {
 	set_position(position);
 	set_texture(texture);
 
 	generate_geometry(block_map);
-	upload_geometry();
-	clear_geometry();
 }
 
 ChunkModel::~ChunkModel() {
 
+}
+
+void ChunkModel::gpu_init() {
+	
+	late_init();
+	upload_geometry();
+	clear_geometry();
+	m_initialized = true;
+}
+
+bool ChunkModel::is_initialized() const {
+	return m_initialized;
 }
 
 void ChunkModel::generate_geometry(const BlockMap& block_map) {
