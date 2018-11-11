@@ -63,6 +63,7 @@ private:
 
 	double m_center_x;
 	double m_center_y;
+	bool m_fullscreen;
 
 	float m_time;
 	float m_previous_time;

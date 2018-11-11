@@ -36,7 +36,18 @@ bool Application::initialize(int argc, char** argv){
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
 
-	m_window = glfwCreateWindow(static_cast<int>(m_width), static_cast<int>(m_height), "Cube Explorer", NULL, NULL);
+	if (m_fullscreen) {
+		GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+		const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+
+		m_width = static_cast<size_t>(mode->width);
+		m_height = static_cast<size_t>(mode->height);
+
+		m_window = glfwCreateWindow(mode->width, mode->height, "Cube Explorer", monitor, NULL);
+	}
+	else {
+		m_window = glfwCreateWindow(static_cast<int>(m_width), static_cast<int>(m_height), "Cube Explorer", NULL, NULL);
+	}
 	if (!m_window)
 	{
 		glfwTerminate();
@@ -47,10 +58,6 @@ bool Application::initialize(int argc, char** argv){
 	glfwSwapInterval(1);
 
 #ifdef _WIN32
-	/*if (glewInit() != GLEW_OK) {
-		return false;
-	}*/
-
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		return false;
 	}
@@ -148,7 +155,7 @@ void Application::exit() {
 
 
 void Application::update_viewport() {
-		GLC(glViewport(0, 0, g_app->m_width, g_app->m_height));
+	GLC(glViewport(0, 0, g_app->m_width, g_app->m_height));
 }
 
 void Application::register_resize_callback(const std::function<void(size_t, size_t)>& callback){
@@ -176,6 +183,7 @@ bool Application::parse_arguments(const std::vector<std::string>& arguments) {
 	m_max_fps = DEFAULT_MAX_FPS;
 	m_width = DEFAULT_WIDTH;
 	m_height = DEFAULT_HEIGHT;
+	m_fullscreen = false;
 
 	auto check_end = [&arguments](auto& it) { return ++it != arguments.end(); };
 
@@ -209,6 +217,9 @@ bool Application::parse_arguments(const std::vector<std::string>& arguments) {
 			else {
 				std::cerr << "Max FPS option requires an argument";
 			}
+		}
+		else if (*it == "--fullscreen" || *it == "-f") {
+			m_fullscreen = true;
 		}
 	}
 

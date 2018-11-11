@@ -87,7 +87,7 @@ glm::vec3 Camera::get_position() const {
 
 void Camera::set_rotation(const glm::vec3& rotation) {
 	m_rotation = rotation;
-	notify_projection();
+	notify_view();
 }
 
 glm::vec3 Camera::get_rotation() const {
@@ -175,6 +175,9 @@ glm::mat4 Camera::update_projection_matrix() {
 }
 
 std::array<FrustumPlane, 6> Camera::update_frustum_planes() {
+
+	//https://www.gamedevs.org/uploads/fast-extraction-viewing-frustum-planes-from-world-view-projection-matrix.pdf
+
 	std::array<FrustumPlane, 6> p;
 
 	glm::mat4 view = m_lock_frustum ? m_locked_view_matrix : m_view_matrix->get();
@@ -229,6 +232,5 @@ void Camera::notify_projection() const {
 
 void Camera::notify_view() const {
 	m_view_matrix->notify();
-	if (!m_lock_frustum)
-		m_frustum_planes->notify();
+	m_frustum_planes->notify();
 }
