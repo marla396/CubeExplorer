@@ -20,13 +20,6 @@ uniform mat4 projection_matrix;
 
 uniform float displacement_factor;
 
-const vec2 poisson_disk[4] = vec2[](
-  vec2( -0.94201624, -0.39906216 ),
-  vec2( 0.94558609, -0.76890725 ),
-  vec2( -0.094184101, -0.92938870 ),
-  vec2( 0.34495938, 0.29387760 )
-);
-
 void main(void){
 
 	vec2 ndc = (clip_space.xy / clip_space.w) / 2.0 + 0.5;
@@ -71,15 +64,10 @@ void main(void){
 
 	vec3 sndc = (shadow_coords.xyz / shadow_coords.w) * 0.5 + 0.5;
 
-	for (int i = 0; i < 4; i++){
-		if (texture(tex_unit7, sndc.xy + poisson_disk[i]/3500.0).z + 0.05 < sndc.z){
-			shadow_occlusion -= 0.15;
-			shade *= 0.15;
-		}
+	if (texture(tex_unit7, sndc.xy).r + 0.005 < sndc.z){
+		shadow_occlusion -= 0.5;
+		shade = vec4(0.0);
 	}
-
-	shadow_occlusion = max(shadow_occlusion, 0.4);
-
 
 	color = mix(shadow_occlusion * color, vec4(0.0, 0.15, 0.25, 1.0) + shade, 0.4);
 	color = color * shadow_occlusion;

@@ -5,7 +5,7 @@
 #include "multi_tex_shader.h"
 #include "light_shader.h"
 
-class WaterShader : public Shader, public MVPShader, public MultiTexShader<9>, public LightShader {
+class WaterShader : public Shader, public MVPShader, public MultiTexShader<8>, public LightShader {
 public:
 	WaterShader();
 	WaterShader(bool depth);

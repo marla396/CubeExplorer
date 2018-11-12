@@ -7,9 +7,9 @@ constexpr int WORLD_SIZE = 8;
 constexpr int WORLD_MAX_HEIGHT = 48;
 constexpr float WORLD_WATER_HEIGHT = 25.5f;
 constexpr float WORLD_BEACH_HEIGHT = WORLD_WATER_HEIGHT + 1.0f;
-constexpr size_t WATER_FFT_DIMENSION = 1024;
-constexpr size_t WATER_FFT_DIMENSION_LOG2 = 10;
-constexpr int WATER_QUAD_DIMENSION = 8;
+constexpr size_t WATER_FFT_DIMENSION = 512;
+constexpr size_t WATER_FFT_DIMENSION_LOG2 = 9;
+constexpr int WATER_QUAD_DIMENSION = 4;
 
 constexpr int WORLD_GENERATOR_THREADS = 4;
 

@@ -44,8 +44,8 @@ Game::Game(NVGcontext* nvg_ctx)
 	texture_atlas = std::make_shared<TextureAtlas<32, 32>>("blocktextures.png");
 	skybox_texture = std::make_shared<FTexture>("skybox.png");
 	 
-	//auto seed = std::random_device{}();
-	auto seed = 1337;
+	auto seed = std::random_device{}();
+	//auto seed = 1337;
 
 	std::cout << "Seed: " << seed << std::endl;
 

@@ -6,7 +6,7 @@ ChunkShader::ChunkShader() : Shader({ "chunkshader.vert", "chunkshader.frag" }),
 }
 
 ChunkShader::ChunkShader(bool depth) 
-	: Shader({ "chunkshader.vert", "depthshader.frag" }), MVPShader(this), MultiTexShader(this), ClipShader(this), m_depth(depth), LightShader(this) {
+	: Shader({ "chunkshader.vert", "depthshader.frag" }), MVPShader(this), MultiTexShader(this), ClipShader(this), LightShader(this), m_depth(depth) {
 	bind();
 	get_uniform_locations();
 }

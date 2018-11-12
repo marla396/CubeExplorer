@@ -63,7 +63,7 @@ void FrameBuffer::attach_depth_texture() {
 	m_depth_texture = std::make_shared<ITexture>();
 	m_depth_texture->bind();
 	GLC(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_width, m_height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
-	m_depth_texture->set_filter(GL_NEAREST);
+	m_depth_texture->set_filter(GL_LINEAR);
 
 	GLC(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depth_texture->get_id(), 0));
 
