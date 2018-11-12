@@ -9,12 +9,7 @@ WaterRenderer::WaterRenderer(const std::shared_ptr<World>& world)
 
 	m_depth_shader = std::make_unique<WaterShader>(true);
 
-	auto height_map = world->get_height_map();
-	uint8_t *buffer = height_map->to_texture_buffer();
-
-	m_height_map = std::make_unique<MTexture<uint8_t>>(WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE, buffer);
-
-	delete[] buffer;
+	m_world = world;
 
 	initialize_h0k();
 	initialize_hkt();
@@ -109,6 +104,10 @@ TexStoragePtr WaterRenderer::get_normal_map() const {
 	return m_normal_map;
 }
 
+TexStoragePtr WaterRenderer::get_dudv_map() const {
+	return m_dudv_map;
+}
+
 std::shared_ptr<ITexture> WaterRenderer::get_reflection() const {
 	return m_reflection_fbo->get_texture();
 }
@@ -124,7 +123,7 @@ void WaterRenderer::render(const std::vector<std::shared_ptr<WaterModel>>& model
 
 	m_shader->bind();
 
-	m_shader->upload_tex_units({ 0, 1, 2, 3, 4, 5, 6, 7 });
+	m_shader->upload_tex_units({ 0, 1, 2, 3, 4, 5, 6, 7, 8 });
 	m_shader->upload_camera_position(camera.get_position());
 	m_shader->upload_displacement_factor(m_wave_strength);
 	m_shader->upload_water_height(WORLD_WATER_HEIGHT / static_cast<float>(WORLD_MAX_HEIGHT));
@@ -136,7 +135,7 @@ void WaterRenderer::render(const std::vector<std::shared_ptr<WaterModel>>& model
 	m_shader->upload_shadow_transform(light->get_transform_matrix());
 
 	m_dy->bind(GL_TEXTURE0);
-	m_height_map->bind(GL_TEXTURE1);
+	m_world->get_height_map_texture()->bind(GL_TEXTURE1);
 	m_reflection_fbo->get_texture()->bind(GL_TEXTURE2);
 	m_refraction_fbo->get_texture()->bind(GL_TEXTURE3);
 	m_normal_map->bind(GL_TEXTURE4);
@@ -146,7 +145,8 @@ void WaterRenderer::render(const std::vector<std::shared_ptr<WaterModel>>& model
 	if (m_shadow_map) {
 		m_shadow_map->bind(GL_TEXTURE7);
 	}
-
+	
+	m_dudv_map->bind(GL_TEXTURE8);
 
 	GLC(glPatchParameteri(GL_PATCH_VERTICES, 3));
 	GLC(glEnable(GL_DEPTH_TEST));
@@ -199,7 +199,7 @@ void WaterRenderer::render_depth(const std::vector<std::shared_ptr<WaterModel>>&
 	m_depth_shader->upload_projection_matrix(light->get_projection_matrix());
 
 	m_dy->bind(GL_TEXTURE0);
-	m_height_map->bind(GL_TEXTURE1);
+	m_world->get_height_map_texture()->bind(GL_TEXTURE1);
 	m_dx->bind(GL_TEXTURE5);
 	m_dz->bind(GL_TEXTURE6);
 
@@ -361,11 +361,20 @@ void WaterRenderer::compute_fft() const {
 	m_normal_shader->bind();
 	m_normal_shader->upload_tex_units({ 0, 1 });
 	m_normal_shader->upload_N(WATER_FFT_DIMENSION);
-	m_normal_shader->upload_strength(0.5f);
+	m_normal_shader->upload_strength(1.0f);
 
 	m_normal_map->bind_image_texture(0, GL_WRITE_ONLY, GL_RGBA32F);
 
 	m_dy->bind(GL_TEXTURE1);
+
+	GLC(glDispatchCompute(WATER_FFT_DIMENSION / 16, WATER_FFT_DIMENSION / 16, 1));
+	GLC(glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT));
+
+	m_dudv_shader->bind();
+	m_dudv_shader->upload_tex_units({ 0, 1 });
+	
+	m_normal_map->bind_image_texture(0, GL_READ_ONLY, GL_RGBA32F);
+	m_dudv_map->bind_image_texture(1, GL_WRITE_ONLY, GL_RGBA32F);
 
 	GLC(glDispatchCompute(WATER_FFT_DIMENSION / 16, WATER_FFT_DIMENSION / 16, 1));
 	GLC(glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT));
@@ -499,6 +508,8 @@ void WaterRenderer::initialize_inversion() {
 	m_inversion_shader = std::make_unique<InversionShader>();
 	m_normal_shader = std::make_unique<NormalShader>();
 	m_normal_map = std::make_shared<TexStorage>();
+	m_dudv_shader = std::make_unique<DuDvShader>();
+	m_dudv_map = std::make_shared <TexStorage>();
 	m_dx = std::make_shared<TexStorage>();
 	m_dy = std::make_shared<TexStorage>();
 	m_dz = std::make_shared<TexStorage>();

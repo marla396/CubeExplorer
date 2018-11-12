@@ -140,9 +140,6 @@
     <ClCompile Include="..\..\src\shaders\extension_shader.cc">
       <Filter>src\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\world\chunk.cc">
-      <Filter>src\world</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\shaders\chunk_shader.cc">
       <Filter>src\shaders</Filter>
     </ClCompile>
@@ -242,6 +239,15 @@
     <ClCompile Include="..\..\src\shaders\light_shader.cc">
       <Filter>src\shaders</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\shaders\dudv_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\models\tree_model.cc">
+      <Filter>src\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\models\player_model.cc">
+      <Filter>src\models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\application.h">
@@ -297,9 +303,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\shaders\extension_shader.h">
       <Filter>include\shaders</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\world\chunk.h">
-      <Filter>include\world</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\models\chunk_model.h">
       <Filter>include\models</Filter>
@@ -442,6 +445,15 @@
     <ClInclude Include="..\..\include\lazy_object.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\shaders\dudv_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\models\tree_model.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\models\player_model.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\res\shaders\blockshader.frag">
@@ -514,6 +526,9 @@
       <Filter>res\shaders\postfx</Filter>
     </None>
     <None Include="..\..\res\shaders\depthshader.frag">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\dudvshader.comp">
       <Filter>res\shaders</Filter>
     </None>
   </ItemGroup>

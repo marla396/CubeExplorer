@@ -26,6 +26,9 @@ void ChunkRenderer::render(const std::vector<std::shared_ptr<ChunkModel>>& model
 	GLC(glEnable(GL_CULL_FACE));
 	GLC(glFrontFace(GL_CCW));
 	GLC(glEnable(GL_CLIP_DISTANCE0));
+	GLC(glEnable(GL_BLEND));
+	GLC(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
 
 	for (const auto& model : models) {
 		if (model->get_indices_count() > 0) {
@@ -42,7 +45,8 @@ void ChunkRenderer::render(const std::vector<std::shared_ptr<ChunkModel>>& model
 	}
 
 	GLC(glDisable(GL_CULL_FACE));
-	GLC(glDisable(GL_DEPTH_TEST));
+	GLC(glDisable(GL_DEPTH_TEST))
+	GLC(glDisable(GL_BLEND));
 	GLC(glDisable(GL_CLIP_DISTANCE0));
 }
 
@@ -65,6 +69,7 @@ void ChunkRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>&
 
 	for (const auto& model : models) {
 		if (model->get_indices_count() > 0) {
+
 			model->bind();
 			m_depth_shader->upload_model_matrix(model->get_model_matrix());
 			DRAW_CALL(GLC(glDrawElements(GL_TRIANGLES, model->get_indices_count(), GL_UNSIGNED_INT, nullptr)));

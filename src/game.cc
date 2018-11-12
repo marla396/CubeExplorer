@@ -38,7 +38,7 @@ Game::Game(NVGcontext* nvg_ctx)
 
 	Application::register_resize_callback([this](size_t w, size_t h){
 		m_postfx_fbo->set_resolution(w, h);
-		m_shadow_fbo->set_resolution(4 * w, 4 * h);
+		m_shadow_fbo->set_resolution(8 * w, 8 * h);
 	});
 
 	texture_atlas = std::make_shared<TextureAtlas<32, 32>>("blocktextures.png");
@@ -52,11 +52,7 @@ Game::Game(NVGcontext* nvg_ctx)
 	m_world = std::make_shared<World>(seed);
 	m_world->generate_world(texture_atlas);
 
-	auto height_map = m_world->get_height_map();
-	
-	uint8_t* buffer = height_map->to_texture_buffer();
-
-	m_height_map_texture = std::make_shared<HUDTexture>(std::make_shared<MTexture<uint8_t>>(WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE, buffer));
+	m_height_map_texture = std::make_shared<HUDTexture>(m_world->get_height_map_texture());
 	m_height_map_texture->set_position({ 0.6f, 0.6f });
 	m_height_map_texture->set_size({ 0.4f, 0.4f });
 
@@ -108,13 +104,13 @@ void Game::on_render() {
 
 	m_hud_textures.clear();
 
-	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_shadow_fbo->get_depth_texture());
+	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_water_renderer->get_dudv_map());
 	hud->set_position({ 0.6f, 0.6f });
 	hud->set_size({ 0.4f, 0.4f });
 	m_hud_textures.insert(std::make_pair("ComputeShader", hud));
 	
 	if (m_show_hud)
-		m_hud_renderer->render(m_hud_textures, m_camera, m_player);
+		m_hud_renderer->render(m_hud_textures, m_camera, m_world->get_player());
 }
 
 void Game::on_update(float time, float dt) {
@@ -141,7 +137,7 @@ void Game::on_update(float time, float dt) {
 	if (m_free_cam)
 		m_camera.process_keyboard(dt);
 	else
-		m_player.update(m_world, m_camera, dt);
+		m_world->get_player()->update(m_world, m_camera, dt);
 	
 
 	if (Application::key_down(GLFW_KEY_PAGE_UP)) {
@@ -196,7 +192,8 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 		if (key == GLFW_KEY_F2) {
 			m_free_cam = !m_free_cam;
 
-			m_player.set_position(m_camera.get_position());
+			if (!m_free_cam)
+				m_world->get_player()->set_position(m_camera.get_position());
 		}
 
 		if (key == GLFW_KEY_F3) {
@@ -209,6 +206,14 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 
 		if (key == GLFW_KEY_F5) {
 			m_camera.toggle_lock_frustum();
+		}
+
+		if (key == GLFW_KEY_F6) {
+			m_world->lock_chunks();
+			m_world->get_chunks()->clear();
+			m_world->set_seed(std::random_device{}());
+			m_world->generate_world(texture_atlas);
+			m_world->unlock_chunks();
 		}
 
 		if (key == GLFW_KEY_ESCAPE) {

@@ -26,6 +26,9 @@ public:
 	glm::vec3 get_position() const;
 	void set_position(const glm::vec3& position);
 
+	glm::vec3 get_rotation() const;
+	void set_rotation(const glm::vec3& rotation);
+
 	glm::vec3 get_scale() const;
 	void set_scale(const glm::vec3& scale);
 
@@ -44,6 +47,7 @@ protected:
 
 	std::shared_ptr<ITexture> m_texture;
 	glm::vec3 m_position;
+	glm::vec3 m_rotation;
 	glm::vec3 m_scale;
 	
 	int m_vertices_dimensions;

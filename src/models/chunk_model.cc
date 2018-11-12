@@ -3,77 +3,16 @@
 
 #include <array>
 
-const std::array<float, 12> bottom_face = {
-	-0.5f, 0.0f, 0.5f,	//0
-	0.5f, 0.0f, 0.5f,	//1
-	-0.5f, 0.0f, -0.5f,	//2
-	0.5f, 0.0f, -0.5f,	//3
-};
-
-const std::array<float, 3> bottom_normal = {
-	0.0f, -1.0f, 0.0f,
-};
-
-const std::array<float, 12> top_face = {
-	-0.5f, 1.0f, 0.5f,	//4
-	0.5f, 1.0f, 0.5f,	//5
-	-0.5f, 1.0f, -0.5f,	//6
-	0.5f, 1.0f, -0.5f,	//7
-};
-
-const std::array<float, 3> top_normal = {
-	0.0f, 1.0f, 0.0f,
-};
-
-const std::array<float, 12> front_face = {
-	-0.5f, 0.0f, 0.5f,
-	0.5f, 0.0f, 0.5f,
-	-0.5f, 1.0f, 0.5f,
-	0.5f, 1.0f, 0.5f,
-};
-
-const std::array<float, 3> front_normal = {
-	0.0f, 0.0f, 1.0f,
-};
-
-const std::array<float, 12> back_face = {
-	-0.5f, 0.0f, -0.5f,
-	0.5f, 0.0f, -0.5f,
-	-0.5f, 1.0f, -0.5f,
-	0.5f, 1.0f, -0.5f,
-};
-
-const std::array<float, 3> back_normal = {
-	0.0f, 0.0f, -1.0f,
-};
-
-const std::array<float, 12> left_face = {
-	-0.5f, 0.0f, 0.5f,
-	-0.5f, 0.0f, -0.5f,
-	-0.5f, 1.0f, 0.5f,
-	-0.5f, 1.0f, -0.5f,
-};
-
-const std::array<float, 3> left_normal = {
-	-1.0f, 0.0f, 0.0f,
-};
-
-const std::array<float, 12> right_face = {
-	0.5f, 0.0f, 0.5f,
-	0.5f, 0.0f, -0.5f,
-	0.5f, 1.0f, 0.5f,
-	0.5f, 1.0f, -0.5f,
-};
-
-const std::array<float, 3> right_normal = {
-	1.0f, 0.0f, 0.0f,
-};
+ChunkModel::ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position) {
+	set_position(position);
+	set_texture(texture);
+}
 
 ChunkModel::ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position, const BlockMap& block_map)
 	: Model(true), m_block_map(block_map), m_initialized(false) {
+	
 	set_position(position);
 	set_texture(texture);
-
 	generate_geometry(block_map);
 }
 
@@ -231,12 +170,12 @@ void ChunkModel::generate_block(const BlockMap& block_map, int x, int y, int z, 
 	}
 }
 
-void ChunkModel::generate_face(int x, int y, int z, FaceDirection dir, const std::array<float, 12>& face_vertices) {
+void ChunkModel::generate_face(int x, int y, int z, FaceDirection dir, const std::array<float, 12>& face_vertices, const glm::vec3& scale, const glm::vec3& offset) {
 	uint32_t start = m_vertices.size() / 3;
 	for (size_t i = 0; i < face_vertices.size(); i += 3) {
-		m_vertices.push_back(face_vertices[i] + x);
-		m_vertices.push_back(face_vertices[i + 1] + y);
-		m_vertices.push_back(face_vertices[i + 2] + z);
+		m_vertices.push_back(face_vertices[i] * scale.x + offset.x + x);
+		m_vertices.push_back(face_vertices[i + 1] * scale.y + offset.y + y);
+		m_vertices.push_back(face_vertices[i + 2] * scale.z + offset.z + z);
 	}
 
 	switch (dir) {
@@ -280,6 +219,50 @@ void ChunkModel::generate_face_texture(ChunkModel::BlockTexture texture) {
 	case SAND:
 		texture_x = 2;
 		texture_y = 1;
+		break;
+	case TREE_TRUNK_INSIDE:
+		texture_x = 0;
+		texture_y = 1;
+		break;
+	case TREE_BRANCH:
+		texture_x = 1;
+		texture_y = 1;
+		break;
+	case TREE_TRUNK:
+		texture_x = 3;
+		texture_y = 0;
+		break;
+	case PLAYER_HEAD_FRONT:
+		texture_x = 0;
+		texture_y = 2;
+		break;
+	case PLAYER_HEAD_BACK:
+		texture_x = 2;
+		texture_y = 2;
+		break;
+	case PLAYER_HEAD_SIDE:
+		texture_x = 3;
+		texture_y = 2;
+		break;
+	case PLAYER_HEAD_BOTTOM:
+		texture_x = 0;
+		texture_y = 3;
+		break;
+	case PLAYER_TORSO:
+		texture_x = 3;
+		texture_y = 1;
+		break;
+	case PLAYER_LEGS:
+		texture_x = 1;
+		texture_y = 2;
+		break;
+	case PLAYER_LEGS_BOTTOM:
+		texture_x = 1;
+		texture_y = 3;
+		break;
+	case PLAYER_ARM:
+		texture_x = 2;
+		texture_y = 3;
 		break;
 	default:
 		LOG("Invalid texture enum" << std::endl);

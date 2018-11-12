@@ -33,7 +33,6 @@ private:
 	bool m_hidden_cursor;
 
 	Camera m_camera;
-	Player m_player;
 
 	std::shared_ptr<World> m_world;
 

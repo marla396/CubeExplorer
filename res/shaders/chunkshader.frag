@@ -17,12 +17,13 @@ void main(void){
 
 	float occlusion = 1.0;
 
-	if (texture(tex_unit1, ndc.xy).r + 0.005 < ndc.z){
+	if (texture(tex_unit1, ndc.xy).r + 0.007 < ndc.z){
 		occlusion -= 0.5;
 	}
 
 	float diffuse = max(dot(normal_fs, normalize(light_position - world_position.xyz)), 0.2);
 
-	color = vec4(light_color, 1.0) * diffuse * occlusion * texture(tex_unit0, tex_coords_fs);
-	color.a = 1.0;
+	color = vec4(light_color, 1.0) * texture(tex_unit0, tex_coords_fs);
+
+	color.xyz *= (diffuse * occlusion);
 }

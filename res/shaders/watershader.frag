@@ -10,6 +10,7 @@ uniform sampler2D tex_unit2; //reflection_texture
 uniform sampler2D tex_unit3; //refraction_texture
 uniform sampler2D tex_unit4; //normal_map
 uniform sampler2D tex_unit7; //shadow_map
+uniform sampler2D tex_unit8; //dudv_map
 
 uniform vec3 camera_position;
 uniform vec3 light_position;
@@ -29,17 +30,17 @@ void main(void){
 
 	vec3 normal = texture(tex_unit4, tex_coords_frag).rbg;
 
-	vec2 dudv = vec2(dFdx(normal).r, dFdy(normal).b) * displacement_factor;
+	vec2 dudv = texture(tex_unit8, tex_coords_frag).rg * 0.05 * displacement_factor;
 
 	normal = normalize(normal);
 
 	reflect_coords += dudv;
 	refract_coords += dudv;
 
-	reflect_coords.x = clamp(reflect_coords.x, 0.0001, 0.9999);
-	reflect_coords.y = clamp(reflect_coords.y, -0.9999, -0.0001);
+	reflect_coords.x = clamp(reflect_coords.x, 0.001, 0.999);
+	reflect_coords.y = clamp(reflect_coords.y, -0.999, -0.001);
 
-	refract_coords = clamp(refract_coords, 0.0001, 0.9999);
+	refract_coords = clamp(refract_coords, 0.001, 0.999);
 
 	vec4 reflection = texture(tex_unit2, reflect_coords);
 	vec4 refraction = texture(tex_unit3, refract_coords);
@@ -53,7 +54,7 @@ void main(void){
 	float specular = max(dot(reflected_light, view_vector), 0.0);
 	float diffuse = 0.0;//max(dot(normalize(world_position_frag - light_position), normal), 0.0);
 	specular = pow(specular, 15.0);
-	vec4 shade = vec4((diffuse * 0.3 + specular) * light_color, 0.0);
+	vec4 shade = vec4((diffuse * 0.4 + specular) * light_color, 0.0);
 
 	if (refractive_factor > 0.0)
 		color = mix(reflection, refraction, refractive_factor);
@@ -63,8 +64,8 @@ void main(void){
 	float shadow_occlusion = 1.0;
 
 	vec3 sndc = (shadow_coords.xyz / shadow_coords.w) * 0.5 + 0.5;
-
-	if (texture(tex_unit7, sndc.xy).r + 0.005 < sndc.z){
+	 
+	if (texture(tex_unit7, sndc.xy).r + 0.01 < sndc.z){
 		shadow_occlusion -= 0.5;
 		shade = vec4(0.0);
 	}

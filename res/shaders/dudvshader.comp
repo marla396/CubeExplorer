@@ -1,0 +1,17 @@
+layout(local_size_x = 16, local_size_y = 16) in;
+
+
+layout(binding = 0, rgba32f) readonly uniform image2D tex_unit0; //normal_map
+layout(binding = 1, rgba32f) writeonly uniform image2D tex_unit1; //dudv_map
+
+void main(void){
+
+	ivec2 c = ivec2(gl_GlobalInvocationID.xy);
+
+	float dudx = (imageLoad(tex_unit0, c + ivec2(1, 0)).r - imageLoad(tex_unit0, c - ivec2(1, 0)).r) / 2.0;
+	float dvdy = (imageLoad(tex_unit0, c + ivec2(0, 1)).g - imageLoad(tex_unit0, c - ivec2(0, 1)).g) / 2.0;
+
+	vec4 dudv = vec4(dudx, dvdy, 0.0, 1.0);
+
+	imageStore(tex_unit1, c, dudv);
+}

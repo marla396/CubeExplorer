@@ -2,12 +2,12 @@
 #include "nanovg/stb_image.h"
 #include "resources.h"
 
-ITexture::ITexture(){
+ITexture::ITexture() : m_destroyed(false){
     GLC(glGenTextures(1, &m_tex_id));
 }
 
 ITexture::~ITexture(){
-    GLC(glDeleteTextures(1, &m_tex_id));
+	destroy();
 }
 
 void ITexture::bind() const{
@@ -16,6 +16,13 @@ void ITexture::bind() const{
 
 uint32_t ITexture::get_id() const {
 	return m_tex_id;
+}
+
+void ITexture::destroy() {
+	if (!m_destroyed) {
+		GLC(glDeleteTextures(1, &m_tex_id));
+		m_destroyed = true;
+	}
 }
 
 void ITexture::bind(GLenum texture_unit) const{

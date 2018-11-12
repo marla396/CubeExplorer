@@ -3,7 +3,9 @@
 #include <glm/vec3.hpp>
 
 #include "camera.h"
-#include "world/world.h"
+#include "models/model.h"
+
+class World;
 
 class Entity {
 public:
@@ -16,8 +18,12 @@ public:
 
 	glm::vec3 get_velocity() const;
 
+	std::shared_ptr<Model> get_model() const;
+
 protected:
 	void update_position(float dt);
+
+	std::shared_ptr<Model> m_model;
 
 	glm::vec3 m_position;
 	glm::vec3 m_velocity;

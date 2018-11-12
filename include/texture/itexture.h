@@ -15,6 +15,8 @@ public:
 
 	uint32_t get_id() const;
 
+	void destroy();
+
 	void bind() const;
 	void bind(GLenum texture_unit) const;
 	void bind_image_texture(uint32_t texture_unit, GLenum access, GLenum format) const;
@@ -56,5 +58,6 @@ protected:
 	uint32_t m_tex_id;
 private:
 	void default_parameters();
-
+	
+	bool m_destroyed;
 };

@@ -13,7 +13,7 @@ class HUDRenderer{
 public:
     HUDRenderer(NVGcontext* nvg_ctx);
 
-    void render(const std::map<std::string, std::shared_ptr<HUDTexture>>& hud_textures, const Camera& camera, const Player& player);
+    void render(const std::map<std::string, std::shared_ptr<HUDTexture>>& hud_textures, const Camera& camera, const std::shared_ptr<Player>& player);
 private:
     void begin_frame();
     void end_frame();

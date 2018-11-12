@@ -94,10 +94,19 @@ glm::vec3 Camera::get_rotation() const {
 	return m_rotation;
 }
 
+float Camera::get_yaw() const {
+	return m_rotation.y;
+}
+
 void Camera::set_yaw(float yaw) {
 	m_rotation.y = yaw;
 	notify_view();
 }
+
+float Camera::get_pitch() const {
+	return m_rotation.x;
+}
+
 void Camera::set_pitch(float pitch) {
 	m_rotation.x = pitch;
 	notify_view();
@@ -163,9 +172,9 @@ glm::mat4 Camera::update_view_matrix() {
 
 	glm::mat4 view_matrix = glm::identity<glm::mat4>();
 
-	view_matrix = glm::rotate(view_matrix, m_rotation.x, { 1, 0, 0 });
-	view_matrix = glm::rotate(view_matrix, m_rotation.y, { 0, 1, 0 });
-	view_matrix = glm::rotate(view_matrix, m_rotation.z, { 0, 0, 1 });
+	view_matrix = glm::rotate(view_matrix, m_rotation.x, { 1.0f, 0.0f, 0.0f });
+	view_matrix = glm::rotate(view_matrix, m_rotation.y, { 0.0f, 1.0f, 0.0f });
+	view_matrix = glm::rotate(view_matrix, m_rotation.z, { 0.0f, 0.0f, 1.0f });
 
 	return glm::translate(view_matrix, -m_position);
 }

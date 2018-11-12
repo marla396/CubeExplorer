@@ -164,8 +164,10 @@
     <ClCompile Include="..\..\src\models\block_model.cc" />
     <ClCompile Include="..\..\src\models\chunk_model.cc" />
     <ClCompile Include="..\..\src\models\model.cc" />
+    <ClCompile Include="..\..\src\models\player_model.cc" />
     <ClCompile Include="..\..\src\models\quad2d_model.cc" />
     <ClCompile Include="..\..\src\models\skybox_model.cc" />
+    <ClCompile Include="..\..\src\models\tree_model.cc" />
     <ClCompile Include="..\..\src\models\water_model.cc" />
     <ClCompile Include="..\..\src\renderers\block_renderer.cc" />
     <ClCompile Include="..\..\src\renderers\chunk_renderer.cc" />
@@ -177,6 +179,7 @@
     <ClCompile Include="..\..\src\shaders\butterfly_shader.cc" />
     <ClCompile Include="..\..\src\shaders\chunk_shader.cc" />
     <ClCompile Include="..\..\src\shaders\clip_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\dudv_shader.cc" />
     <ClCompile Include="..\..\src\shaders\extension_shader.cc" />
     <ClCompile Include="..\..\src\shaders\h0k_shader.cc" />
     <ClCompile Include="..\..\src\shaders\hkt_shader.cc" />
@@ -197,7 +200,6 @@
     <ClCompile Include="..\..\src\texture\itexture.cc" />
     <ClCompile Include="..\..\src\world\block.cc" />
     <ClCompile Include="..\..\src\world\block_map.cc" />
-    <ClCompile Include="..\..\src\world\chunk.cc" />
     <ClCompile Include="..\..\src\world\light.cc" />
     <ClCompile Include="..\..\src\world\world.cc" />
     <ClCompile Include="..\..\Windows\glad\src\glad.c" />
@@ -220,8 +222,10 @@
     <ClInclude Include="..\..\include\models\block_model.h" />
     <ClInclude Include="..\..\include\models\chunk_model.h" />
     <ClInclude Include="..\..\include\models\model.h" />
+    <ClInclude Include="..\..\include\models\player_model.h" />
     <ClInclude Include="..\..\include\models\quad2d_model.h" />
     <ClInclude Include="..\..\include\models\skybox_model.h" />
+    <ClInclude Include="..\..\include\models\tree_model.h" />
     <ClInclude Include="..\..\include\models\water_model.h" />
     <ClInclude Include="..\..\include\renderers\block_renderer.h" />
     <ClInclude Include="..\..\include\renderers\chunk_renderer.h" />
@@ -233,6 +237,7 @@
     <ClInclude Include="..\..\include\shaders\block_shader.h" />
     <ClInclude Include="..\..\include\shaders\chunk_shader.h" />
     <ClInclude Include="..\..\include\shaders\clip_shader.h" />
+    <ClInclude Include="..\..\include\shaders\dudv_shader.h" />
     <ClInclude Include="..\..\include\shaders\extension_shader.h" />
     <ClInclude Include="..\..\include\shaders\h0k_shader.h" />
     <ClInclude Include="..\..\include\shaders\butterfly_shader.h" />
@@ -258,7 +263,6 @@
     <ClInclude Include="..\..\include\texture\texture_atlas.h" />
     <ClInclude Include="..\..\include\world\block.h" />
     <ClInclude Include="..\..\include\world\block_map.h" />
-    <ClInclude Include="..\..\include\world\chunk.h" />
     <ClInclude Include="..\..\include\world\light.h" />
     <ClInclude Include="..\..\include\world\world.h" />
     <ClInclude Include="..\..\include\world\world_const.h" />
@@ -277,6 +281,7 @@
     <None Include="..\..\res\shaders\chunkshader.frag" />
     <None Include="..\..\res\shaders\chunkshader.vert" />
     <None Include="..\..\res\shaders\depthshader.frag" />
+    <None Include="..\..\res\shaders\dudvshader.comp" />
     <None Include="..\..\res\shaders\h0kshader.comp" />
     <None Include="..\..\res\shaders\hktshader.comp" />
     <None Include="..\..\res\shaders\hudshader.frag" />

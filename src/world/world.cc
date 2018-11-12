@@ -1,6 +1,7 @@
 #include <utility>
 
 #include "world/world.h"
+#include "models/tree_model.h"
 
 World::World(uint32_t seed) : m_all_blocks_initialized(false), m_seed(seed) {
 
@@ -46,13 +47,27 @@ float World::height_at(float x, float z) const {
 void World::generate_world(const std::shared_ptr<ITexture>& chunk_texture) {
 
 	m_height_map = m_generator->generate_height_map<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>(1.0f, static_cast<float>(WORLD_MAX_HEIGHT));
+
+	if (m_height_map_texture != nullptr)
+		m_height_map_texture->destroy();
+
+	auto* buffer = m_height_map->to_texture_buffer();
+
+	m_player = std::make_shared<Player>(chunk_texture);
+	m_height_map_texture = std::make_shared<MTexture<uint8_t>>(WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE, buffer);
+
+	delete[] buffer;
+
 	m_chunks = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
+	m_chunks->push_back(std::dynamic_pointer_cast<PlayerModel>(m_player->get_model()));
 
 	int n_workers = WORLD_GENERATOR_THREADS;
 	for (int i = 0; i < n_workers; i++) {
 		std::thread t(&World::generate_world_part, this, n_workers, i, chunk_texture);
 		t.detach();
 	}
+
+
 }
 
 void World::lock_chunks() {
@@ -63,8 +78,16 @@ void World::unlock_chunks() {
 	m_generator_mutex.unlock();
 }
 
+void World::set_seed(uint32_t seed) {
+	m_seed = seed;
+}
+
 std::shared_ptr<FFTNoise<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>> World::get_height_map() const {
 	return m_height_map;
+}
+
+std::shared_ptr<MTexture<uint8_t>> World::get_height_map_texture() const {
+	return m_height_map_texture;
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> World::get_chunks() const {
@@ -73,6 +96,10 @@ std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> World::get_chunks() co
 
 std::shared_ptr<Light> World::get_sun() const {
 	return m_sun;
+}
+
+std::shared_ptr<Player> World::get_player() const {
+	return m_player;
 }
 
 void World::generate_world_part(int n_workers, int id, const std::shared_ptr<ITexture>& chunk_texture) {
@@ -96,24 +123,34 @@ void World::generate_world_part(int n_workers, int id, const std::shared_ptr<ITe
 					for (int cz = 0; cz < CHUNK_SIZE; cz++) {
 						int height = static_cast<int>(m_height_map->noise[x * CHUNK_SIZE + cx][z * CHUNK_SIZE + cz]) - y * CHUNK_SIZE;
 
-						if (height < 2 * CHUNK_SIZE) {
+						//if (height < 2 * CHUNK_SIZE) {
 							for (int cy = 0; cy < height && cy < CHUNK_SIZE; cy++) {
 								block_map.insert_block(cx, cy, cz, height < CHUNK_SIZE + 1);
 								if (height != CHUNK_SIZE + 1)
 									n_blocks++;
 							}
-						}
+						//}
 					}
 				}
 
 
-				if (n_blocks < CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) { //is not solid?	
+				//if (n_blocks < CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) { //is not solid?	
 					std::shared_ptr<ChunkModel> chunk = std::make_shared<ChunkModel>(chunk_texture, chunk_pos, block_map);
 					add_chunk(chunk);
-				}
+
+				//}
 			}
 		}
 	}
+
+	/*if (id == 0) {
+		for (int x = 0; x < CHUNK_SIZE * WORLD_SIZE; x += CHUNK_SIZE) {
+			for (int z = 0; z < CHUNK_SIZE * WORLD_SIZE; z += CHUNK_SIZE) {
+				std::shared_ptr<TreeModel> tree = std::make_shared<TreeModel>(chunk_texture, glm::vec3{ x, WORLD_MAX_HEIGHT, z });
+				add_chunk(tree);
+			}
+		}
+	}*/
 }
 
 void World::add_chunk(const std::shared_ptr<ChunkModel>& chunk) {

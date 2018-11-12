@@ -37,7 +37,7 @@ void check_framebuffer_status();
 
 #define GL_ASSERT(stmt)	if (!(stmt)) TRAP;
 
-#ifndef _DEBUG
+#ifdef _DEBUG
 
 #define GLC(stmt)			clear_OpenGL_errors(); \
 							stmt; \
@@ -49,10 +49,10 @@ void check_framebuffer_status();
 
 #else
 
-/*#define GLC(stmt) stmt;
+#define GLC(stmt) stmt;
 #define CHECK_FRAME_BUFFER() NOP;
 #define LOG(msg) NOP;
-*/
+
 #endif
 
 #define DRAW_CALL(stmt) increment_draw_calls(); \

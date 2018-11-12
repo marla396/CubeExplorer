@@ -8,6 +8,7 @@
 #include "shaders/butterfly_shader.h"
 #include "shaders/inversion_shader.h"
 #include "shaders/normal_shader.h"
+#include "shaders/dudv_shader.h"
 #include "models/water_model.h"
 #include "texture/ftexture.h"
 #include "texture/mtexture.h"
@@ -47,6 +48,7 @@ public:
 	TexStorageLog2Ptr get_twiddle_factors() const;
 	TexStoragePtr get_pingpong() const;
 	TexStoragePtr get_normal_map() const;
+	TexStoragePtr get_dudv_map() const;
 	std::shared_ptr<ITexture> get_reflection() const;
 	std::shared_ptr<ITexture> get_refraction() const;
 
@@ -94,8 +96,10 @@ private:
 
 	std::unique_ptr<InversionShader> m_inversion_shader;
 	std::unique_ptr<NormalShader> m_normal_shader;
+	std::unique_ptr<DuDvShader> m_dudv_shader;
 
 	TexStoragePtr m_normal_map;
+	TexStoragePtr m_dudv_map;
 	
 	std::unique_ptr<MTexture<float>> m_noise_r0;
 	std::unique_ptr<MTexture<float>> m_noise_i0;
@@ -113,7 +117,7 @@ private:
 
 	std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>> m_terrain_renderers;
 
-	std::unique_ptr<MTexture<uint8_t>> m_height_map;
+	std::shared_ptr<World> m_world;
 	std::shared_ptr<FrameBuffer> m_reflection_fbo;
 	std::shared_ptr<FrameBuffer> m_refraction_fbo;
 };

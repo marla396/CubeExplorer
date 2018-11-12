@@ -4,6 +4,7 @@ Model::Model(bool lazy_init) :
 	m_vertices_dimensions(3), m_indices_count(0), m_has_tex_coords(false), m_has_normals(false), m_vbo_index(0), m_ibo_index(0) {
 
 	m_position = { 0.0f, 0.0f, 0.0f };
+	m_rotation = { 0.0f, 0.0f, 0.0f };
 	m_scale = { 1.0f, 1.0f, 1.0f };
 	
 	if (!lazy_init)
@@ -66,6 +67,9 @@ glm::mat4 Model::get_model_matrix() const {
 
 	auto matrix = glm::identity<glm::mat4>();
 
+	matrix = glm::rotate(matrix, m_rotation.x, { 1.0f, 0.0f, 0.0f });
+	matrix = glm::rotate(matrix, m_rotation.y, { 0.0f, 1.0f, 0.0f });
+	matrix = glm::rotate(matrix, m_rotation.z, { 0.0f, 0.0f, 1.0f });
 	matrix = glm::translate(matrix, m_position);
 	matrix = glm::scale(matrix, m_scale);
 
@@ -78,6 +82,14 @@ glm::vec3 Model::get_position() const {
 
 void Model::set_position(const glm::vec3& position) {
 	m_position = position;
+}
+
+glm::vec3 Model::get_rotation() const {
+	return m_rotation;
+}
+
+void Model::set_rotation(const glm::vec3& rotation) {
+	m_rotation = rotation;
 }
 
 glm::vec3 Model::get_scale() const {

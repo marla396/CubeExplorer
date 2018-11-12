@@ -36,7 +36,10 @@ public:
 	void set_rotation(const glm::vec3& rotation);
 	glm::vec3 get_rotation() const;
 
+	float get_yaw() const;
 	void set_yaw(float yaw);
+
+	float get_pitch() const;
 	void set_pitch(float pitch);
 
 	void set_near(float near);

@@ -1,18 +1,20 @@
 #include "entities/player.h"
 #include "entities/physics_const.h"
 #include "application.h"
+#include "models/player_model.h"
+#include "texture/texture_atlas.h"
+#include "world/world.h"
 
+Player::Player(const std::shared_ptr<ITexture>& texture) : m_on_ground(false) {
+	m_model = std::make_shared<PlayerModel>(texture);
 
-Player::Player() : m_on_ground(false) {
-
+	auto m = std::dynamic_pointer_cast<PlayerModel>(m_model);
+	m->gpu_init();
 }
 
 void Player::update(const std::shared_ptr<World>& world, Camera& camera, float dt) {
 
-
-	auto chunks = world->get_chunks();
 	auto rotation = camera.get_rotation();
-	
 
 	if (Application::key_down(GLFW_KEY_W)) {
 
@@ -89,5 +91,7 @@ void Player::update(const std::shared_ptr<World>& world, Camera& camera, float d
 		m_on_ground = false;
 	}
 
-	camera.set_position(m_position);
+	set_position(m_position);
+	m_model->set_rotation({ 0.0f, camera.get_yaw(), 0.0f });
+	camera.set_position(m_position + glm::vec3{ 0.0f, 3.0f, 0.4f });
 }

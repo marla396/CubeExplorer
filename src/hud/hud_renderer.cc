@@ -14,7 +14,7 @@ HUDRenderer::HUDRenderer(NVGcontext* nvg_ctx) : m_nvg_ctx(nvg_ctx) {
 	m_shader = std::make_unique<HUDShader>();
 }
 
-void HUDRenderer::render(const std::map<std::string, std::shared_ptr<HUDTexture>>& hud_textures, const Camera& camera, const Player& player){
+void HUDRenderer::render(const std::map<std::string, std::shared_ptr<HUDTexture>>& hud_textures, const Camera& camera, const std::shared_ptr<Player>& player){
 
 	bool m_height_map = false;
 
@@ -78,7 +78,7 @@ void HUDRenderer::render(const std::map<std::string, std::shared_ptr<HUDTexture>
 
 	log.str("");
 	log.clear();
-	log << "Velocity: " << player.get_velocity().x << ", " << player.get_velocity().y << ", " << player.get_velocity().z;
+	log << "Velocity: " << player->get_velocity().x << ", " << player->get_velocity().y << ", " << player->get_velocity().z;
 	render_shadow_text(log.str(), 10.0f, 120.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
 
