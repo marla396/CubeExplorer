@@ -67,10 +67,11 @@ glm::mat4 Model::get_model_matrix() const {
 
 	auto matrix = glm::identity<glm::mat4>();
 
+
+	matrix = glm::translate(matrix, m_position);
 	matrix = glm::rotate(matrix, m_rotation.x, { 1.0f, 0.0f, 0.0f });
 	matrix = glm::rotate(matrix, m_rotation.y, { 0.0f, 1.0f, 0.0f });
 	matrix = glm::rotate(matrix, m_rotation.z, { 0.0f, 0.0f, 1.0f });
-	matrix = glm::translate(matrix, m_position);
 	matrix = glm::scale(matrix, m_scale);
 
 	return matrix;

@@ -1,7 +1,106 @@
-﻿  player_model.cc
+﻿  nanovg.c
+  glad.c
+  application.cc
+  camera.cc
+  entity.cc
+  player.cc
+  framebuffer.cc
+  game.cc
+..\..\src\application.cc(158): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  gl.cc
+  hud_texture.cc
+..\..\src\framebuffer.cc(65): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\framebuffer.cc(78): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\framebuffer.cc(117): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\framebuffer.cc(136): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  hud_renderer.cc
+  main.cc
+  white_noise_generator.cc
+  block_model.cc
+  chunk_model.cc
+  model.cc
+  player_model.cc
+  quad2d_model.cc
+..\..\src\models\chunk_model.cc(174): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
+  skybox_model.cc
+  tree_model.cc
+  water_model.cc
+  block_renderer.cc
+  chunk_renderer.cc
+  entity_renderer.cc
+  postfx_renderer.cc
+..\..\src\renderers\block_renderer.cc(27): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  skybox_renderer.cc
+..\..\src\renderers\chunk_renderer.cc(43): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\renderers\chunk_renderer.cc(75): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\renderers\entity_renderer.cc(41): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\renderers\entity_renderer.cc(72): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  water_renderer.cc
+..\..\src\renderers\postfx_renderer.cc(39): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\renderers\postfx_renderer.cc(51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  resources.cc
+  block_shader.cc
+..\..\src\renderers\skybox_renderer.cc(31): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  butterfly_shader.cc
+..\..\src\renderers\water_renderer.cc(173): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\renderers\water_renderer.cc(216): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  chunk_shader.cc
+L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\water_renderer.cc)
+  L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(8): note: while compiling class template member function 'MTexture<float>::MTexture(::size_t,::size_t,const T *)'
+          with
+          [
+              T=float
+          ] (compiling source file ..\..\src\renderers\water_renderer.cc)
+  L:\Visual Studio\VC\Tools\MSVC\14.12.25827\include\memory(2585): note: see reference to function template instantiation 'MTexture<float>::MTexture(::size_t,::size_t,const T *)' being compiled
+          with
+          [
+              T=float
+          ] (compiling source file ..\..\src\renderers\water_renderer.cc)
+  ..\..\src\renderers\water_renderer.cc(249): note: see reference to class template instantiation 'MTexture<float>' being compiled
+L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\water_renderer.cc)
+  clip_shader.cc
+  dudv_shader.cc
+  entity_shader.cc
+  extension_shader.cc
+  h0k_shader.cc
+  hkt_shader.cc
+  hud_shader.cc
+  inversion_shader.cc
+  invert_shader.cc
+  light_shader.cc
+  mvp_shader.cc
+  normal_shader.cc
+  lowpass_x_shader.cc
+  plain_shader.cc
+  shader.cc
+  skybox_shader.cc
+  tex_shader.cc
+..\..\src\shaders\shader.cc(59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  twiddle_shader.cc
+  water_shader.cc
+  ftexture.cc
+  itexture.cc
+  block.cc
+  block_map.cc
+..\..\src\texture\itexture.cc(94): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\texture\itexture.cc(98): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\texture\itexture.cc(102): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  light.cc
+  world.cc
+L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\world\world.cc)
+  L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(8): note: while compiling class template member function 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)'
+          with
+          [
+              T=uint8_t
+          ] (compiling source file ..\..\src\world\world.cc)
+  L:\Visual Studio\VC\Tools\MSVC\14.12.25827\include\memory(1849): note: see reference to function template instantiation 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)' being compiled
+          with
+          [
+              T=uint8_t
+          ] (compiling source file ..\..\src\world\world.cc)
+  ..\..\src\world\world.cc(51): note: see reference to class template instantiation 'MTexture<uint8_t>' being compiled
+L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\world\world.cc)
   Generating code
-  5 of 3962 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+  All 4087 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   CubeExplorer.vcxproj -> L:\CubeExplorer\CubeExplorer\vs\CubeExplorer\x64\Release\CubeExplorer.exe

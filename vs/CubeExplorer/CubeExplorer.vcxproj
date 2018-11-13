@@ -171,6 +171,7 @@
     <ClCompile Include="..\..\src\models\water_model.cc" />
     <ClCompile Include="..\..\src\renderers\block_renderer.cc" />
     <ClCompile Include="..\..\src\renderers\chunk_renderer.cc" />
+    <ClCompile Include="..\..\src\renderers\entity_renderer.cc" />
     <ClCompile Include="..\..\src\renderers\postfx_renderer.cc" />
     <ClCompile Include="..\..\src\renderers\skybox_renderer.cc" />
     <ClCompile Include="..\..\src\renderers\water_renderer.cc" />
@@ -180,6 +181,7 @@
     <ClCompile Include="..\..\src\shaders\chunk_shader.cc" />
     <ClCompile Include="..\..\src\shaders\clip_shader.cc" />
     <ClCompile Include="..\..\src\shaders\dudv_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\entity_shader.cc" />
     <ClCompile Include="..\..\src\shaders\extension_shader.cc" />
     <ClCompile Include="..\..\src\shaders\h0k_shader.cc" />
     <ClCompile Include="..\..\src\shaders\hkt_shader.cc" />
@@ -229,6 +231,7 @@
     <ClInclude Include="..\..\include\models\water_model.h" />
     <ClInclude Include="..\..\include\renderers\block_renderer.h" />
     <ClInclude Include="..\..\include\renderers\chunk_renderer.h" />
+    <ClInclude Include="..\..\include\renderers\entity_renderer.h" />
     <ClInclude Include="..\..\include\renderers\postfx_renderer.h" />
     <ClInclude Include="..\..\include\renderers\renderer.h" />
     <ClInclude Include="..\..\include\renderers\skybox_renderer.h" />
@@ -238,6 +241,7 @@
     <ClInclude Include="..\..\include\shaders\chunk_shader.h" />
     <ClInclude Include="..\..\include\shaders\clip_shader.h" />
     <ClInclude Include="..\..\include\shaders\dudv_shader.h" />
+    <ClInclude Include="..\..\include\shaders\entity_shader.h" />
     <ClInclude Include="..\..\include\shaders\extension_shader.h" />
     <ClInclude Include="..\..\include\shaders\h0k_shader.h" />
     <ClInclude Include="..\..\include\shaders\butterfly_shader.h" />
@@ -282,6 +286,8 @@
     <None Include="..\..\res\shaders\chunkshader.vert" />
     <None Include="..\..\res\shaders\depthshader.frag" />
     <None Include="..\..\res\shaders\dudvshader.comp" />
+    <None Include="..\..\res\shaders\entityshader.frag" />
+    <None Include="..\..\res\shaders\entityshader.vert" />
     <None Include="..\..\res\shaders\h0kshader.comp" />
     <None Include="..\..\res\shaders\hktshader.comp" />
     <None Include="..\..\res\shaders\hudshader.frag" />

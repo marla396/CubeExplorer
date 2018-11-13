@@ -32,7 +32,7 @@ void World::update(float time) {
 
 	float r = WORLD_CENTER.x * 1.2f;
 
-	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time/10.0f), WORLD_CENTER.y + r * std::sin(time/10.0f), WORLD_CENTER.z + r * std::cos(time / 10.0f) };
+	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time/50.0f + PI/2), WORLD_CENTER.y + r * std::sin(time/50.0f + PI/2), WORLD_CENTER.z + r * std::cos(time / 50.0f + PI/2) };
 
 	m_sun->set_position(new_pos);
 }
@@ -59,7 +59,9 @@ void World::generate_world(const std::shared_ptr<ITexture>& chunk_texture) {
 	delete[] buffer;
 
 	m_chunks = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
-	m_chunks->push_back(std::dynamic_pointer_cast<PlayerModel>(m_player->get_model()));
+	m_entities = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
+
+	m_entities->push_back(std::dynamic_pointer_cast<PlayerModel>(m_player->get_model()));
 
 	int n_workers = WORLD_GENERATOR_THREADS;
 	for (int i = 0; i < n_workers; i++) {
@@ -92,6 +94,10 @@ std::shared_ptr<MTexture<uint8_t>> World::get_height_map_texture() const {
 
 std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> World::get_chunks() const {
 	return m_chunks;
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> World::get_entities() const {
+	return m_entities;
 }
 
 std::shared_ptr<Light> World::get_sun() const {

@@ -32,6 +32,7 @@ public:
 	std::shared_ptr<FFTNoise<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>> get_height_map() const;
 	std::shared_ptr<MTexture<uint8_t>> get_height_map_texture() const;
 	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> get_chunks() const;
+	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> get_entities() const;
 
 	std::shared_ptr<Light> get_sun() const;
 	std::shared_ptr<Player> get_player() const;
@@ -46,6 +47,7 @@ private:
 	std::shared_ptr<FFTNoise<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>> m_height_map;
 
 	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> m_chunks;
+	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> m_entities;
 	std::shared_ptr<Player> m_player;
 	std::shared_ptr<Light> m_sun;
 	std::shared_ptr<MTexture<uint8_t>> m_height_map_texture;

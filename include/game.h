@@ -9,6 +9,7 @@
 #include "renderers/water_renderer.h"
 #include "renderers/skybox_renderer.h"
 #include "renderers/postfx_renderer.h"
+#include "renderers/entity_renderer.h"
 #include "world/world.h"
 #include "entities/player.h"
 #include "framebuffer.h"
@@ -40,6 +41,7 @@ private:
 	std::shared_ptr<FrameBuffer> m_shadow_fbo;
 
 	std::unique_ptr<ChunkRenderer> m_chunk_renderer;
+	std::unique_ptr<EntityRenderer> m_entity_renderer;
 	std::unique_ptr<WaterRenderer> m_water_renderer;
 	std::unique_ptr<HUDRenderer> m_hud_renderer;
 	std::unique_ptr<SkyboxRenderer> m_skybox_renderer;

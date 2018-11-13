@@ -12,7 +12,6 @@
 #include "texture/mtexture.h"
 #include "models/chunk_model.h"
 #include "models/water_model.h"
-#include "renderers/chunk_renderer.h"
 #include "misc/fft_noise_generator.h"
 #include "renderers/renderer.h"
 
@@ -38,7 +37,7 @@ Game::Game(NVGcontext* nvg_ctx)
 
 	Application::register_resize_callback([this](size_t w, size_t h){
 		m_postfx_fbo->set_resolution(w, h);
-		m_shadow_fbo->set_resolution(8 * w, 8 * h);
+		m_shadow_fbo->set_resolution(4 * w, 4 * h);
 	});
 
 	texture_atlas = std::make_shared<TextureAtlas<32, 32>>("blocktextures.png");
@@ -75,6 +74,7 @@ Game::Game(NVGcontext* nvg_ctx)
 	skybox_model = std::make_shared<SkyboxModel>(skybox_texture);
 
 	m_chunk_renderer = std::make_unique<ChunkRenderer>();
+	m_entity_renderer = std::make_unique<EntityRenderer>();
 	m_water_renderer = std::make_unique<WaterRenderer>(m_world);
 	m_hud_renderer = std::make_unique<HUDRenderer>(m_nvg_ctx);
 	m_skybox_renderer = std::make_unique<SkyboxRenderer>();
@@ -93,9 +93,11 @@ void Game::on_render() {
 	GLC(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 
 	auto chunks = m_world->get_chunks();
+	auto entities = m_world->get_entities();
 
 	m_skybox_renderer->render({ skybox_model }, m_camera, m_world->get_sun());
 	m_chunk_renderer->render(*chunks, m_camera, m_world->get_sun());
+	m_entity_renderer->render(*entities, m_camera, m_world->get_sun());
 	m_water_renderer->render(water_models, m_camera, m_world->get_sun());
 	
 	m_world->unlock_chunks();
@@ -235,11 +237,13 @@ void Game::render_shadow_maps() {
 
 	//m_water_renderer->render_depth(water_models, m_camera, m_world->get_sun());
 	m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun());
+	m_entity_renderer->render_depth(*m_world->get_entities(), m_camera, m_world->get_sun());
 
 	GLC(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE));
 
 	unbind_fbo();
 
 	m_chunk_renderer->set_shadow_map(m_shadow_fbo->get_depth_texture());
+	m_entity_renderer->set_shadow_map(m_shadow_fbo->get_depth_texture());
 	m_water_renderer->set_shadow_map(m_shadow_fbo->get_depth_texture());
 }

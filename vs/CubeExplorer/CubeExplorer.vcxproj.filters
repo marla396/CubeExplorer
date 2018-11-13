@@ -248,6 +248,12 @@
     <ClCompile Include="..\..\src\models\player_model.cc">
       <Filter>src\models</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\shaders\entity_shader.cc">
+      <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\renderers\entity_renderer.cc">
+      <Filter>src\renderers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\application.h">
@@ -454,6 +460,12 @@
     <ClInclude Include="..\..\include\models\player_model.h">
       <Filter>include\models</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\shaders\entity_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\renderers\entity_renderer.h">
+      <Filter>include\renderers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\res\shaders\blockshader.frag">
@@ -529,6 +541,12 @@
       <Filter>res\shaders</Filter>
     </None>
     <None Include="..\..\res\shaders\dudvshader.comp">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\entityshader.vert">
+      <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\entityshader.frag">
       <Filter>res\shaders</Filter>
     </None>
   </ItemGroup>
