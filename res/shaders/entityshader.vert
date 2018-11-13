@@ -12,9 +12,13 @@ uniform mat4 view_matrix;
 uniform mat4 projection_matrix;
 uniform mat4 shadow_transform;
 
+uniform vec4 clip_plane;
+
 void main(void){
 
 	world_position = model_matrix * vec4(position, 1.0);
+
+	gl_ClipDistance[0] = dot(world_position, clip_plane);
 
 	shadow_coords = shadow_transform * world_position;
 

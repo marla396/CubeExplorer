@@ -4,8 +4,9 @@
 #include "mvp_shader.h"
 #include "multi_tex_shader.h"
 #include "light_shader.h"
+#include "clip_shader.h"
 
-class EntityShader : public Shader, public MVPShader, public MultiTexShader<2>, public LightShader {
+class EntityShader : public Shader, public MVPShader, public MultiTexShader<2>, public LightShader, public ClipShader {
 public:
 	EntityShader();
 	EntityShader(bool depth);

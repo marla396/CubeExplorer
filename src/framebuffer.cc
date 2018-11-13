@@ -1,7 +1,11 @@
 #include "framebuffer.h"
 
 FrameBuffer::FrameBuffer(size_t width, size_t height, uint32_t attachments) 
-	: m_width(width), m_height(height), m_attachments(attachments) {
+	: FrameBuffer(width, height, attachments, 1) {
+}
+
+FrameBuffer::FrameBuffer(size_t width, size_t height, uint32_t attachments, uint32_t n_textures) 
+	: m_width(width), m_height(height), m_attachments(attachments), m_n_textures(n_textures) {
 	create();
 }
 
@@ -31,23 +35,26 @@ void FrameBuffer::set_resolution(size_t width, size_t height) {
 	bind_top_fbo();
 }
 
-std::shared_ptr<ITexture> FrameBuffer::get_texture() const {
-	return m_texture;
+std::shared_ptr<ITexture> FrameBuffer::get_texture(uint32_t n) const {
+	return m_textures[n];
 }
 
 std::shared_ptr<ITexture> FrameBuffer::get_depth_texture() const {
 	return m_depth_texture;
 }
 
-void FrameBuffer::attach_texture(){
+void FrameBuffer::attach_texture(uint32_t attachment){
 
-	m_texture = std::make_shared<ITexture>();
-	m_texture->bind();
-	m_texture->buffer_data(m_width, m_height, static_cast<float*>(nullptr));
-	m_texture->set_filter(GL_LINEAR);
+	std::shared_ptr<ITexture> texture = std::make_shared<ITexture>();
+	texture = std::make_shared<ITexture>();
+	texture->bind();
+	texture->buffer_data(m_width, m_height, static_cast<float*>(nullptr));
+	texture->set_filter(GL_LINEAR);
 
 	bind();
-	GLC(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture->get_id(), 0));
+	GLC(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + attachment, GL_TEXTURE_2D, texture->get_id(), 0));
+	
+	m_textures.push_back(texture);
 
 	CHECK_FRAME_BUFFER();
 }
@@ -85,7 +92,8 @@ void FrameBuffer::create() {
 	GLC(glGenFramebuffers(1, &m_fbo))
 
 	if (m_attachments & FBO_TEXTURE) {
-		attach_texture();
+		for (uint32_t i = 0; i < m_n_textures; i++)
+			attach_texture(i);
 	}
 
 	if (m_attachments & FBO_DEPTH_TEXTURE) {
@@ -101,6 +109,8 @@ void FrameBuffer::destroy() {
 	if (m_attachments & FBO_RENDERBUFFER) {
 		GLC(glDeleteRenderbuffers(1, &m_rbo));
 	}
+
+	m_textures.clear();
 
 	GLC(glDeleteFramebuffers(1, &m_fbo))
 }

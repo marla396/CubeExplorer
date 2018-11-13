@@ -1,6 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <string_view>
+#include <vector>
 #include "gl.h"
 
 
@@ -28,7 +29,10 @@ public:
 	void upload_uniform(int location, const glm::mat3& m) const;
 	void upload_uniform(int location, const glm::mat4& m) const;
 
+	void upload_uniform(int location, const glm::ivec2& v) const;
+
 	void upload_uniform(int location, const float* data, size_t count) const;
+	void upload_uniform(int location, const std::vector<glm::vec3>& data) const;
 
 	//friend class MVPShader;
 	//friend class TexShader;

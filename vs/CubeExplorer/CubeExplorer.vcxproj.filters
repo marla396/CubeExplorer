@@ -254,6 +254,9 @@
     <ClCompile Include="..\..\src\renderers\entity_renderer.cc">
       <Filter>src\renderers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\shaders\postfx\ssao_shader.cc">
+      <Filter>src\shaders\postfx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\application.h">
@@ -466,6 +469,9 @@
     <ClInclude Include="..\..\include\renderers\entity_renderer.h">
       <Filter>include\renderers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\shaders\postfx\ssao_shader.h">
+      <Filter>include\shaders\postfx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\res\shaders\blockshader.frag">
@@ -516,9 +522,6 @@
     <None Include="..\..\res\shaders\inversionshader.comp">
       <Filter>res\shaders</Filter>
     </None>
-    <None Include="..\..\res\shaders\watershader.geom">
-      <Filter>res\shaders</Filter>
-    </None>
     <None Include="..\..\res\shaders\normalshader.comp">
       <Filter>res\shaders</Filter>
     </None>
@@ -548,6 +551,12 @@
     </None>
     <None Include="..\..\res\shaders\entityshader.frag">
       <Filter>res\shaders</Filter>
+    </None>
+    <None Include="..\..\res\shaders\postfx\ssaoshader.vert">
+      <Filter>res\shaders\postfx</Filter>
+    </None>
+    <None Include="..\..\res\shaders\postfx\ssaoshader.frag">
+      <Filter>res\shaders\postfx</Filter>
     </None>
   </ItemGroup>
 </Project>

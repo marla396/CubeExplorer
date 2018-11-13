@@ -55,8 +55,16 @@ void Shader::upload_uniform(int location, const glm::mat4& m) const{
 	GLC(glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(m)));
 }
 
+void Shader::upload_uniform(int location, const glm::ivec2& v) const {
+	GLC(glUniform2iv(location, 1, glm::value_ptr(v)));
+}
+
 void Shader::upload_uniform(int location, const float* data, size_t count) const {
 	GLC(glUniform1fv(location, count, data));
+}
+
+void Shader::upload_uniform(int location, const std::vector<glm::vec3>& data) const {
+	GLC(glUniform3fv(location, data.size(), reinterpret_cast<float*>(const_cast<glm::vec3*>(data.data()))));
 }
 
 int Shader::get_uniform_location(const std::string& name) {

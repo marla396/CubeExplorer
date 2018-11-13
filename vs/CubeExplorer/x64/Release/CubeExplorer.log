@@ -21,8 +21,8 @@
   model.cc
   player_model.cc
   quad2d_model.cc
-..\..\src\models\chunk_model.cc(174): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
   skybox_model.cc
+..\..\src\models\chunk_model.cc(174): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
   tree_model.cc
   water_model.cc
   block_renderer.cc
@@ -33,9 +33,9 @@
   skybox_renderer.cc
 ..\..\src\renderers\chunk_renderer.cc(43): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 ..\..\src\renderers\chunk_renderer.cc(75): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  water_renderer.cc
 ..\..\src\renderers\entity_renderer.cc(41): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 ..\..\src\renderers\entity_renderer.cc(72): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  water_renderer.cc
 ..\..\src\renderers\postfx_renderer.cc(39): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 ..\..\src\renderers\postfx_renderer.cc(51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   resources.cc
@@ -75,8 +75,8 @@ L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=':
   shader.cc
   skybox_shader.cc
   tex_shader.cc
-..\..\src\shaders\shader.cc(59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   twiddle_shader.cc
+..\..\src\shaders\shader.cc(59): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   water_shader.cc
   ftexture.cc
   itexture.cc

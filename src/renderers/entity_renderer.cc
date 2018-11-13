@@ -16,6 +16,7 @@ void EntityRenderer::render(const std::vector<std::shared_ptr<ChunkModel>>& mode
 	m_shader->upload_projection_matrix(camera.get_projection_matrix());
 	m_shader->upload_light_source(light);
 	m_shader->upload_shadow_transform(light->get_transform_matrix());
+	m_shader->upload_clip_plane(m_clip_plane);
 
 	if (m_shadow_map)
 		m_shadow_map->bind(GL_TEXTURE1);
@@ -57,6 +58,7 @@ void EntityRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>
 
 	m_depth_shader->upload_view_matrix(light->get_view_matrix());
 	m_depth_shader->upload_projection_matrix(light->get_projection_matrix());
+	m_depth_shader->upload_clip_plane(m_clip_plane);
 
 
 	GLC(glEnable(GL_DEPTH_TEST));

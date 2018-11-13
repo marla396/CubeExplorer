@@ -8,6 +8,10 @@ World::World(uint32_t seed) : m_all_blocks_initialized(false), m_seed(seed) {
 	m_sun = std::make_shared<Light>( glm::vec3 { WORLD_SIZE * CHUNK_SIZE * 1.2f, WORLD_MAX_HEIGHT * 1.5f, WORLD_SIZE * CHUNK_SIZE * 1.2f}, glm::vec3 { 1.0f, 1.0f, 1.0f });
 
 	m_generator = std::make_shared<FFTNoiseGenerator>(seed, 0.005f, 2.0f, 1.0f);
+
+	m_chunks = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
+	m_entities = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
+	m_water_models = std::make_shared<std::vector<std::shared_ptr<WaterModel>>>();
 }
 
 World::~World() {
@@ -37,6 +41,12 @@ void World::update(float time) {
 	m_sun->set_position(new_pos);
 }
 
+void World::clear_world() {
+	m_chunks->clear();
+	m_entities->clear();
+	m_water_models->clear();
+}
+
 float World::height_at(float x, float z) const {
 	if (x >= 0.0f && z >= 0.0f && x + 0.5f < static_cast<float>(WORLD_SIZE * CHUNK_SIZE) && z + 0.5f < static_cast<float>(WORLD_SIZE * CHUNK_SIZE)) {
 		return std::floor(m_height_map->noise[static_cast<int>(x + 0.5f)][static_cast<int>(z + 0.5f)]);
@@ -58,8 +68,22 @@ void World::generate_world(const std::shared_ptr<ITexture>& chunk_texture) {
 
 	delete[] buffer;
 
-	m_chunks = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
-	m_entities = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
+
+	for (int x = 0; x < WATER_QUAD_DIMENSION; x++) {
+		for (int y = 0; y < WATER_QUAD_DIMENSION; y++) {
+			glm::vec2 pos = {
+				static_cast<float>(x) / static_cast<float>(WATER_QUAD_DIMENSION),
+				static_cast<float>(y) / static_cast<float>(WATER_QUAD_DIMENSION)
+			};
+
+			float world_size = static_cast<float>(WORLD_SIZE * CHUNK_SIZE);
+			auto water_model = std::make_shared<WaterModel>(pos);
+			water_model->set_position({ -0.5f + pos.x * world_size, WORLD_WATER_HEIGHT, -0.5f + pos.y * world_size });
+			water_model->set_scale({ world_size / static_cast<float>(WATER_QUAD_DIMENSION), 1.0f, world_size / static_cast<float>(WATER_QUAD_DIMENSION) });
+
+			m_water_models->push_back(water_model);
+		}
+	}
 
 	m_entities->push_back(std::dynamic_pointer_cast<PlayerModel>(m_player->get_model()));
 
@@ -72,11 +96,11 @@ void World::generate_world(const std::shared_ptr<ITexture>& chunk_texture) {
 
 }
 
-void World::lock_chunks() {
+void World::lock() {
 	m_generator_mutex.lock();
 }
 
-void World::unlock_chunks() {
+void World::unlock() {
 	m_generator_mutex.unlock();
 }
 
@@ -98,6 +122,10 @@ std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> World::get_chunks() co
 
 std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> World::get_entities() const {
 	return m_entities;
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<WaterModel>>> World::get_water_models() const {
+	return m_water_models;
 }
 
 std::shared_ptr<Light> World::get_sun() const {

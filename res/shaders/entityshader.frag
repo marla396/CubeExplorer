@@ -17,7 +17,7 @@ void main(void){
 
 	float occlusion = 1.0;
 
-	if (texture(tex_unit1, ndc.xy).r + 0.007 < ndc.z){
+	if (texture(tex_unit1, ndc.xy).r + 0.001 < ndc.z){
 		occlusion -= 0.5;
 	}
 

@@ -13,6 +13,7 @@
 #include "texture/itexture.h"
 #include "texture/mtexture.h"
 #include "models/chunk_model.h"
+#include "models/water_model.h"
 #include "entities/player.h"
 #include "light.h"
 
@@ -23,16 +24,19 @@ public:
 
 	void update(float time);
 	void generate_world(const std::shared_ptr<ITexture>& chunk_texture);
-	void lock_chunks();
-	void unlock_chunks();
+	void lock();
+	void unlock();
 	void set_seed(uint32_t seed);
 
+	void clear_world();
 	float height_at(float x, float z) const;
 
 	std::shared_ptr<FFTNoise<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>> get_height_map() const;
 	std::shared_ptr<MTexture<uint8_t>> get_height_map_texture() const;
+
 	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> get_chunks() const;
 	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> get_entities() const;
+	std::shared_ptr<std::vector<std::shared_ptr<WaterModel>>> get_water_models() const;
 
 	std::shared_ptr<Light> get_sun() const;
 	std::shared_ptr<Player> get_player() const;
@@ -48,6 +52,7 @@ private:
 
 	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> m_chunks;
 	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> m_entities;
+	std::shared_ptr<std::vector<std::shared_ptr<WaterModel>>> m_water_models;
 	std::shared_ptr<Player> m_player;
 	std::shared_ptr<Light> m_sun;
 	std::shared_ptr<MTexture<uint8_t>> m_height_map_texture;

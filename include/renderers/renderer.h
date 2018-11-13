@@ -43,6 +43,18 @@ public:
 		m_wireframe = !m_wireframe;
 	}
 
+	//std::function<void(Camera&)> a = std::bind(&ChunkRenderer::render, m_chunk_renderer.get(), *chunks, _1, m_world->get_sun());
+	//std::function<void(const glm::vec4&)> b = std::bind(&ChunkRenderer::set_clip_plane, m_chunk_renderer.get(), _1);
+
+	std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>> 
+	get_render_delegate(const std::vector<std::shared_ptr<M>>& models, const std::shared_ptr<Light>& light_source) {
+
+		using namespace std::placeholders;
+		auto r = std::bind(&Renderer::render, this, models, _1, light_source);
+		auto c = std::bind(&Renderer::set_clip_plane, this, _1);
+		return std::make_pair(r, c);
+	}
+
 protected:
 	glm::vec4 m_clip_plane;
 	std::shared_ptr<ITexture> m_shadow_map;

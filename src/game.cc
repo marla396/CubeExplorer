@@ -16,7 +16,6 @@
 #include "renderers/renderer.h"
 
 std::shared_ptr<TextureAtlas<32, 32>> texture_atlas;
-std::vector<std::shared_ptr<WaterModel>> water_models;
 std::shared_ptr<SkyboxModel> skybox_model;
 std::shared_ptr<FTexture> skybox_texture;
 
@@ -32,7 +31,7 @@ Game::Game(NVGcontext* nvg_ctx)
 	m_camera.set_position({ 0.0f, WORLD_MAX_HEIGHT, 0.0f });
 	m_camera.set_yaw((3.0f * PI) / 4.0f);
 
-	m_postfx_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_DEPTH_TEXTURE | FBO_RENDERBUFFER);
+	m_postfx_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_DEPTH_TEXTURE | FBO_RENDERBUFFER, 3);
 	m_shadow_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_DEPTH_TEXTURE);
 
 	Application::register_resize_callback([this](size_t w, size_t h){
@@ -55,21 +54,7 @@ Game::Game(NVGcontext* nvg_ctx)
 	m_height_map_texture->set_position({ 0.6f, 0.6f });
 	m_height_map_texture->set_size({ 0.4f, 0.4f });
 
-	for (int x = 0; x < WATER_QUAD_DIMENSION; x++){
-		for (int y = 0; y < WATER_QUAD_DIMENSION; y++){
-			glm::vec2 pos = { 
-						static_cast<float>(x) / static_cast<float>(WATER_QUAD_DIMENSION),
-		      				static_cast<float>(y) / static_cast<float>(WATER_QUAD_DIMENSION)
-					};
 
-			float world_size = static_cast<float>(WORLD_SIZE * CHUNK_SIZE);
-			auto water_model = std::make_shared<WaterModel>(pos);
-			water_model->set_position({ -0.5f + pos.x * world_size, WORLD_WATER_HEIGHT, -0.5f + pos.y * world_size });
-			water_model->set_scale({ world_size / static_cast<float>(WATER_QUAD_DIMENSION), 1.0f, world_size / static_cast<float>(WATER_QUAD_DIMENSION)});
-
-			water_models.push_back(water_model);
-		}
-	}
 
 	skybox_model = std::make_shared<SkyboxModel>(skybox_texture);
 
@@ -84,29 +69,34 @@ Game::Game(NVGcontext* nvg_ctx)
 
 void Game::on_render() {
 
-	//bind_fbo(m_postfx_fbo);
+	GLC(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 
-	m_world->lock_chunks();
+	bind_fbo(m_postfx_fbo);
+
+	GLC(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
+	m_world->lock();
 
 	render_shadow_maps();
 
-	GLC(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
-
 	auto chunks = m_world->get_chunks();
 	auto entities = m_world->get_entities();
+	auto water_models = m_world->get_water_models();
 
 	m_skybox_renderer->render({ skybox_model }, m_camera, m_world->get_sun());
 	m_chunk_renderer->render(*chunks, m_camera, m_world->get_sun());
 	m_entity_renderer->render(*entities, m_camera, m_world->get_sun());
-	m_water_renderer->render(water_models, m_camera, m_world->get_sun());
+	m_water_renderer->render(*water_models, m_camera, m_world->get_sun());
 	
-	m_world->unlock_chunks();
+	m_world->unlock();
 
-	//m_postfx_renderer->render(m_postfx_fbo);
+	unbind_fbo();
+
+	m_postfx_renderer->render(m_postfx_fbo, m_camera);
 
 	m_hud_textures.clear();
 
-	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_water_renderer->get_dudv_map());
+	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_water_renderer->get_dy());
 	hud->set_position({ 0.6f, 0.6f });
 	hud->set_size({ 0.4f, 0.4f });
 	m_hud_textures.insert(std::make_pair("ComputeShader", hud));
@@ -118,21 +108,20 @@ void Game::on_render() {
 void Game::on_update(float time, float dt) {
 	using namespace std::placeholders;
 	
-	m_world->lock_chunks();
+	m_world->lock();
 
 	m_world->update(time);
 
 	auto chunks = m_world->get_chunks();
+	auto entities = m_world->get_entities();
 	
-	std::function<void(Camera&)> a = std::bind(&ChunkRenderer::render, m_chunk_renderer.get(), *chunks, _1, m_world->get_sun());
-	std::function<void(const glm::vec4&)> b = std::bind(&ChunkRenderer::set_clip_plane, m_chunk_renderer.get(), _1);
+	std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>> render_delegates;
 
-	std::vector<std::shared_ptr<SkyboxModel>> sky_boxes = { skybox_model };
+	render_delegates.push_back(m_skybox_renderer->get_render_delegate({ skybox_model }, m_world->get_sun()));
+	render_delegates.push_back(m_chunk_renderer->get_render_delegate(*chunks, m_world->get_sun()));
+	render_delegates.push_back(m_entity_renderer->get_render_delegate(*entities, m_world->get_sun()));
 
-	std::function<void(Camera&)> c = std::bind(&SkyboxRenderer::render, m_skybox_renderer.get(), sky_boxes, _1, m_world->get_sun());
-	std::function<void(const glm::vec4&)> d = std::bind(&SkyboxRenderer::set_clip_plane, m_skybox_renderer.get(), _1);
-
-	m_water_renderer->set_terrain_renderers({ std::make_pair(c, d), std::make_pair(a, b) });
+	m_water_renderer->set_terrain_renderers(render_delegates);
 	
 	m_water_renderer->update(m_camera, time);
 
@@ -160,7 +149,7 @@ void Game::on_update(float time, float dt) {
 		Application::add_time_warp_factor(-0.1f);
 	}
 
-	m_world->unlock_chunks();
+	m_world->unlock();
 }
 
 void Game::on_resize(size_t width, size_t height) {
@@ -211,11 +200,11 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 		}
 
 		if (key == GLFW_KEY_F6) {
-			m_world->lock_chunks();
-			m_world->get_chunks()->clear();
+			m_world->lock();
+			m_world->clear_world();
 			m_world->set_seed(std::random_device{}());
 			m_world->generate_world(texture_atlas);
-			m_world->unlock_chunks();
+			m_world->unlock();
 		}
 
 		if (key == GLFW_KEY_ESCAPE) {
@@ -235,7 +224,6 @@ void Game::render_shadow_maps() {
 	GLC(glClear(GL_DEPTH_BUFFER_BIT));
 	GLC(glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE));
 
-	//m_water_renderer->render_depth(water_models, m_camera, m_world->get_sun());
 	m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun());
 	m_entity_renderer->render_depth(*m_world->get_entities(), m_camera, m_world->get_sun());
 
