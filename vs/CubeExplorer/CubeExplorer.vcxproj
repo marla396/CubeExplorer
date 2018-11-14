@@ -194,6 +194,7 @@
     <ClCompile Include="..\..\src\shaders\postfx\lowpass_x_shader.cc" />
     <ClCompile Include="..\..\src\shaders\postfx\plain_shader.cc" />
     <ClCompile Include="..\..\src\shaders\postfx\ssao_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\postfx\underwater_shader.cc" />
     <ClCompile Include="..\..\src\shaders\shader.cc" />
     <ClCompile Include="..\..\src\shaders\skybox_shader.cc" />
     <ClCompile Include="..\..\src\shaders\tex_shader.cc" />
@@ -257,6 +258,7 @@
     <ClInclude Include="..\..\include\shaders\postfx\lowpass_x_shader.h" />
     <ClInclude Include="..\..\include\shaders\postfx\plain_shader.h" />
     <ClInclude Include="..\..\include\shaders\postfx\ssao_shader.h" />
+    <ClInclude Include="..\..\include\shaders\postfx\underwater_shader.h" />
     <ClInclude Include="..\..\include\shaders\shader.h" />
     <ClInclude Include="..\..\include\shaders\skybox_shader.h" />
     <ClInclude Include="..\..\include\shaders\tex_shader.h" />
@@ -302,6 +304,7 @@
     <None Include="..\..\res\shaders\postfx\plainshader.vert" />
     <None Include="..\..\res\shaders\postfx\ssaoshader.frag" />
     <None Include="..\..\res\shaders\postfx\ssaoshader.vert" />
+    <None Include="..\..\res\shaders\postfx\underwatershader.comp" />
     <None Include="..\..\res\shaders\skyboxshader.frag" />
     <None Include="..\..\res\shaders\skyboxshader.vert" />
     <None Include="..\..\res\shaders\twiddleshader.comp" />

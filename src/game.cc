@@ -31,7 +31,7 @@ Game::Game(NVGcontext* nvg_ctx)
 	m_camera.set_position({ 0.0f, WORLD_MAX_HEIGHT, 0.0f });
 	m_camera.set_yaw((3.0f * PI) / 4.0f);
 
-	m_postfx_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_DEPTH_TEXTURE | FBO_RENDERBUFFER, 3);
+	m_postfx_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_RENDERBUFFER, 3);
 	m_shadow_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_DEPTH_TEXTURE);
 
 	Application::register_resize_callback([this](size_t w, size_t h){
@@ -96,7 +96,7 @@ void Game::on_render() {
 
 	m_hud_textures.clear();
 
-	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_water_renderer->get_dy());
+	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_shadow_fbo->get_depth_texture());
 	hud->set_position({ 0.6f, 0.6f });
 	hud->set_size({ 0.4f, 0.4f });
 	m_hud_textures.insert(std::make_pair("ComputeShader", hud));
@@ -124,6 +124,7 @@ void Game::on_update(float time, float dt) {
 	m_water_renderer->set_terrain_renderers(render_delegates);
 	
 	m_water_renderer->update(m_camera, time);
+	m_postfx_renderer->update(time);
 
 	if (m_free_cam)
 		m_camera.process_keyboard(dt);

@@ -1,4 +1,5 @@
 #include "renderers/postfx_renderer.h"
+#include "world/world_const.h"
 
 #include <random>
 #include <numeric>
@@ -15,6 +16,11 @@ PostFXRenderer::PostFXRenderer() {
 
 	m_plain_shader = std::make_unique<PlainShader>();
 	
+	m_underwater_shader = std::make_unique<UnderwaterShader>();
+	m_underwater_shader->upload_tex_units({ 0, 1, 2 });
+
+	m_underwater_texture = std::make_unique<FTexture>("underwater.png", ITexture::RGBA32F);
+
 	init_ssao();
 
 	m_lowpass_x_shader = std::make_unique<LowpassXShader>();
@@ -43,13 +49,41 @@ void PostFXRenderer::render(const std::shared_ptr<FrameBuffer>& input_fbo, Camer
 
 	unbind_fbo();
 
+	auto tex1 = input_fbo->get_texture(0);
+	auto tex2 = m_pingpong_fbo->get_texture();
+
+	/*if (camera.get_position().y < WORLD_WATER_HEIGHT) {
+		underwater(tex1, tex2);
+		tex1 = tex2;
+	}*/
+
 	m_plain_shader->bind();
 	m_plain_shader->upload_tex_unit(0);
 
-	input_fbo->get_texture(0)->bind(GL_TEXTURE0);
+	tex1->bind(GL_TEXTURE0);
 	
 	m_quad->bind();
 	DRAW_CALL(GLC(glDrawElements(GL_TRIANGLES, m_quad->get_indices_count(), GL_UNSIGNED_INT, nullptr)));
+}
+
+void PostFXRenderer::update(float time) {
+	m_time = time;
+}
+
+void PostFXRenderer::underwater(const std::shared_ptr<ITexture>& input, const std::shared_ptr<ITexture>& output) {
+
+	m_underwater_shader->bind();
+	m_underwater_shader->upload_time(m_time);
+	m_underwater_shader->upload_screen_dimensions({ static_cast<float>(Application::get_width()), static_cast<float>(Application::get_height()) });
+
+	input->bind_image_texture(0, GL_READ_ONLY, GL_RGBA32F);
+	output->bind_image_texture(1, GL_WRITE_ONLY, GL_RGBA32F);
+	m_underwater_texture->bind_image_texture(2, GL_READ_ONLY, GL_RGBA32F);
+
+	auto work = get_works_groups();
+
+	GLC(glDispatchCompute(work.x, work.y, work.z));
+	GLC(glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT));
 }
 
 void PostFXRenderer::lowpass_x(const std::shared_ptr<FrameBuffer>& input_fbo, const std::shared_ptr<FrameBuffer>& output_fbo) {
@@ -123,3 +157,11 @@ std::vector<float> PostFXRenderer::generate_lowpass_kernel() {
 	return { 0.057138f, 0.056559f, 0.054856f, 0.052132f, 0.048544f, 0.044292f, 0.039597f, 0.034685f, 0.02977f, 0.025037f, 0.020631f, 0.016658f, 0.013178f, 0.010216f, 0.007759f, 0.005774f, 0.004211f, 0.003009f, 0.002106f, 0.001445f, 0.000971f };
 }
 
+glm::ivec3 PostFXRenderer::get_works_groups() const {
+	
+	int work_x = (Application::get_width() / 16) + Application::get_width() % 16;
+	int work_y = (Application::get_height() / 16) + Application::get_height() % 16;
+	int work_z = 1;
+
+	return { work_x, work_y, work_z };
+}

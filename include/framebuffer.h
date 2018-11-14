@@ -18,6 +18,8 @@ public:
 	FrameBuffer(size_t width, size_t height, uint32_t attachments);
 	FrameBuffer(size_t width, size_t height, uint32_t attachments, uint32_t n_textures);
 	~FrameBuffer();
+	
+
 
 	uint32_t get_id() const;
 	size_t get_width() const;
@@ -48,6 +50,7 @@ private:
 	std::shared_ptr<ITexture> m_depth_texture;
 	uint32_t m_render_buffer;
 };
+
 
 void bind_top_fbo();
 

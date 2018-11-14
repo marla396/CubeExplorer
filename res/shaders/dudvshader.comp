@@ -9,7 +9,7 @@ void main(void){
 	ivec2 c = ivec2(gl_GlobalInvocationID.xy);
 
 	float dudx = (imageLoad(tex_unit0, c + ivec2(1, 0)).r - imageLoad(tex_unit0, c - ivec2(1, 0)).r) / 2.0;
-	float dvdy = (imageLoad(tex_unit0, c + ivec2(0, 1)).g - imageLoad(tex_unit0, c - ivec2(0, 1)).g) / 2.0;
+	float dvdy = 0.0;//(imageLoad(tex_unit0, c + ivec2(0, 1)).b - imageLoad(tex_unit0, c - ivec2(0, 1)).b) / 2.0;
 
 	vec4 dudv = vec4(dudx, dvdy, 0.0, 1.0);
 

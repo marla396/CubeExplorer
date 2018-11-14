@@ -63,15 +63,15 @@ void ITexture::load_from_file(const std::string& path, ITexture::MemoryLayout la
 			for (int32_t x = 0; x < m_width; x++) {
 				for (int32_t y = 0; y < m_height; y++) {
 
-					uint8_t r = buffer[4 * (y + x * m_width) + 0];
-					uint8_t g = buffer[4 * (y + x * m_width) + 1];
-					uint8_t b = buffer[4 * (y + x * m_width) + 2];
-					uint8_t a = buffer[4 * (y + x * m_width) + 3];
+					uint8_t r = buffer[4 * (x + y * m_width) + 0];
+					uint8_t g = buffer[4 * (x + y * m_width) + 1];
+					uint8_t b = buffer[4 * (x + y * m_width) + 2];
+					uint8_t a = buffer[4 * (x + y * m_width) + 3];
 
-					fbuffer[4 * (y + x * m_width) + 0] = (static_cast<float>(r) / 255.0f);
-					fbuffer[4 * (y + x * m_width) + 1] = (static_cast<float>(g) / 255.0f);
-					fbuffer[4 * (y + x * m_width) + 2] = (static_cast<float>(b) / 255.0f);
-					fbuffer[4 * (y + x * m_width) + 3] = (static_cast<float>(a) / 255.0f);
+					fbuffer[4 * (x + y * m_width) + 0] = (static_cast<float>(r) / 255.0f);
+					fbuffer[4 * (x + y * m_width) + 1] = (static_cast<float>(g) / 255.0f);
+					fbuffer[4 * (x + y * m_width) + 2] = (static_cast<float>(b) / 255.0f);
+					fbuffer[4 * (x + y * m_width) + 3] = (static_cast<float>(a) / 255.0f);
 				}
 			}
 

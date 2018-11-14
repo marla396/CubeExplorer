@@ -13,7 +13,7 @@ Shader::Shader(const std::initializer_list<std::string>& files) {
 	}
 
 	GLC(glLinkProgram(m_program));
-}
+}	
 
 Shader::~Shader() {
 	GLC(glDeleteShader(m_program));

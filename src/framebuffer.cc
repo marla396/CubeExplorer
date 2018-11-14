@@ -48,7 +48,7 @@ void FrameBuffer::attach_texture(uint32_t attachment){
 	std::shared_ptr<ITexture> texture = std::make_shared<ITexture>();
 	texture = std::make_shared<ITexture>();
 	texture->bind();
-	texture->buffer_data(m_width, m_height, static_cast<float*>(nullptr));
+	texture->buffer_data(m_width, m_height, static_cast<uint8_t*>(nullptr));
 	texture->set_filter(GL_LINEAR);
 
 	bind();
@@ -62,7 +62,7 @@ void FrameBuffer::attach_texture(uint32_t attachment){
 void FrameBuffer::attach_depth_texture() {
 	bind();
 
-	if (m_attachments == FBO_DEPTH_TEXTURE) {
+	if (m_attachments & FBO_DEPTH_TEXTURE) {
 		GLC(glDrawBuffer(GL_NONE));
 		GLC(glReadBuffer(GL_NONE));
 	}
@@ -103,6 +103,14 @@ void FrameBuffer::create() {
 	if (m_attachments & FBO_RENDERBUFFER) {
 		attach_renderbuffer();
 	}
+
+/*	std::vector<GLenum> attachments;
+
+	for (uint32_t i = 0; i < m_n_textures; i++) {
+		attachments.push_back(GL_COLOR_ATTACHMENT0 + i);
+	}
+
+	GLC(glDrawBuffers(m_n_textures, const_cast<GLenum*>(attachments.data())));*/
 }
 
 void FrameBuffer::destroy() {
@@ -118,6 +126,7 @@ void FrameBuffer::destroy() {
 
 void FrameBuffer::bind() const {
 	GLC(glBindFramebuffer(GL_FRAMEBUFFER, m_fbo));
+
 }
 
 std::stack<std::shared_ptr<FrameBuffer>> fbo_bind_stack;
