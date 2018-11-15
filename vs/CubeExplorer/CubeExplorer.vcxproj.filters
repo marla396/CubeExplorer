@@ -84,6 +84,9 @@
     <Filter Include="glad">
       <UniqueIdentifier>{cf431c70-a0ac-44af-9b3c-9b3a7dbed833}</UniqueIdentifier>
     </Filter>
+    <Filter Include="res\shaders\ext">
+      <UniqueIdentifier>{52eaec7d-3cf2-4ffa-a3a2-1f891da5fa86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\application.cc">
@@ -259,6 +262,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\shaders\postfx\underwater_shader.cc">
       <Filter>src\shaders\postfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\postfx\fxaa_shader.cc">
+      <Filter>src\shaders\postfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\shadow_shader.cc">
+      <Filter>src\shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -478,6 +487,12 @@
     <ClInclude Include="..\..\include\shaders\postfx\underwater_shader.h">
       <Filter>include\shaders\postfx</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\shaders\postfx\fxaa_shader.h">
+      <Filter>include\shaders\postfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\shadow_shader.h">
+      <Filter>include\shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\res\shaders\blockshader.frag">
@@ -566,6 +581,9 @@
     </None>
     <None Include="..\..\res\shaders\postfx\underwatershader.comp">
       <Filter>res\shaders\postfx</Filter>
+    </None>
+    <None Include="..\..\res\shaders\ext\shadows.glsl">
+      <Filter>res\shaders\ext</Filter>
     </None>
   </ItemGroup>
 </Project>

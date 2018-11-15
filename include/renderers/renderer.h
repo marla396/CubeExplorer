@@ -35,16 +35,17 @@ public:
 		m_clip_plane = clip_plane;
 	}
 
-	void set_shadow_map(const std::shared_ptr<ITexture>& shadow_map) {
-		m_shadow_map = shadow_map;
+	void set_shadow_map_low(const std::shared_ptr<ITexture>& shadow_map) {
+		m_shadow_map_low = shadow_map;
+	}
+
+	void set_shadow_map_high(const std::shared_ptr<ITexture>& shadow_map) {
+		m_shadow_map_high = shadow_map;
 	}
 
 	void toggle_wireframe() {
 		m_wireframe = !m_wireframe;
 	}
-
-	//std::function<void(Camera&)> a = std::bind(&ChunkRenderer::render, m_chunk_renderer.get(), *chunks, _1, m_world->get_sun());
-	//std::function<void(const glm::vec4&)> b = std::bind(&ChunkRenderer::set_clip_plane, m_chunk_renderer.get(), _1);
 
 	std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>> 
 	get_render_delegate(const std::vector<std::shared_ptr<M>>& models, const std::shared_ptr<Light>& light_source) {
@@ -57,7 +58,8 @@ public:
 
 protected:
 	glm::vec4 m_clip_plane;
-	std::shared_ptr<ITexture> m_shadow_map;
+	std::shared_ptr<ITexture> m_shadow_map_low;
+	std::shared_ptr<ITexture> m_shadow_map_high;
 	std::unique_ptr<ShaderProgram> m_shader;
 
 	bool m_wireframe;

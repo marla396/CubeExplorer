@@ -53,7 +53,7 @@ public:
 	std::shared_ptr<ITexture> get_refraction() const;
 
 	void render(const std::vector<std::shared_ptr<WaterModel>>& models, Camera& camera, const std::shared_ptr<Light>& light);
-	void render_depth(const std::vector<std::shared_ptr<WaterModel>>& models, Camera& camera, const std::shared_ptr<Light>& light);
+	void render_depth(const std::vector<std::shared_ptr<WaterModel>>& models, Camera& camera, const std::shared_ptr<Light>& light, Light::ShadowMapQuality quality);
 	void update(Camera& camera, float time);
 	void compute_h0k() const;
 	void compute_hkt() const;

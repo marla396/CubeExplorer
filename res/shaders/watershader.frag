@@ -1,16 +1,20 @@
+#include "ext/shadows.glsl"
+
 out vec4 color;
 
 in vec3 world_position_frag;
 in vec2 tex_coords_frag;
 in vec4 clip_space;
-in vec4 shadow_coords;
+in vec4 shadow_coords_low;
+in vec4 shadow_coords_high;
 
 uniform sampler2D tex_unit0; //displacement_map
 uniform sampler2D tex_unit2; //reflection_texture
 uniform sampler2D tex_unit3; //refraction_texture
 uniform sampler2D tex_unit4; //normal_map
-uniform sampler2D tex_unit7; //shadow_map
-uniform sampler2D tex_unit8; //dudv_map
+uniform sampler2D tex_unit7; //dudv_map
+uniform sampler2D tex_unit8; //shadow_map_low
+uniform sampler2D tex_unit9; //shadow_map_high
 
 uniform vec3 camera_position;
 uniform vec3 light_position;
@@ -30,7 +34,7 @@ void main(void){
 
 	vec3 normal = texture(tex_unit4, tex_coords_frag).rbg;
 
-	vec2 dudv = texture(tex_unit8, tex_coords_frag).rg * 0.05 * displacement_factor;
+	vec2 dudv = texture(tex_unit7, tex_coords_frag).rg * 0.05 * displacement_factor;
 
 	normal = normalize(normal);
 
@@ -61,14 +65,17 @@ void main(void){
 	else
 		color = refraction;
 
-	float shadow_occlusion = 1.0;
 
-	vec3 sndc = (shadow_coords.xyz / shadow_coords.w) * 0.5 + 0.5;
+
+	//vec3 sndc = (shadow_coords.xyz / shadow_coords.w) * 0.5 + 0.5;
+	vec3 sndc_low = project_shadow_coords(shadow_coords_low);
+	vec3 sndc_high = project_shadow_coords(shadow_coords_high);
 	 
-	if (texture(tex_unit7, sndc.xy).r + 0.01 < sndc.z){
-		shadow_occlusion -= 0.5;
+	float shadow_occlusion = get_shadow_occlusion(tex_unit8, sndc_low, tex_unit9, sndc_high, length(world_position_frag - camera_position), 0.007);
+
+	/*if (shadow_occlusion > 0.0){
 		shade = vec4(0.0);
-	}
+	}*/
 
 	color = mix(shadow_occlusion * color, vec4(0.0, 0.15, 0.25, 1.0) + shade, 0.4);
 	color = color * shadow_occlusion;

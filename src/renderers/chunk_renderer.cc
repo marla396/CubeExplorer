@@ -11,15 +11,20 @@ void ChunkRenderer::render(const std::vector<std::shared_ptr<ChunkModel>>& model
 
 	m_shader->bind();
 
-	m_shader->upload_tex_units({ 0, 1 });
+	m_shader->upload_tex_units({ 0, 1, 2 });
 	m_shader->upload_view_matrix(camera.get_view_matrix());
 	m_shader->upload_projection_matrix(camera.get_projection_matrix());
 	m_shader->upload_clip_plane(m_clip_plane);
 	m_shader->upload_light_source(light);
-	m_shader->upload_shadow_transform(light->get_transform_matrix());
+	m_shader->upload_shadow_transform_low(light->get_transform_matrix(camera, Light::LOW));
+	m_shader->upload_shadow_transform_high(light->get_transform_matrix(camera, Light::HIGH));
+	m_shader->upload_camera_position(camera.get_position());
 
-	if (m_shadow_map)
-		m_shadow_map->bind(GL_TEXTURE1);
+	if (m_shadow_map_low)
+		m_shadow_map_low->bind(GL_TEXTURE1);
+
+	if (m_shadow_map_high)
+		m_shadow_map_high->bind(GL_TEXTURE2);
 
 
 	GLC(glEnable(GL_DEPTH_TEST));
@@ -50,15 +55,15 @@ void ChunkRenderer::render(const std::vector<std::shared_ptr<ChunkModel>>& model
 	GLC(glDisable(GL_CLIP_DISTANCE0));
 }
 
-void ChunkRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>& models, Camera& camera, const std::shared_ptr<Light>& light) {
+void ChunkRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>& models, Camera& camera, const std::shared_ptr<Light>& light, Light::ShadowMapQuality quality) {
 	if (models.empty()) {
 		return;
 	}
 
 	m_depth_shader->bind();
 
-	m_depth_shader->upload_view_matrix(light->get_view_matrix());
-	m_depth_shader->upload_projection_matrix(light->get_projection_matrix());
+	m_depth_shader->upload_view_matrix(light->get_view_matrix(camera, quality));
+	m_depth_shader->upload_projection_matrix(light->get_projection_matrix(quality));
 	m_depth_shader->upload_clip_plane(m_clip_plane);
 
 

@@ -32,7 +32,7 @@ Game::Game(NVGcontext* nvg_ctx)
 	m_camera.set_yaw((3.0f * PI) / 4.0f);
 
 	m_postfx_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_RENDERBUFFER, 3);
-	m_shadow_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_DEPTH_TEXTURE);
+	m_shadow_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_DEPTH_TEXTURE | FBO_DEPTH_TEXTURE2);
 
 	Application::register_resize_callback([this](size_t w, size_t h){
 		m_postfx_fbo->set_resolution(w, h);
@@ -96,10 +96,14 @@ void Game::on_render() {
 
 	m_hud_textures.clear();
 
-	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_shadow_fbo->get_depth_texture());
+	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_shadow_fbo->get_depth_texture(1));
 	hud->set_position({ 0.6f, 0.6f });
 	hud->set_size({ 0.4f, 0.4f });
+	std::shared_ptr<HUDTexture> hud2 = std::make_shared<HUDTexture>(m_shadow_fbo->get_depth_texture(0));
+	hud2->set_position({ 0.6f, -0.6f });
+	hud2->set_size({ 0.4f, 0.4f });
 	m_hud_textures.insert(std::make_pair("ComputeShader", hud));
+	m_hud_textures.insert(std::make_pair("ComputeShadexr", hud2));
 	
 	if (m_show_hud)
 		m_hud_renderer->render(m_hud_textures, m_camera, m_world->get_player());
@@ -110,7 +114,7 @@ void Game::on_update(float time, float dt) {
 	
 	m_world->lock();
 
-	m_world->update(time);
+	m_world->update(time, m_camera);
 
 	auto chunks = m_world->get_chunks();
 	auto entities = m_world->get_entities();
@@ -226,17 +230,31 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 void Game::render_shadow_maps() {
 	bind_fbo(m_shadow_fbo);
 
-	GLC(glClear(GL_DEPTH_BUFFER_BIT));
 	GLC(glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE));
 
-	m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun());
-	m_entity_renderer->render_depth(*m_world->get_entities(), m_camera, m_world->get_sun());
+	m_shadow_fbo->bind_depth_texture(0);
+
+	GLC(glClear(GL_DEPTH_BUFFER_BIT));
+
+	m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun(), Light::LOW);
+	m_entity_renderer->render_depth(*m_world->get_entities(), m_camera, m_world->get_sun(), Light::LOW);
+
+	m_shadow_fbo->bind_depth_texture(1);
+
+	GLC(glClear(GL_DEPTH_BUFFER_BIT));
+
+	m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun(), Light::HIGH);
+	m_entity_renderer->render_depth(*m_world->get_entities(), m_camera, m_world->get_sun(), Light::HIGH);
 
 	GLC(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE));
 
 	unbind_fbo();
 
-	m_chunk_renderer->set_shadow_map(m_shadow_fbo->get_depth_texture());
-	m_entity_renderer->set_shadow_map(m_shadow_fbo->get_depth_texture());
-	m_water_renderer->set_shadow_map(m_shadow_fbo->get_depth_texture());
+	m_chunk_renderer->set_shadow_map_low(m_shadow_fbo->get_depth_texture(0));
+	m_entity_renderer->set_shadow_map_low(m_shadow_fbo->get_depth_texture(0));
+	m_water_renderer->set_shadow_map_low(m_shadow_fbo->get_depth_texture(0));
+
+	m_chunk_renderer->set_shadow_map_high(m_shadow_fbo->get_depth_texture(1));
+	m_entity_renderer->set_shadow_map_high(m_shadow_fbo->get_depth_texture(1));
+	m_water_renderer->set_shadow_map_high(m_shadow_fbo->get_depth_texture(1));
 }

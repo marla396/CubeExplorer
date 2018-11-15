@@ -191,11 +191,13 @@
     <ClCompile Include="..\..\src\shaders\light_shader.cc" />
     <ClCompile Include="..\..\src\shaders\mvp_shader.cc" />
     <ClCompile Include="..\..\src\shaders\normal_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\postfx\fxaa_shader.cc" />
     <ClCompile Include="..\..\src\shaders\postfx\lowpass_x_shader.cc" />
     <ClCompile Include="..\..\src\shaders\postfx\plain_shader.cc" />
     <ClCompile Include="..\..\src\shaders\postfx\ssao_shader.cc" />
     <ClCompile Include="..\..\src\shaders\postfx\underwater_shader.cc" />
     <ClCompile Include="..\..\src\shaders\shader.cc" />
+    <ClCompile Include="..\..\src\shaders\shadow_shader.cc" />
     <ClCompile Include="..\..\src\shaders\skybox_shader.cc" />
     <ClCompile Include="..\..\src\shaders\tex_shader.cc" />
     <ClCompile Include="..\..\src\shaders\twiddle_shader.cc" />
@@ -255,11 +257,13 @@
     <ClInclude Include="..\..\include\shaders\multi_tex_shader.h" />
     <ClInclude Include="..\..\include\shaders\mvp_shader.h" />
     <ClInclude Include="..\..\include\shaders\normal_shader.h" />
+    <ClInclude Include="..\..\include\shaders\postfx\fxaa_shader.h" />
     <ClInclude Include="..\..\include\shaders\postfx\lowpass_x_shader.h" />
     <ClInclude Include="..\..\include\shaders\postfx\plain_shader.h" />
     <ClInclude Include="..\..\include\shaders\postfx\ssao_shader.h" />
     <ClInclude Include="..\..\include\shaders\postfx\underwater_shader.h" />
     <ClInclude Include="..\..\include\shaders\shader.h" />
+    <ClInclude Include="..\..\include\shaders\shadow_shader.h" />
     <ClInclude Include="..\..\include\shaders\skybox_shader.h" />
     <ClInclude Include="..\..\include\shaders\tex_shader.h" />
     <ClInclude Include="..\..\include\shaders\twiddle_shader.h" />
@@ -292,6 +296,7 @@
     <None Include="..\..\res\shaders\dudvshader.comp" />
     <None Include="..\..\res\shaders\entityshader.frag" />
     <None Include="..\..\res\shaders\entityshader.vert" />
+    <None Include="..\..\res\shaders\ext\shadows.glsl" />
     <None Include="..\..\res\shaders\h0kshader.comp" />
     <None Include="..\..\res\shaders\hktshader.comp" />
     <None Include="..\..\res\shaders\hudshader.frag" />

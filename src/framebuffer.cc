@@ -39,8 +39,8 @@ std::shared_ptr<ITexture> FrameBuffer::get_texture(uint32_t n) const {
 	return m_textures[n];
 }
 
-std::shared_ptr<ITexture> FrameBuffer::get_depth_texture() const {
-	return m_depth_texture;
+std::shared_ptr<ITexture> FrameBuffer::get_depth_texture(uint32_t n) const {
+	return m_depth_textures[n];
 }
 
 void FrameBuffer::attach_texture(uint32_t attachment){
@@ -67,13 +67,14 @@ void FrameBuffer::attach_depth_texture() {
 		GLC(glReadBuffer(GL_NONE));
 	}
 
-	m_depth_texture = std::make_shared<ITexture>();
-	m_depth_texture->bind();
+	std::shared_ptr<ITexture> texture = std::make_shared<ITexture>();
+	texture->bind();
 	GLC(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_width, m_height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
-	m_depth_texture->set_filter(GL_LINEAR);
+	texture->set_filter(GL_LINEAR);
 
-	GLC(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depth_texture->get_id(), 0));
+	GLC(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texture->get_id(), 0));
 
+	m_depth_textures.push_back(texture);
 
 	CHECK_FRAME_BUFFER();
 }
@@ -86,6 +87,10 @@ void FrameBuffer::attach_renderbuffer() {
 	GLC(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_rbo));
 
 	CHECK_FRAME_BUFFER();
+}
+
+void FrameBuffer::bind_depth_texture(uint32_t n) {
+	GLC(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depth_textures[n]->get_id(), 0));
 }
 
 void FrameBuffer::create() {
@@ -104,6 +109,10 @@ void FrameBuffer::create() {
 		attach_renderbuffer();
 	}
 
+	if (m_attachments & FBO_DEPTH_TEXTURE2) {
+		attach_depth_texture();
+	}
+
 /*	std::vector<GLenum> attachments;
 
 	for (uint32_t i = 0; i < m_n_textures; i++) {
@@ -119,6 +128,7 @@ void FrameBuffer::destroy() {
 	}
 
 	m_textures.clear();
+	m_depth_textures.clear();
 
 	GLC(glDeleteFramebuffers(1, &m_fbo))
 }

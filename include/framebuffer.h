@@ -6,10 +6,11 @@
 #include "texture/itexture.h"
 #include "application.h"
 
-enum FrameBufferAttachment{
+enum FrameBufferAttachment {
 	FBO_TEXTURE = 1,
 	FBO_RENDERBUFFER = 2,
-	FBO_DEPTH_TEXTURE = 4
+	FBO_DEPTH_TEXTURE = 4,
+	FBO_DEPTH_TEXTURE2 = 8
 };
 
 
@@ -27,11 +28,13 @@ public:
 
 	void set_resolution(size_t width, size_t height);
 	std::shared_ptr<ITexture> get_texture(uint32_t n = 0) const;
-	std::shared_ptr<ITexture> get_depth_texture() const;
+	std::shared_ptr<ITexture> get_depth_texture(uint32_t n = 0) const;
 
 	void attach_texture(uint32_t attachment = 0);
 	void attach_depth_texture();
 	void attach_renderbuffer();
+
+	void bind_depth_texture(uint32_t n);
 private:
 	void create();
 	void destroy();
@@ -47,7 +50,7 @@ private:
 	uint32_t m_fbo;
 	uint32_t m_rbo;
 	std::vector<std::shared_ptr<ITexture>> m_textures;
-	std::shared_ptr<ITexture> m_depth_texture;
+	std::vector<std::shared_ptr<ITexture>> m_depth_textures;
 	uint32_t m_render_buffer;
 };
 

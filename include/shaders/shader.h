@@ -44,7 +44,7 @@ public:
 
 private:
 	void compile(const std::string& file);
-	bool preprocess_shader(const std::string& in, std::string& out) const;
+	bool preprocess_shader(std::string& in, std::string& out) const;
 	uint32_t get_shader_type(const std::string& file) const;
 	bool compiler_error(const std::string& file, uint32_t s) const;
 

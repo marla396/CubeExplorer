@@ -1,8 +1,10 @@
 
 #include "shaders/shader.h"
 #include "resources.h"
+#include "world/light.h"
 
 #include <glm/gtc/type_ptr.hpp>
+#include <regex>
 
 Shader::Shader(const std::initializer_list<std::string>& files) {
 
@@ -86,6 +88,7 @@ void Shader::compile(const std::string& file) {
 	std::string source;
 
 	if (!preprocess_shader(raw_source, source)) {
+		LOG("Failed to preprocess " << file);
 		return;
 	}
 	const char* tmp = source.c_str();
@@ -102,8 +105,32 @@ void Shader::compile(const std::string& file) {
 	GLC(glDeleteShader(s));
 }
 
-bool Shader::preprocess_shader(const std::string& in, std::string& out) const{
-	out = "#version " + GLSL_VERSION + "\n" + in;
+bool Shader::preprocess_shader(std::string& in, std::string& out) const{
+
+	std::regex include("^#include [\"<](.+?)[>\"]$", std::regex_constants::ECMAScript);
+
+	std::smatch match;
+	std::string tmp = in;
+
+	while (std::regex_search(tmp, match, include)) {
+
+		for (int i = 1; i < match.size(); i++) {
+
+			std::string ext = Resources::read_file(Resources::resolve_shader_path(match[i].str()));
+
+			if (ext == "") {
+				return false;
+			}
+			in = std::regex_replace(in, std::regex(match[0].str()), ext, std::regex_constants::format_first_only);
+			tmp = match.suffix();
+		}
+	}
+
+	out = "#define LIGHT_HIGH_DISTANCE " + std::to_string(Light::LIGHT_HIGH_DISTANCE) + "\n" + in;
+	out = "#define SHADOW_EPSILON_HIGH 0.001\n#define SHADOW_EPSILON_LOW 0.005\n" + out;
+
+	out = "#version " + GLSL_VERSION + "\n" + out;
+	
 	return true;
 }
 

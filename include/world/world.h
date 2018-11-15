@@ -22,7 +22,7 @@ public:
 	World(uint32_t seed);
 	~World();
 
-	void update(float time);
+	void update(float time, Camera& camera);
 	void generate_world(const std::shared_ptr<ITexture>& chunk_texture);
 	void lock();
 	void unlock();
