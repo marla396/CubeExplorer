@@ -37,7 +37,7 @@ void check_framebuffer_status();
 
 #define GL_ASSERT(stmt)	if (!(stmt)) TRAP;
 
-#ifdef _DEBUG
+#ifndef _DEBUG
 
 #define GLC(stmt)			clear_OpenGL_errors(); \
 							stmt; \

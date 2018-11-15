@@ -9,6 +9,7 @@
 #include "shaders/postfx/ssao_shader.h"
 #include "shaders/postfx/lowpass_x_shader.h"
 #include "shaders/postfx/underwater_shader.h"
+#include "shaders/postfx/fxaa_shader.h"
 #include "texture/mtexture.h"
 #include "texture/ftexture.h"
 #include "models/quad2d_model.h"
@@ -24,10 +25,11 @@ public:
 private:
 	void lowpass_x(const std::shared_ptr<FrameBuffer>& input_fbo, const std::shared_ptr<FrameBuffer>& output_fbo);
 	void underwater(const std::shared_ptr<ITexture>& input, const std::shared_ptr<ITexture>& output);
-
+	void fxaa(const std::shared_ptr<ITexture>& input, const std::shared_ptr<ITexture>& output);
+	
 	void init_ssao();
 	std::vector<float> generate_lowpass_kernel();
-	glm::ivec3 get_works_groups() const;
+	glm::ivec3 get_work_groups() const;
 
 	float m_time;
 
@@ -42,6 +44,9 @@ private:
 
 	std::unique_ptr<LowpassXShader> m_lowpass_x_shader;
 
+	std::unique_ptr<FXAAShader> m_fxaa_shader;
+
 	std::unique_ptr<Quad2DModel> m_quad;
 	std::shared_ptr<FrameBuffer> m_pingpong_fbo;
+	std::shared_ptr<MTexture<float>> m_pingpong_texture;
 };

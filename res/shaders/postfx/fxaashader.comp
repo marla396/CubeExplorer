@@ -1,0 +1,71 @@
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0, rgba32f) readonly uniform image2D tex_unit0; //input
+layout(binding = 1, rgba32f) writeonly uniform image2D tex_unit1; //outupt
+
+const float luma_threshold = 1.0/4.0;
+const float luma_threshold_min = 1.0/8.0;
+const float mul_reduce = 1.0;
+const float min_reduce = 1.0;
+const float max_span = 5.0;
+
+
+float rgb2luma(vec3 rgb){
+	return (dot(rgb, vec3(0.299, 0.587, 0.114)));
+}
+
+float get_luma(ivec2 coords){
+	return rgb2luma(imageLoad(tex_unit0, coords).rgb);
+}
+
+void main(void){
+	ivec2 coords = ivec2(gl_GlobalInvocationID.xy);
+
+	vec3 rgbM = imageLoad(tex_unit0, coords).rgb;;
+
+	float lumaM = rgb2luma(rgbM);
+	float lumaNW = get_luma(ivec2(-1, 1));
+	float lumaNE = get_luma(ivec2(1, 1));
+	float lumaSW = get_luma(ivec2(-1, -1));
+	float lumaSE = get_luma(ivec2(1, -1));
+
+	float luma_min = min(lumaM, min(min(lumaNW, lumaNE), min(lumaSW, lumaSE)));
+	float luma_max = max(lumaM, max(max(lumaNW, lumaNE), max(lumaSW, lumaSE)));
+
+	if (luma_max - luma_min < max(luma_threshold_min, luma_max * luma_threshold)){
+		imageStore(tex_unit1, coords, vec4(rgbM, 1.0));
+		return;
+	}
+	
+	vec2 sampling_direction = vec2(-((lumaNW + lumaNE) - (lumaSW + lumaSE)),
+					((lumaNW + lumaSW) - (lumaNE + lumaSE)));
+
+
+	float sampling_direction_reduce = max((lumaNW + lumaNE + lumaSW + lumaSE) * 0.25 * mul_reduce, min_reduce);
+
+	float min_sampling_direction_factor = 1.0 / (min(abs(sampling_direction.x), abs(sampling_direction.y)) + sampling_direction_reduce);
+
+	sampling_direction = clamp(sampling_direction * min_sampling_direction_factor, -max_span, max_span);
+
+	vec3 sample_pos = imageLoad(tex_unit0, coords + ivec2(sampling_direction * (1.0/3.0 - 0.5))).rgb;
+			  
+	vec3 sample_neg = imageLoad(tex_unit0, coords + ivec2(sampling_direction * (2.0/3.0 - 0.5))).rgb;		
+
+	vec3 rgb_two_tab = (sample_pos + sample_neg) * 0.5;
+
+	vec3 sample_pos_outer = imageLoad(tex_unit0, coords + ivec2(sampling_direction * -0.5)).rgb;
+	vec3 sample_neg_outer = imageLoad(tex_unit0, coords + ivec2(sampling_direction * 0.5)).rgb;
+
+	vec3 rgb_four_tab = (sample_pos_outer + sample_neg_outer) * 0.25 + rgb_two_tab * 0.5;
+
+	float luma_four_tab = rgb2luma(rgb_four_tab);
+
+	if (luma_four_tab < luma_min || luma_four_tab > luma_max){
+		imageStore(tex_unit1, coords, vec4(rgb_two_tab, 1.0));
+	} else{
+        	imageStore(tex_unit1, coords, vec4(rgb_four_tab, 1.0));
+	}
+
+	//Show edges
+	//imageStore(tex_unit1, coords, vec4(1.0, 0.0, 0.0, 1.0));
+}

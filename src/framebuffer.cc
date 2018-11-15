@@ -48,7 +48,7 @@ void FrameBuffer::attach_texture(uint32_t attachment){
 	std::shared_ptr<ITexture> texture = std::make_shared<ITexture>();
 	texture = std::make_shared<ITexture>();
 	texture->bind();
-	texture->buffer_data(m_width, m_height, static_cast<uint8_t*>(nullptr));
+	texture->buffer_data(m_width, m_height, static_cast<float*>(nullptr));
 	texture->set_filter(GL_LINEAR);
 
 	bind();
