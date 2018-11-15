@@ -3,11 +3,11 @@ layout(local_size_x = 16, local_size_y = 16) in;
 layout(binding = 0, rgba32f) readonly uniform image2D tex_unit0; //input
 layout(binding = 1, rgba32f) writeonly uniform image2D tex_unit1; //outupt
 
-const float luma_threshold = 1.0/4.0;
-const float luma_threshold_min = 1.0/8.0;
-const float mul_reduce = 1.0;
-const float min_reduce = 1.0;
-const float max_span = 5.0;
+const float luma_threshold = 1.0/1.0;
+const float luma_threshold_min = 1.0/2.0;
+const float mul_reduce = 5.5;
+const float min_reduce = 3.0;
+const float max_span = 0.3;
 
 
 float rgb2luma(vec3 rgb){
@@ -63,9 +63,9 @@ void main(void){
 	if (luma_four_tab < luma_min || luma_four_tab > luma_max){
 		imageStore(tex_unit1, coords, vec4(rgb_two_tab, 1.0));
 	} else{
-        	imageStore(tex_unit1, coords, vec4(rgb_four_tab, 1.0));
+		imageStore(tex_unit1, coords, vec4(rgb_four_tab, 1.0));
 	}
 
 	//Show edges
-	//imageStore(tex_unit1, coords, vec4(1.0, 0.0, 0.0, 1.0));
+//	imageStore(tex_unit1, coords, vec4(1.0, 0.0, 0.0, 1.0));
 }

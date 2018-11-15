@@ -4,7 +4,7 @@
 #include <random>
 #include <numeric>
 
-PostFXRenderer::PostFXRenderer() {
+PostFXRenderer::PostFXRenderer() : m_fxaa(true) {
 	m_pingpong_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_RENDERBUFFER);
 
 	m_pingpong_texture = std::make_shared<MTexture<float>>(Application::get_width(), Application::get_height(), static_cast<float*>(nullptr));
@@ -64,12 +64,15 @@ void PostFXRenderer::render(const std::shared_ptr<FrameBuffer>& input_fbo, Camer
 		tex1 = tex2;
 	}*/
 
-	fxaa(tex1, tex2);
+	if (m_fxaa){
+		fxaa(tex1, tex2);
+		tex1 = tex2;
+	}
 
 	m_plain_shader->bind();
 	m_plain_shader->upload_tex_unit(0);
 
-	tex2->bind(GL_TEXTURE0);
+	tex1->bind(GL_TEXTURE0);
 	
 	m_quad->bind();
 	DRAW_CALL(GLC(glDrawElements(GL_TRIANGLES, m_quad->get_indices_count(), GL_UNSIGNED_INT, nullptr)));
@@ -77,6 +80,10 @@ void PostFXRenderer::render(const std::shared_ptr<FrameBuffer>& input_fbo, Camer
 
 void PostFXRenderer::update(float time) {
 	m_time = time;
+}
+
+void PostFXRenderer::toggle_fxaa(){
+	m_fxaa = !m_fxaa;
 }
 
 void PostFXRenderer::underwater(const std::shared_ptr<ITexture>& input, const std::shared_ptr<ITexture>& output) {

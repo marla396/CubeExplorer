@@ -21,7 +21,7 @@ public:
 	void render(const std::shared_ptr<FrameBuffer>& input_fbo, Camera& camera);
 
 	void update(float time);
-
+	void toggle_fxaa();
 private:
 	void lowpass_x(const std::shared_ptr<FrameBuffer>& input_fbo, const std::shared_ptr<FrameBuffer>& output_fbo);
 	void underwater(const std::shared_ptr<ITexture>& input, const std::shared_ptr<ITexture>& output);
@@ -32,6 +32,7 @@ private:
 	glm::ivec3 get_work_groups() const;
 
 	float m_time;
+	bool m_fxaa;
 
 
 	std::unique_ptr<PlainShader> m_plain_shader;

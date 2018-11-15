@@ -208,6 +208,10 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 			m_world->unlock();
 		}
 
+		if (key == GLFW_KEY_F7){
+			m_postfx_renderer->toggle_fxaa();
+		}
+
 		if (key == GLFW_KEY_ESCAPE) {
 			Application::exit();
 			return;
