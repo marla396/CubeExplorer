@@ -23,6 +23,8 @@ public:
 	void set_parameter(GLenum name, int parameter) const;
 	void set_filter(int filter) const;
 	void set_wrap(int wrap) const;
+	void set_compare_mode(GLint compare_mode) const;
+	void set_compare_func(GLint compare_func) const;
 
 	virtual std::array<float, 8> get_texture_coords(size_t, size_t) const { return std::array<float, 8>(); }
 

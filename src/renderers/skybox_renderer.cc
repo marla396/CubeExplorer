@@ -18,8 +18,7 @@ void SkyboxRenderer::render(const std::vector<std::shared_ptr<SkyboxModel>>& mod
 	view_matrix[3][1] = 0.0f;
 	view_matrix[3][2] = 0.0f;
 
-	m_shader->upload_view_matrix(view_matrix);
-	m_shader->upload_projection_matrix(camera.get_projection_matrix());
+	m_shader->upload_view_projection_matrix(camera.get_projection_matrix() * view_matrix);
 
 	GLC(glDisable(GL_DEPTH_TEST));
 	GLC(glEnable(GL_CULL_FACE));

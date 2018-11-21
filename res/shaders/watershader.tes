@@ -9,8 +9,7 @@ out vec4 clip_space;
 out vec4 shadow_coords_low;
 out vec4 shadow_coords_high;
 
-uniform mat4 view_matrix;
-uniform mat4 projection_matrix;
+uniform mat4 view_projection_matrix;
 
 uniform sampler2D tex_unit0; //displacement map dy
 uniform sampler2D tex_unit1; //height map
@@ -60,7 +59,7 @@ void main(void){
 	world_position_frag.x += displacement_x * water_depth * displacement_factor;
 	world_position_frag.z += displacement_z * water_depth * displacement_factor;
 
-	clip_space = projection_matrix * view_matrix * vec4(world_position_frag, 1.0);
+	clip_space = view_projection_matrix * vec4(world_position_frag, 1.0);
 	shadow_coords_low = shadow_transform_low * vec4(world_position_frag, 1.0);
 	shadow_coords_high = shadow_transform_high * vec4(world_position_frag, 1.0);
 

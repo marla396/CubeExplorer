@@ -36,7 +36,7 @@ Game::Game(NVGcontext* nvg_ctx)
 
 	Application::register_resize_callback([this](size_t w, size_t h){
 		m_postfx_fbo->set_resolution(w, h);
-		m_shadow_fbo->set_resolution(4 * w, 4 * h);
+		m_shadow_fbo->set_resolution(8 * w, 8 * h);
 	});
 
 	texture_atlas = std::make_shared<TextureAtlas<32, 32>>("blocktextures.png");
@@ -116,24 +116,13 @@ void Game::on_update(float time, float dt) {
 
 	m_world->update(time, m_camera);
 
-	auto chunks = m_world->get_chunks();
-	auto entities = m_world->get_entities();
-	
-	std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>> render_delegates;
-
-	render_delegates.push_back(m_skybox_renderer->get_render_delegate({ skybox_model }, m_world->get_sun()));
-	render_delegates.push_back(m_chunk_renderer->get_render_delegate(*chunks, m_world->get_sun()));
-	render_delegates.push_back(m_entity_renderer->get_render_delegate(*entities, m_world->get_sun()));
-
-	m_water_renderer->set_terrain_renderers(render_delegates);
-	
-	m_water_renderer->update(m_camera, time);
-	m_postfx_renderer->update(time);
-
 	if (m_free_cam)
 		m_camera.process_keyboard(dt);
 	else
 		m_world->get_player()->update(m_world, m_camera, dt);
+
+	auto chunks = m_world->get_chunks();
+	auto entities = m_world->get_entities();
 	
 
 	if (Application::key_down(GLFW_KEY_PAGE_UP)) {
@@ -153,6 +142,17 @@ void Game::on_update(float time, float dt) {
 	if (Application::key_down(GLFW_KEY_SLASH)) {
 		Application::add_time_warp_factor(-0.1f);
 	}
+
+	std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>> render_delegates;
+
+	render_delegates.push_back(m_skybox_renderer->get_render_delegate({ skybox_model }, m_world->get_sun()));
+	render_delegates.push_back(m_chunk_renderer->get_render_delegate(*chunks, m_world->get_sun()));
+	render_delegates.push_back(m_entity_renderer->get_render_delegate(*entities, m_world->get_sun()));
+
+	m_water_renderer->set_terrain_renderers(render_delegates);
+
+	m_water_renderer->update(m_camera, time);
+	m_postfx_renderer->update(time);
 
 	m_world->unlock();
 }

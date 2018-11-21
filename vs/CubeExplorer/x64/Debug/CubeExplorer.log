@@ -1,3 +1,32 @@
 ﻿  application.cc
+  camera.cc
+  game.cc
+  main.cc
+  block_renderer.cc
 l:\cubeexplorer\cubeexplorer\src\application.cc(158): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  chunk_renderer.cc
+  entity_renderer.cc
+l:\cubeexplorer\cubeexplorer\src\renderers\block_renderer.cc(26): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  skybox_renderer.cc
+  water_renderer.cc
+l:\cubeexplorer\cubeexplorer\src\renderers\chunk_renderer.cc(47): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+l:\cubeexplorer\cubeexplorer\src\renderers\chunk_renderer.cc(78): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+l:\cubeexplorer\cubeexplorer\src\renderers\entity_renderer.cc(45): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+l:\cubeexplorer\cubeexplorer\src\renderers\entity_renderer.cc(75): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+l:\cubeexplorer\cubeexplorer\src\renderers\skybox_renderer.cc(30): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+l:\cubeexplorer\cubeexplorer\src\renderers\water_renderer.cc(176): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+l:\cubeexplorer\cubeexplorer\src\renderers\water_renderer.cc(218): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\water_renderer.cc)
+  l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(8): note: while compiling class template member function 'MTexture<float>::MTexture(::size_t,::size_t,const T *)'
+          with
+          [
+              T=float
+          ] (compiling source file ..\..\src\renderers\water_renderer.cc)
+  l:\visual studio\vc\tools\msvc\14.12.25827\include\memory(2585): note: see reference to function template instantiation 'MTexture<float>::MTexture(::size_t,::size_t,const T *)' being compiled
+          with
+          [
+              T=float
+          ] (compiling source file ..\..\src\renderers\water_renderer.cc)
+  l:\cubeexplorer\cubeexplorer\src\renderers\water_renderer.cc(251): note: see reference to class template instantiation 'MTexture<float>' being compiled
+l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\water_renderer.cc)
   CubeExplorer.vcxproj -> L:\CubeExplorer\CubeExplorer\vs\CubeExplorer\x64\Debug\CubeExplorer.exe

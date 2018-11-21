@@ -130,8 +130,7 @@ void WaterRenderer::render(const std::vector<std::shared_ptr<WaterModel>>& model
 	m_shader->upload_light_source(light);
 	m_shader->upload_quad_dimension(WATER_QUAD_DIMENSION);
 
-	m_shader->upload_view_matrix(camera.get_view_matrix());
-	m_shader->upload_projection_matrix(camera.get_projection_matrix());
+	m_shader->upload_view_projection_matrix(camera.get_view_projection_matrix());
 	m_shader->upload_shadow_transform_low(light->get_transform_matrix(camera, Light::LOW));
 	m_shader->upload_shadow_transform_high(light->get_transform_matrix(camera, Light::HIGH));
 
@@ -199,8 +198,7 @@ void WaterRenderer::render_depth(const std::vector<std::shared_ptr<WaterModel>>&
 	m_depth_shader->upload_water_height(WORLD_WATER_HEIGHT / static_cast<float>(WORLD_MAX_HEIGHT));
 	m_depth_shader->upload_quad_dimension(WATER_QUAD_DIMENSION);
 
-	m_depth_shader->upload_view_matrix(light->get_view_matrix(camera, quality));
-	m_depth_shader->upload_projection_matrix(light->get_projection_matrix(quality));
+	m_depth_shader->upload_view_projection_matrix(light->get_transform_matrix(camera, quality));
 
 	m_dy->bind(GL_TEXTURE0);
 	m_world->get_height_map_texture()->bind(GL_TEXTURE1);

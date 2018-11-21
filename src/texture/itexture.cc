@@ -48,6 +48,14 @@ void ITexture::set_wrap(int wrap) const {
 	GLC(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrap));
 }
 
+void ITexture::set_compare_mode(GLint compare_mode) const {
+	GLC(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, compare_mode));
+}
+
+void ITexture::set_compare_func(GLint compare_func) const {
+	GLC(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_FUNC, compare_func));
+}
+
 
 void ITexture::load_from_file(const std::string& path, ITexture::MemoryLayout layout){
     stbi_set_flip_vertically_on_load(1);

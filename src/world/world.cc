@@ -34,13 +34,15 @@ void World::update(float time, Camera& camera) {
 		m_all_blocks_initialized = initialized;
 	}
 
+	//time = -(50 * PI) / 4;
+
 	float r = WORLD_CENTER.x * 1.2f;
 
-	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time/50.0f + PI/2), WORLD_CENTER.y + r * std::sin(time/50.0f + PI/2), WORLD_CENTER.z + r * std::cos(time / 50.0f + PI/2) };
+	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time/5.0f + PI/2), WORLD_CENTER.y + r * std::sin(time/5.0f + PI/2), WORLD_CENTER.z + r * std::cos(time / 5.0f + PI/2) };
 
 	m_sun->set_position(new_pos);
 
-	m_sun->m_player_position = { camera.get_position().x + Light::LIGHT_HIGH_DISTANCE * std::cos(time / 50.0f + PI / 2), camera.get_position().y + Light::LIGHT_HIGH_DISTANCE * std::sin(time / 50.0f + PI / 2), camera.get_position().z + Light::LIGHT_HIGH_DISTANCE * std::cos(time / 50.0f + PI / 2) };
+	m_sun->m_player_position = { camera.get_position().x + Light::LIGHT_HIGH_DISTANCE * std::cos(time / 5.0f + PI / 2), camera.get_position().y + Light::LIGHT_HIGH_DISTANCE * std::sin(time / 5.0f + PI / 2), camera.get_position().z + Light::LIGHT_HIGH_DISTANCE * std::cos(time / 5.0f + PI / 2) };
 }
 
 void World::clear_world() {

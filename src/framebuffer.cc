@@ -62,15 +62,18 @@ void FrameBuffer::attach_texture(uint32_t attachment){
 void FrameBuffer::attach_depth_texture() {
 	bind();
 
-	if (m_attachments & FBO_DEPTH_TEXTURE) {
+
+	if (m_attachments & (FBO_DEPTH_TEXTURE | FBO_DEPTH_TEXTURE2)) {
 		GLC(glDrawBuffer(GL_NONE));
 		GLC(glReadBuffer(GL_NONE));
 	}
+	
 
 	std::shared_ptr<ITexture> texture = std::make_shared<ITexture>();
 	texture->bind();
 	GLC(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_width, m_height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
 	texture->set_filter(GL_LINEAR);
+	texture->set_wrap(GL_CLAMP_TO_EDGE);
 
 	GLC(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texture->get_id(), 0));
 

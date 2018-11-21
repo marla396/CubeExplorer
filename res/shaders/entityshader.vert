@@ -9,8 +9,7 @@ out vec4 shadow_coords_high;
 out vec4 world_position;
 
 uniform mat4 model_matrix;
-uniform mat4 view_matrix;
-uniform mat4 projection_matrix;
+uniform mat4 view_projection_matrix;
 uniform mat4 shadow_transform_low;
 uniform mat4 shadow_transform_high;
 
@@ -25,7 +24,7 @@ void main(void){
 	shadow_coords_low = shadow_transform_low * world_position;
 	shadow_coords_high = shadow_transform_high * world_position;
 
-	gl_Position = projection_matrix * view_matrix * world_position;
+	gl_Position = view_projection_matrix * world_position;
 	tex_coords_fs = tex_coords;
 	normal_fs = normal;
 }

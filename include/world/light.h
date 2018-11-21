@@ -16,14 +16,14 @@ public:
 
 	Light(const glm::vec3& position, const glm::vec3& color);
 
-	glm::vec3 get_position() const;
+	glm::vec3 get_position() const;	
 	void set_position(const glm::vec3& position);
 
 	glm::vec3 get_color() const;
 	void set_color(const glm::vec3& color);
 
 	glm::mat4 get_view_matrix(const Camera& camera, ShadowMapQuality quality) const;
-	glm::mat4 get_projection_matrix(ShadowMapQuality quality) const;
+	glm::mat4 get_projection_matrix(const Camera& camera, ShadowMapQuality quality) const;
 
 	glm::mat4 get_transform_matrix(const Camera& camera, ShadowMapQuality quality) const;
 	

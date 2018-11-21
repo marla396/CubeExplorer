@@ -13,8 +13,7 @@ void BlockRenderer::render(const std::vector<std::shared_ptr<BlockModel>>& model
 	m_shader->bind();
 
 	m_shader->upload_tex_unit(0);
-	m_shader->upload_view_matrix(camera.get_view_matrix());
-	m_shader->upload_projection_matrix(camera.get_projection_matrix());
+	m_shader->upload_view_projection_matrix(camera.get_view_projection_matrix());
 
 	GLC(glEnable(GL_DEPTH_TEST));
 	GLC(glEnable(GL_CULL_FACE));

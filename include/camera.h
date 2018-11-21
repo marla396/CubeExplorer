@@ -60,9 +60,11 @@ public:
 
 	glm::mat4 get_view_matrix();
 	glm::mat4 get_projection_matrix();
+	glm::mat4 get_view_projection_matrix();
 private:
 	glm::mat4 update_view_matrix();
 	glm::mat4 update_projection_matrix();
+	glm::mat4 update_view_projection_matrix();
 	std::array<FrustumPlane, 6> update_frustum_planes();
 
 	void notify_projection() const;
@@ -81,5 +83,6 @@ private:
 
 	std::unique_ptr<LazyObject<glm::mat4>> m_view_matrix;
 	std::unique_ptr<LazyObject<glm::mat4>> m_projection_matrix;
+	std::unique_ptr<LazyObject<glm::mat4>> m_view_projection_matrix;
 	std::unique_ptr<LazyObject<std::array<FrustumPlane, 6>>> m_frustum_planes;
 };

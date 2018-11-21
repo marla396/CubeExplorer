@@ -126,7 +126,7 @@ bool Shader::preprocess_shader(std::string& in, std::string& out) const{
 		}
 	}
 
-	out = "#define LIGHT_HIGH_DISTANCE " + std::to_string(Light::LIGHT_HIGH_DISTANCE) + "\n" + in;
+	out = "#define LIGHT_HIGH_DISTANCE " + std::to_string(Light::LIGHT_HIGH_DISTANCE / 2 - 5.0f) + "\n" + in;
 	out = "#define SHADOW_EPSILON_HIGH 0.001\n#define SHADOW_EPSILON_LOW 0.005\n" + out;
 
 	out = "#version " + GLSL_VERSION + "\n" + out;

@@ -17,6 +17,10 @@ Camera::Camera()
 		return update_projection_matrix();
 	});
 
+	m_view_projection_matrix = std::make_unique<LazyObject<glm::mat4>>([this]() {
+		return update_view_projection_matrix();
+	});
+
 	m_frustum_planes = std::make_unique<LazyObject<std::array<FrustumPlane, 6>>>([this]() {
 		return update_frustum_planes();
 	});
@@ -168,6 +172,10 @@ glm::mat4 Camera::get_projection_matrix() {
 	return m_projection_matrix->get();
 }
 
+glm::mat4 Camera::get_view_projection_matrix() {
+	return m_view_projection_matrix->get();
+}
+
 glm::mat4 Camera::update_view_matrix() {
 
 	glm::mat4 view_matrix = glm::identity<glm::mat4>();
@@ -181,6 +189,10 @@ glm::mat4 Camera::update_view_matrix() {
 
 glm::mat4 Camera::update_projection_matrix() {
 	return glm::perspective(m_fov, m_aspect, m_near, m_far);
+}
+
+glm::mat4 Camera::update_view_projection_matrix() {
+	return get_projection_matrix() * get_view_matrix();
 }
 
 std::array<FrustumPlane, 6> Camera::update_frustum_planes() {
@@ -236,10 +248,12 @@ std::array<FrustumPlane, 6> Camera::update_frustum_planes() {
 
 void Camera::notify_projection() const {
 	m_projection_matrix->notify();
+	m_view_projection_matrix->notify();
 	m_frustum_planes->notify();
 }
 
 void Camera::notify_view() const {
 	m_view_matrix->notify();
+	m_view_projection_matrix->notify();
 	m_frustum_planes->notify();
 }

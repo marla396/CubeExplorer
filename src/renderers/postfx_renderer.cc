@@ -11,7 +11,7 @@ PostFXRenderer::PostFXRenderer() : m_fxaa(true) {
 
 	Application::register_resize_callback([this](size_t w, size_t h) {
 		m_pingpong_fbo->set_resolution(w, h);
-		m_pingpong_texture = std::make_shared<MTexture<float>>(w, h, static_cast<float*>(nullptr));
+		m_pingpong_texture = std::make_shared<MTexture<float>>(2 * w, 2 * h, static_cast<float*>(nullptr));
 	});
 
 	m_quad = std::make_unique<Quad2DModel>(1.0f);
@@ -64,10 +64,10 @@ void PostFXRenderer::render(const std::shared_ptr<FrameBuffer>& input_fbo, Camer
 		tex1 = tex2;
 	}*/
 
-	if (m_fxaa){
+	/*if (m_fxaa){
 		fxaa(tex1, tex2);
 		tex1 = tex2;
-	}
+	}*/
 
 	m_plain_shader->bind();
 	m_plain_shader->upload_tex_unit(0);
