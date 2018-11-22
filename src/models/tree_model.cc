@@ -1,4 +1,7 @@
+#include <array>
+
 #include "models/tree_model.h"
+
 
 TreeModel::TreeModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position) 
 	: ChunkModel(texture, position){
@@ -6,23 +9,7 @@ TreeModel::TreeModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& 
 }
 
 void TreeModel::generate_geometry() {
-	generate_trunk(CHUNK_SIZE / 2, 0, CHUNK_SIZE / 2);
-	generate_trunk(CHUNK_SIZE / 2, 1, CHUNK_SIZE / 2);
-	generate_trunk(CHUNK_SIZE / 2, 2, CHUNK_SIZE / 2);
-
-	for (int x = -1; x <= 1; x++) {
-		for (int y = -1; y <= 1; y++) {
-			generate_trunk(CHUNK_SIZE / 2 + x, 3, CHUNK_SIZE / 2 + y);
-
-		}
-	}
-
-	for (int x = -3; x <= 3; x++) {
-		for (int y = -3; y <= 3; y++) {
-			generate_branch(CHUNK_SIZE / 2 + x, 4, CHUNK_SIZE / 2 + y);
-
-		}
-	}
+	
 }
 
 void TreeModel::generate_trunk(int x, int y, int z) {

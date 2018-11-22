@@ -31,7 +31,7 @@ Game::Game(NVGcontext* nvg_ctx)
 	m_camera.set_position({ 0.0f, WORLD_MAX_HEIGHT, 0.0f });
 	m_camera.set_yaw((3.0f * PI) / 4.0f);
 
-	m_postfx_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_RENDERBUFFER, 3);
+	m_postfx_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_DEPTH_TEXTURE | FBO_RENDERBUFFER);
 	m_shadow_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_DEPTH_TEXTURE | FBO_DEPTH_TEXTURE2);
 
 	Application::register_resize_callback([this](size_t w, size_t h){
@@ -72,6 +72,7 @@ void Game::on_render() {
 	GLC(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 
 	bind_fbo(m_postfx_fbo);
+	m_postfx_fbo->bind_depth_texture(0);
 
 	GLC(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
@@ -96,14 +97,14 @@ void Game::on_render() {
 
 	m_hud_textures.clear();
 
-	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_shadow_fbo->get_depth_texture(1));
+	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_postfx_fbo->get_depth_texture());
 	hud->set_position({ 0.6f, 0.6f });
 	hud->set_size({ 0.4f, 0.4f });
 	std::shared_ptr<HUDTexture> hud2 = std::make_shared<HUDTexture>(m_shadow_fbo->get_depth_texture(0));
 	hud2->set_position({ 0.6f, -0.6f });
 	hud2->set_size({ 0.4f, 0.4f });
 	m_hud_textures.insert(std::make_pair("ComputeShader", hud));
-	m_hud_textures.insert(std::make_pair("ComputeShadexr", hud2));
+	//m_hud_textures.insert(std::make_pair("ComputeShadexr", hud2));
 	
 	if (m_show_hud)
 		m_hud_renderer->render(m_hud_textures, m_camera, m_world->get_player());

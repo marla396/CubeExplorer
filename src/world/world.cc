@@ -35,10 +35,11 @@ void World::update(float time, Camera& camera) {
 	}
 
 	//time = -(50 * PI) / 4;
+	time = 0.0f;
 
 	float r = WORLD_CENTER.x * 1.2f;
 
-	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time/5.0f + PI/2), WORLD_CENTER.y + r * std::sin(time/5.0f + PI/2), WORLD_CENTER.z + r * std::cos(time / 5.0f + PI/2) };
+	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time/5.0f + PI/4), WORLD_CENTER.y + r * std::sin(time/5.0f + PI/4), WORLD_CENTER.z + r * std::cos(time / 5.0f + PI/4) };
 
 	m_sun->set_position(new_pos);
 

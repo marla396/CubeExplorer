@@ -107,7 +107,11 @@ void Shader::compile(const std::string& file) {
 
 bool Shader::preprocess_shader(std::string& in, std::string& out) const{
 
+#ifdef _WIN32
 	std::regex include("^#include [\"<](.+?)[>\"]$", std::regex_constants::ECMAScript);
+#else
+	std::regex include("#include [\"<](.+?)[>\"]");
+#endif
 
 	std::smatch match;
 	std::string tmp = in;

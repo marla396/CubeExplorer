@@ -39,22 +39,22 @@ PostFXRenderer::PostFXRenderer() : m_fxaa(true) {
 
 void PostFXRenderer::render(const std::shared_ptr<FrameBuffer>& input_fbo, Camera& camera) {
 
-	/*bind_fbo(m_pingpong_fbo);
+	bind_fbo(m_pingpong_fbo);
 
 	GLC(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
 	m_ssao_shader->bind();
 	m_ssao_shader->upload_resolution({ static_cast<float>(Application::get_width()), static_cast<float>(Application::get_height()) });
-	m_ssao_shader->upload_projection_matrix(camera.get_projection_matrix());
+	/*m_ssao_shader->upload_projection_matrix(camera.get_projection_matrix());*/
 
-	input_fbo->get_texture(1)->bind(GL_TEXTURE0);
-	input_fbo->get_texture(2)->bind(GL_TEXTURE1);
+	input_fbo->get_texture()->bind(GL_TEXTURE0);
+	input_fbo->get_depth_texture()->bind(GL_TEXTURE1);
 	m_ssao_noise->bind(GL_TEXTURE2);
 
 	m_quad->bind();
 	DRAW_CALL(GLC(glDrawElements(GL_TRIANGLES, m_quad->get_indices_count(), GL_UNSIGNED_INT, nullptr)));
 
-	unbind_fbo();*/
+	unbind_fbo();
 
 	auto tex1 = input_fbo->get_texture();
 	auto tex2 = m_pingpong_fbo->get_texture();
@@ -72,7 +72,7 @@ void PostFXRenderer::render(const std::shared_ptr<FrameBuffer>& input_fbo, Camer
 	m_plain_shader->bind();
 	m_plain_shader->upload_tex_unit(0);
 
-	tex1->bind(GL_TEXTURE0);
+	tex2->bind(GL_TEXTURE0);
 	
 	m_quad->bind();
 	DRAW_CALL(GLC(glDrawElements(GL_TRIANGLES, m_quad->get_indices_count(), GL_UNSIGNED_INT, nullptr)));
@@ -120,7 +120,7 @@ void PostFXRenderer::lowpass_x(const std::shared_ptr<FrameBuffer>& input_fbo, co
 void PostFXRenderer::fxaa(const std::shared_ptr<ITexture>& input, const std::shared_ptr<ITexture>& output){
 
 	m_fxaa_shader->bind();
-	m_fxaa_shader->upload_threshold(0.125f);
+	m_fxaa_shader->upload_threshold(1.0f/16.0f);
 
 	input->bind_image_texture(0, GL_READ_ONLY, GL_RGBA32F);
 	output->bind_image_texture(1, GL_WRITE_ONLY, GL_RGBA32F);
