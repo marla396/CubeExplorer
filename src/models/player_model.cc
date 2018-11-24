@@ -10,7 +10,7 @@ void PlayerModel::generate_geometry() {
 		{
 			ChunkModel::PLAYER_HEAD_SIDE,
 			ChunkModel::PLAYER_HEAD_SIDE,
-			ChunkModel::PLAYER_HEAD_BACK,
+			ChunkModel::PLAYER_HEAD_TOP,
 			ChunkModel::PLAYER_HEAD_FRONT,
 			ChunkModel::PLAYER_HEAD_BACK,
 			ChunkModel::PLAYER_HEAD_BOTTOM,
@@ -21,8 +21,8 @@ void PlayerModel::generate_geometry() {
 		{
 			ChunkModel::PLAYER_TORSO,
 			ChunkModel::PLAYER_TORSO,
-			ChunkModel::PLAYER_TORSO,
-			ChunkModel::PLAYER_TORSO,
+			ChunkModel::PLAYER_TORSO_TOP,
+			ChunkModel::PLAYER_TORSO_FRONT,
 			ChunkModel::PLAYER_TORSO,
 			ChunkModel::PLAYER_TORSO,
 		}
@@ -54,7 +54,7 @@ void PlayerModel::generate_geometry() {
 		{
 			ChunkModel::PLAYER_ARM,
 			ChunkModel::PLAYER_ARM,
-			ChunkModel::PLAYER_TORSO,
+			ChunkModel::PLAYER_TORSO_TOP,
 			ChunkModel::PLAYER_ARM,
 			ChunkModel::PLAYER_ARM,
 			ChunkModel::PLAYER_HEAD_BOTTOM,
@@ -65,7 +65,7 @@ void PlayerModel::generate_geometry() {
 		{
 			ChunkModel::PLAYER_ARM,
 			ChunkModel::PLAYER_ARM,
-			ChunkModel::PLAYER_TORSO,
+			ChunkModel::PLAYER_TORSO_TOP,
 			ChunkModel::PLAYER_ARM,
 			ChunkModel::PLAYER_ARM,
 			ChunkModel::PLAYER_HEAD_BOTTOM,

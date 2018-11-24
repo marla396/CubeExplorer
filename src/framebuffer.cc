@@ -90,7 +90,6 @@ void FrameBuffer::attach_renderbuffer() {
 	GLC(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_width, m_height));
 	GLC(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_rbo));
 
-
 	CHECK_FRAME_BUFFER();
 }
 

@@ -4,7 +4,7 @@
 #include <thread>
 
 WaterRenderer::WaterRenderer(const std::shared_ptr<World>& world)
-	: m_generator(std::random_device{}()), m_time(0.0f), m_L(4250), m_amplitude(1.0f), m_wind_speed(50.0f),
+	: m_generator(std::random_device{}()), m_time(0.0f), m_L(8250), m_amplitude(1.0f), m_wind_speed(50.0f),
 	m_wind_direction({ 1.0f, 1.0f }), m_capillar_supress_factor(0.1f), m_wave_strength(1.0f), m_below_water(false){
 
 	m_depth_shader = std::make_unique<WaterShader>(true);
@@ -363,7 +363,7 @@ void WaterRenderer::compute_fft() const {
 	m_normal_shader->bind();
 	m_normal_shader->upload_tex_units({ 0, 1 });
 	m_normal_shader->upload_N(WATER_FFT_DIMENSION);
-	m_normal_shader->upload_strength(5.0f);
+	m_normal_shader->upload_strength(0.1f);
 
 	m_normal_map->bind_image_texture(0, GL_WRITE_ONLY, GL_RGBA32F);
 

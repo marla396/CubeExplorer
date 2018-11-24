@@ -68,6 +68,7 @@ void ChunkRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>&
 	GLC(glEnable(GL_DEPTH_TEST));
 	GLC(glEnable(GL_CULL_FACE));
 	GLC(glFrontFace(GL_CCW));
+	GLC(glEnable(GL_BLEND));
 	GLC(glEnable(GL_CLIP_DISTANCE0));
 
 	for (const auto& model : models) {
@@ -79,6 +80,7 @@ void ChunkRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>&
 		}
 	}
 
+	GLC(glDisable(GL_BLEND));
 	GLC(glDisable(GL_CULL_FACE));
 	GLC(glDisable(GL_DEPTH_TEST));
 	GLC(glDisable(GL_CLIP_DISTANCE0));

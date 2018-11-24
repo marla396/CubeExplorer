@@ -1,8 +1,6 @@
 #include "ext/shadows.glsl"
 
-layout(location = 0) out vec4 color;
-layout(location = 1) out float depth;
-
+out vec4 color;
 in vec2 tex_coords_fs;
 in vec3 normal_fs;
 in vec4 shadow_coords_low;
@@ -26,8 +24,9 @@ void main(void){
 
 	float diffuse = max(dot(normal_fs, normalize(light_position - world_position.xyz)), 0.2);
 
+	color = texture(tex_unit0, tex_coords_fs);
+
 	color = vec4(light_color, 1.0) * texture(tex_unit0, tex_coords_fs);
 
 	color.xyz *= (diffuse * occlusion);
-	depth = gl_FragCoord.z;
 }

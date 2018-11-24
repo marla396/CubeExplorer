@@ -3,9 +3,9 @@ layout(local_size_x = 16, local_size_y = 16) in;
 layout(binding = 0, rgba32f) readonly uniform image2D tex_unit0; //input
 layout(binding = 1, rgba32f) writeonly uniform image2D tex_unit1; //outupt
 
-uniform float luma_threshold = 1/16.0;
+uniform float luma_threshold;
 
-const float mul_reduce = 1.0/8.0;
+const float mul_reduce = 1.0/16.0;
 const float min_reduce = 1.0/128.0;
 const float max_span = 8.0;
 

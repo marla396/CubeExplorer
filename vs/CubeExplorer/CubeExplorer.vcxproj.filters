@@ -227,9 +227,6 @@
     <ClCompile Include="..\..\src\framebuffer.cc">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\shaders\postfx\lowpass_x_shader.cc">
-      <Filter>src\shaders\postfx</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Windows\glad\src\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
@@ -268,6 +265,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\shaders\shadow_shader.cc">
       <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\postfx\ssao_merge_shader.cc">
+      <Filter>src\shaders\postfx</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\postfx\ssao_blur_shader.cc">
+      <Filter>src\shaders\postfx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -451,9 +454,6 @@
     <ClInclude Include="..\..\include\shaders\postfx\plain_shader.h">
       <Filter>include\shaders\postfx</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\shaders\postfx\lowpass_x_shader.h">
-      <Filter>include\shaders\postfx</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\models\water_model.h">
       <Filter>include\models</Filter>
     </ClInclude>
@@ -492,6 +492,12 @@
     </ClInclude>
     <ClInclude Include="..\..\include\shaders\shadow_shader.h">
       <Filter>include\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\postfx\ssao_merge_shader.h">
+      <Filter>include\shaders\postfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\shaders\postfx\ssao_blur_shader.h">
+      <Filter>include\shaders\postfx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -558,9 +564,6 @@
     <None Include="..\..\res\shaders\postfx\plainshader.frag">
       <Filter>res\shaders\postfx</Filter>
     </None>
-    <None Include="..\..\res\shaders\postfx\lowpassxshader.frag">
-      <Filter>res\shaders\postfx</Filter>
-    </None>
     <None Include="..\..\res\shaders\depthshader.frag">
       <Filter>res\shaders</Filter>
     </None>
@@ -584,6 +587,18 @@
     </None>
     <None Include="..\..\res\shaders\ext\shadows.glsl">
       <Filter>res\shaders\ext</Filter>
+    </None>
+    <None Include="..\..\res\shaders\postfx\fxaashader.comp">
+      <Filter>res\shaders\postfx</Filter>
+    </None>
+    <None Include="..\..\res\shaders\postfx\ssaomergeshader.comp">
+      <Filter>res\shaders\postfx</Filter>
+    </None>
+    <None Include="..\..\res\shaders\postfx\ssaoblurshader.comp">
+      <Filter>res\shaders\postfx</Filter>
+    </None>
+    <None Include="..\..\res\shaders\transparentdepthshader.frag">
+      <Filter>res\shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

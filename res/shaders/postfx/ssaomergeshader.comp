@@ -1,0 +1,19 @@
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0, rgba32f) readonly uniform image2D tex_unit0; //color
+layout(binding = 1, rgba32f) readonly uniform image2D tex_unit1; //ssao
+layout(binding = 2, rgba32f) writeonly uniform image2D tex_unit2; //output
+
+uniform vec2 factors;
+
+void main(void){
+	
+	ivec2 coords = ivec2(gl_GlobalInvocationID.xy);
+
+	vec4 ssao = imageLoad(tex_unit1, coords / 2);
+	vec4 color = imageLoad(tex_unit0, coords);
+
+	vec4 pixel = factors.x * color - factors.y * vec4(1.0 - ssao.xyz, 0.0);
+	
+	imageStore(tex_unit2, coords, pixel);
+}

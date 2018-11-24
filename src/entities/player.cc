@@ -93,6 +93,6 @@ void Player::update(const std::shared_ptr<World>& world, Camera& camera, float d
 
 	set_position(m_position);
 	m_model->set_rotation({ 0.0f, PI - camera.get_yaw(), 0.0f });
-	//camera.set_position(m_position + glm::vec3{ 0.0f, 3.0f, 0.0f }); 1st person
+	//camera.set_position(m_position + glm::vec3{ 0.0f, 3.0f, 0.0f }); //1st person
 	camera.set_position(m_position + glm::vec3{ 8.0f * std::sin(-camera.get_yaw()), 5.0f, 8.0f * std::cos(-camera.get_yaw()) });
 }

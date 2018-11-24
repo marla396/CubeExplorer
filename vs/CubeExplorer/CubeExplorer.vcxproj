@@ -102,8 +102,8 @@
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\Windows\glfw\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <StackReserveSize>536870912</StackReserveSize>
-      <StackCommitSize>536870912</StackCommitSize>
+      <StackReserveSize>2147483648</StackReserveSize>
+      <StackCommitSize>2147483648</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -144,8 +144,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\Windows\glfw\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <StackReserveSize>536870912</StackReserveSize>
-      <StackCommitSize>536870912</StackCommitSize>
+      <StackReserveSize>2147483648</StackReserveSize>
+      <StackCommitSize>2147483648</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -192,8 +192,9 @@
     <ClCompile Include="..\..\src\shaders\mvp_shader.cc" />
     <ClCompile Include="..\..\src\shaders\normal_shader.cc" />
     <ClCompile Include="..\..\src\shaders\postfx\fxaa_shader.cc" />
-    <ClCompile Include="..\..\src\shaders\postfx\lowpass_x_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\postfx\ssao_blur_shader.cc" />
     <ClCompile Include="..\..\src\shaders\postfx\plain_shader.cc" />
+    <ClCompile Include="..\..\src\shaders\postfx\ssao_merge_shader.cc" />
     <ClCompile Include="..\..\src\shaders\postfx\ssao_shader.cc" />
     <ClCompile Include="..\..\src\shaders\postfx\underwater_shader.cc" />
     <ClCompile Include="..\..\src\shaders\shader.cc" />
@@ -258,8 +259,9 @@
     <ClInclude Include="..\..\include\shaders\mvp_shader.h" />
     <ClInclude Include="..\..\include\shaders\normal_shader.h" />
     <ClInclude Include="..\..\include\shaders\postfx\fxaa_shader.h" />
-    <ClInclude Include="..\..\include\shaders\postfx\lowpass_x_shader.h" />
+    <ClInclude Include="..\..\include\shaders\postfx\ssao_blur_shader.h" />
     <ClInclude Include="..\..\include\shaders\postfx\plain_shader.h" />
+    <ClInclude Include="..\..\include\shaders\postfx\ssao_merge_shader.h" />
     <ClInclude Include="..\..\include\shaders\postfx\ssao_shader.h" />
     <ClInclude Include="..\..\include\shaders\postfx\underwater_shader.h" />
     <ClInclude Include="..\..\include\shaders\shader.h" />
@@ -304,14 +306,17 @@
     <None Include="..\..\res\shaders\inversionshader.comp" />
     <None Include="..\..\res\shaders\invertshader.comp" />
     <None Include="..\..\res\shaders\normalshader.comp" />
-    <None Include="..\..\res\shaders\postfx\lowpassxshader.frag" />
+    <None Include="..\..\res\shaders\postfx\fxaashader.comp" />
     <None Include="..\..\res\shaders\postfx\plainshader.frag" />
     <None Include="..\..\res\shaders\postfx\plainshader.vert" />
+    <None Include="..\..\res\shaders\postfx\ssaoblurshader.comp" />
+    <None Include="..\..\res\shaders\postfx\ssaomergeshader.comp" />
     <None Include="..\..\res\shaders\postfx\ssaoshader.frag" />
     <None Include="..\..\res\shaders\postfx\ssaoshader.vert" />
     <None Include="..\..\res\shaders\postfx\underwatershader.comp" />
     <None Include="..\..\res\shaders\skyboxshader.frag" />
     <None Include="..\..\res\shaders\skyboxshader.vert" />
+    <None Include="..\..\res\shaders\transparentdepthshader.frag" />
     <None Include="..\..\res\shaders\twiddleshader.comp" />
     <None Include="..\..\res\shaders\watershader.frag" />
     <None Include="..\..\res\shaders\watershader.tcs" />

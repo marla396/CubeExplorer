@@ -3,7 +3,7 @@
 
 #include <array>
 
-ChunkModel::ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position) {
+ChunkModel::ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position, bool late_init) : Model(late_init), m_initialized(!late_init) {
 	set_position(position);
 	set_texture(texture);
 }
@@ -237,6 +237,10 @@ void ChunkModel::generate_face_texture(ChunkModel::BlockTexture texture) {
 		texture_y = 2;
 		break;
 	case PLAYER_HEAD_BACK:
+		texture_x = 4;
+		texture_y = 2;
+		break;
+	case PLAYER_HEAD_TOP:
 		texture_x = 2;
 		texture_y = 2;
 		break;
@@ -251,6 +255,14 @@ void ChunkModel::generate_face_texture(ChunkModel::BlockTexture texture) {
 	case PLAYER_TORSO:
 		texture_x = 3;
 		texture_y = 1;
+		break;
+	case PLAYER_TORSO_FRONT:
+		texture_x = 3;
+		texture_y = 3;
+		break;
+	case PLAYER_TORSO_TOP:
+		texture_x = 0;
+		texture_y = 4;
 		break;
 	case PLAYER_LEGS:
 		texture_x = 1;

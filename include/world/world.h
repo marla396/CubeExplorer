@@ -36,6 +36,7 @@ public:
 
 	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> get_chunks() const;
 	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> get_entities() const;
+	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> get_trees() const;
 	std::shared_ptr<std::vector<std::shared_ptr<WaterModel>>> get_water_models() const;
 
 	std::shared_ptr<Light> get_sun() const;
@@ -43,6 +44,7 @@ public:
 private:
 	void generate_world_part(int n_workers, int id, const std::shared_ptr<ITexture>& chunk_texture);
 	void add_chunk(const std::shared_ptr<ChunkModel>& chunk);
+	void add_tree(const std::shared_ptr<ChunkModel>& tree);
 
 	std::shared_ptr<FFTNoiseGenerator> m_generator;
 	std::mutex m_generator_mutex;
@@ -51,6 +53,7 @@ private:
 	std::shared_ptr<FFTNoise<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>> m_height_map;
 
 	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> m_chunks;
+	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> m_trees;
 	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> m_entities;
 	std::shared_ptr<std::vector<std::shared_ptr<WaterModel>>> m_water_models;
 	std::shared_ptr<Player> m_player;

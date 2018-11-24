@@ -39,7 +39,7 @@ Game::Game(NVGcontext* nvg_ctx)
 		m_shadow_fbo->set_resolution(8 * w, 8 * h);
 	});
 
-	texture_atlas = std::make_shared<TextureAtlas<32, 32>>("blocktextures.png");
+	texture_atlas = std::make_shared<TextureAtlas<32, 32>>("christmastextures.png");
 	skybox_texture = std::make_shared<FTexture>("skybox.png");
 	 
 	auto seed = std::random_device{}();
@@ -82,12 +82,14 @@ void Game::on_render() {
 
 	auto chunks = m_world->get_chunks();
 	auto entities = m_world->get_entities();
+	auto trees = m_world->get_trees();
 	auto water_models = m_world->get_water_models();
 
 	m_skybox_renderer->render({ skybox_model }, m_camera, m_world->get_sun());
 	m_chunk_renderer->render(*chunks, m_camera, m_world->get_sun());
 	m_entity_renderer->render(*entities, m_camera, m_world->get_sun());
 	m_water_renderer->render(*water_models, m_camera, m_world->get_sun());
+	m_chunk_renderer->render(*trees, m_camera, m_world->get_sun());
 	
 	m_world->unlock();
 
@@ -124,7 +126,7 @@ void Game::on_update(float time, float dt) {
 
 	auto chunks = m_world->get_chunks();
 	auto entities = m_world->get_entities();
-	
+	auto trees = m_world->get_trees();
 
 	if (Application::key_down(GLFW_KEY_PAGE_UP)) {
 		auto strength = m_water_renderer->get_wave_strength();
@@ -149,6 +151,7 @@ void Game::on_update(float time, float dt) {
 	render_delegates.push_back(m_skybox_renderer->get_render_delegate({ skybox_model }, m_world->get_sun()));
 	render_delegates.push_back(m_chunk_renderer->get_render_delegate(*chunks, m_world->get_sun()));
 	render_delegates.push_back(m_entity_renderer->get_render_delegate(*entities, m_world->get_sun()));
+	render_delegates.push_back(m_chunk_renderer->get_render_delegate(*trees, m_world->get_sun()));
 
 	m_water_renderer->set_terrain_renderers(render_delegates);
 
@@ -217,6 +220,10 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 			m_postfx_renderer->toggle_fxaa();
 		}
 
+		if (key == GLFW_KEY_F8) {
+			m_postfx_renderer->toggle_ssao();
+		}
+
 		if (key == GLFW_KEY_ESCAPE) {
 			Application::exit();
 			return;
@@ -239,6 +246,7 @@ void Game::render_shadow_maps() {
 
 	m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun(), Light::LOW);
 	m_entity_renderer->render_depth(*m_world->get_entities(), m_camera, m_world->get_sun(), Light::LOW);
+	m_chunk_renderer->render_depth(*m_world->get_trees(), m_camera, m_world->get_sun(), Light::LOW);
 
 	m_shadow_fbo->bind_depth_texture(1);
 

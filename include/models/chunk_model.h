@@ -73,7 +73,7 @@ const std::array<float, 3> right_normal = {
 
 class ChunkModel : public Model {
 public:
-	ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position);
+	ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position, bool late_init = false);
 	ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position, const BlockMap& block_map);
 	~ChunkModel();
 
@@ -102,12 +102,17 @@ protected:
 		TREE_BRANCH,
 		PLAYER_HEAD_FRONT,
 		PLAYER_HEAD_BACK,
+		PLAYER_HEAD_TOP,
 		PLAYER_HEAD_SIDE,
 		PLAYER_HEAD_BOTTOM,
 		PLAYER_TORSO,
+		PLAYER_TORSO_FRONT,
+		PLAYER_TORSO_TOP,
 		PLAYER_LEGS,
 		PLAYER_LEGS_BOTTOM,
 		PLAYER_ARM,
+		SNOW,
+		SNOW_SOIL_BORDER,
 	};
 
 	void generate_face(int x, int y, int z, FaceDirection dir, const std::array<float, 12>& face_vertices, const glm::vec3& scale = { 1.0f, 1.0f, 1.0f }, const glm::vec3& offset = { 0.0f, 0.0f, 0.0f });

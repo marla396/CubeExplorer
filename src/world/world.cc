@@ -11,6 +11,7 @@ World::World(uint32_t seed) : m_all_blocks_initialized(false), m_seed(seed) {
 
 	m_chunks = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
 	m_entities = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
+	m_trees = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
 	m_water_models = std::make_shared<std::vector<std::shared_ptr<WaterModel>>>();
 }
 
@@ -31,7 +32,20 @@ void World::update(float time, Camera& camera) {
 			}
 		}
 
+		for (auto& tree : *m_trees) {
+			if (!tree->is_initialized()) {
+				tree->gpu_init();
+				initialized = false;
+			}
+		}
+
 		m_all_blocks_initialized = initialized;
+	}
+	else {
+		auto pos = camera.get_position();
+		std::sort(m_trees->begin(), m_trees->end(), [&pos](const auto& lhs, const auto& rhs) {
+			return glm::distance(pos, lhs->get_position()) > glm::distance(pos, rhs->get_position());
+		});
 	}
 
 	//time = -(50 * PI) / 4;
@@ -50,6 +64,7 @@ void World::clear_world() {
 	m_chunks->clear();
 	m_entities->clear();
 	m_water_models->clear();
+	m_trees->clear();
 }
 
 float World::height_at(float x, float z) const {
@@ -73,6 +88,9 @@ void World::generate_world(const std::shared_ptr<ITexture>& chunk_texture) {
 
 	delete[] buffer;
 
+
+
+	
 
 	for (int x = 0; x < WATER_QUAD_DIMENSION; x++) {
 		for (int y = 0; y < WATER_QUAD_DIMENSION; y++) {
@@ -129,6 +147,10 @@ std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> World::get_entities() 
 	return m_entities;
 }
 
+std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> World::get_trees() const {
+	return m_trees;
+}
+
 std::shared_ptr<std::vector<std::shared_ptr<WaterModel>>> World::get_water_models() const {
 	return m_water_models;
 }
@@ -146,6 +168,22 @@ void World::generate_world_part(int n_workers, int id, const std::shared_ptr<ITe
 	int x_start = id * (WORLD_SIZE / n_workers);
 	int x_end = (id + 1) * (WORLD_SIZE / n_workers);
 
+	std::default_random_engine rng;
+	std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+	std::vector<glm::vec3> tree_positions;
+
+	auto make_tree = [&rng, &dist, &tree_positions](const glm::vec3& pos) { 
+
+		for (const auto& t : tree_positions) {
+			if (glm::distance(pos, t) < 10.0f)
+				return false;
+		}
+
+		return dist(rng) > 0.99; 
+	};
+
+	glm::vec3 previous_tree = glm::vec3{ std::numeric_limits<float>::max() };
+
 	for (int x = x_start; x < x_end; x++) {
 		for (int z = 0; z < WORLD_SIZE; z++) {
 			for (int y = 0; y < WORLD_MAX_HEIGHT / CHUNK_SIZE; y++) {
@@ -158,38 +196,38 @@ void World::generate_world_part(int n_workers, int id, const std::shared_ptr<ITe
 
 				int n_blocks = 0;
 
+
+
 				for (int cx = 0; cx < CHUNK_SIZE; cx++) {
 					for (int cz = 0; cz < CHUNK_SIZE; cz++) {
 						int height = static_cast<int>(m_height_map->noise[x * CHUNK_SIZE + cx][z * CHUNK_SIZE + cz]) - y * CHUNK_SIZE;
 
-						//if (height < 2 * CHUNK_SIZE) {
 							for (int cy = 0; cy < height && cy < CHUNK_SIZE; cy++) {
+								bool is_top = height == cy + 1 + y * CHUNK_SIZE;
+
 								block_map.insert_block(cx, cy, cz, height < CHUNK_SIZE + 1);
-								if (height != CHUNK_SIZE + 1)
-									n_blocks++;
+
+								if (is_top && y * CHUNK_SIZE + cy > WORLD_BEACH_HEIGHT) {
+									glm::vec3 pos = chunk_pos + glm::vec3{ cx, cy + 1, cz };
+									if (make_tree(pos)) {
+										previous_tree = pos;
+										auto tree = std::make_shared<TreeModel>(chunk_texture, pos);
+										add_tree(tree);
+										tree_positions.push_back(pos);
+									}
+								}
+
 							}
-						//}
 					}
 				}
 
-
-				//if (n_blocks < CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE) { //is not solid?	
-					std::shared_ptr<ChunkModel> chunk = std::make_shared<ChunkModel>(chunk_texture, chunk_pos, block_map);
+					auto chunk = std::make_shared<ChunkModel>(chunk_texture, chunk_pos, block_map);
 					add_chunk(chunk);
 
-				//}
+					
 			}
 		}
 	}
-
-	/*if (id == 0) {
-		for (int x = 0; x < CHUNK_SIZE * WORLD_SIZE; x += CHUNK_SIZE) {
-			for (int z = 0; z < CHUNK_SIZE * WORLD_SIZE; z += CHUNK_SIZE) {
-				std::shared_ptr<TreeModel> tree = std::make_shared<TreeModel>(chunk_texture, glm::vec3{ x, WORLD_MAX_HEIGHT, z });
-				add_chunk(tree);
-			}
-		}
-	}*/
 }
 
 void World::add_chunk(const std::shared_ptr<ChunkModel>& chunk) {
@@ -200,4 +238,13 @@ void World::add_chunk(const std::shared_ptr<ChunkModel>& chunk) {
 
 	m_generator_mutex.unlock();
 
+}
+
+void World::add_tree(const std::shared_ptr<ChunkModel>& tree) {
+	m_generator_mutex.lock();
+
+	m_trees->push_back(tree);
+	m_all_blocks_initialized = false;
+
+	m_generator_mutex.unlock();
 }

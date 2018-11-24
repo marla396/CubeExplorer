@@ -4,7 +4,6 @@
 #include <vector>
 #include "gl.h"
 
-
 const std::string GLSL_VERSION = "450 core";
 
 class Shader {
@@ -47,6 +46,7 @@ private:
 	bool preprocess_shader(std::string& in, std::string& out) const;
 	uint32_t get_shader_type(const std::string& file) const;
 	bool compiler_error(const std::string& file, uint32_t s) const;
+	void check_linker_errors(const std::initializer_list<std::string>& files) const;
 
 
 	uint32_t m_program;

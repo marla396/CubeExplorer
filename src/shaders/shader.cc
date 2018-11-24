@@ -15,6 +15,8 @@ Shader::Shader(const std::initializer_list<std::string>& files) {
 	}
 
 	GLC(glLinkProgram(m_program));
+
+	check_linker_errors(files);
 }	
 
 Shader::~Shader() {
@@ -23,7 +25,7 @@ Shader::~Shader() {
 
 void Shader::bind() const{
 	GLC(glUseProgram(m_program));
-}
+}	
 
 void Shader::unbind() const{
 	GLC(glUseProgram(0));
@@ -187,4 +189,24 @@ bool Shader::compiler_error(const std::string& file, uint32_t s) const{
 	}
 
 	return false;
+}
+
+void Shader::check_linker_errors(const std::initializer_list<std::string>& files) const {
+	int link_ok = 0;
+	GLC(glGetProgramiv(m_program, GL_LINK_STATUS, &link_ok));
+
+	if (!link_ok) {
+		int max_length = 0;
+		GLC(glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &max_length));
+
+		std::string error_msg(max_length, '\0');
+
+		GLC(glGetProgramInfoLog(m_program, max_length, &max_length, error_msg.data()));
+
+		LOG("Error linking shader ");
+		for (const auto& f : files) {
+			LOG(f << " ");
+		}
+		LOG("\n" << error_msg << std::endl);
+	}
 }

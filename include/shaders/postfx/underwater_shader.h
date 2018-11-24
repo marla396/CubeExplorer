@@ -3,7 +3,7 @@
 #include "../shader.h"
 #include "../multi_tex_shader.h"
 
-class UnderwaterShader : public Shader, public MultiTexShader<3> {
+class UnderwaterShader : public Shader, public MultiTexShader<2> {
 public:
 	UnderwaterShader();
 
@@ -11,11 +11,11 @@ public:
 	UnderwaterShader(const UnderwaterShader&&) = delete;
 
 	void upload_time(float time) const;
-	void upload_screen_dimensions(const glm::vec2& dim) const;
+	void upload_depth(float depth) const;
 
 private:
 	void get_uniform_locations() override;
 
 	int m_time_location;
-	int m_screen_dimensions_location;
+	int m_depth_location;
 };

@@ -57,7 +57,7 @@ void main(void){
 	vec3 reflected_light = reflect(normalize(world_position_frag - light_position), normal);
 	float specular = max(dot(reflected_light, view_vector), 0.0);
 	float diffuse = 0.0;//max(dot(normalize(world_position_frag - light_position), normal), 0.0);
-	specular = pow(specular, 30.0);
+	specular = pow(specular, 10.0);
 	vec4 shade = vec4((diffuse * 0.9 + 1.3 * specular) * light_color, 0.0);
 
 	if (refractive_factor > 0.0)

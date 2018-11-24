@@ -2,46 +2,22 @@ layout (local_size_x = 16, local_size_y = 16) in;
 
 layout (binding = 0, rgba32f) readonly uniform image2D tex_unit0; //input
 layout (binding = 1, rgba32f) writeonly uniform image2D tex_unit1; //output
-layout (binding = 2, rgba32f) readonly uniform image2D tex_unit2; //bubbles
-
 
 uniform float time;
-uniform vec2 screen_dimensions;
-uniform vec2 bubbles_dimensions;
+uniform float depth;
 
-void main(void)
-{
+void main(void){
+
 	ivec2 coords = ivec2(gl_GlobalInvocationID.xy);
 
-	vec2 bubbles_coords = coords;
 
-	ivec2 bubbles_size = imageSize(tex_unit2);
+	vec4 pixel = imageLoad(tex_unit0, coords);
 
-	bubbles_coords.x /= screen_dimensions.x;
-	bubbles_coords.y /= screen_dimensions.y;
+	coords.x += int(sin((coords.y / 100.0) + time * 5.0) * 2.0);
+	coords.y += int(sin((coords.x / 100.0) + time * 5.0) * 2.0);
 
-	bubbles_coords.x *= bubbles_size.x;
-	bubbles_coords.y *= bubbles_size.y;
-
-	bubbles_coords.y -= ((screen_dimensions.y/3) * time);
-
-	ivec2 i_bubbles = ivec2(bubbles_coords.x, bubbles_coords.y);
-
-	i_bubbles.y %= bubbles_size.y;
-
-
-	ivec2 distorted_coords = coords;
-	distorted_coords.x += int(20 * sin(time) * sin(coords.x) * sin(coords.y)); //distortion
-	distorted_coords.x = clamp(distorted_coords.x, 0, int(screen_dimensions.x));
-
-
-	vec4 pixel = imageLoad(tex_unit0, distorted_coords);
-	vec4 under_water = imageLoad(tex_unit2, i_bubbles);
-
-
-	vec4 color = pixel + under_water * 0.1;
-	color.b += 0.5;
-	color.a = 1.0;
-
-	imageStore(tex_unit1, coords, color);
+	pixel.b += 0.4;
+	pixel /= max(1.0, (depth*depth) * 0.005);
+	
+	imageStore(tex_unit1, coords, pixel);
 }

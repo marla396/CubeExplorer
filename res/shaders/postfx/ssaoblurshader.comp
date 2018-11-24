@@ -1,0 +1,20 @@
+layout(local_size_x = 16, local_size_y = 16) in;
+
+layout(binding = 0, rgba32f) readonly uniform image2D tex_unit0; //input
+layout(binding = 1, rgba32f) writeonly uniform image2D tex_unit1; //output
+
+
+void main(void){
+	ivec2 coords = ivec2(gl_GlobalInvocationID.xy);
+	float result = 0.0;
+
+	for (int x = -2; x < 2; x++){
+		for (int y = -2; y < 2; y++){
+			result += imageLoad(tex_unit0, coords + ivec2(x, y)).r;
+		}
+	}
+
+	result /= (4.0 * 4.0);
+
+	imageStore(tex_unit1, coords, vec4(result, result, result, 0.0));
+}
