@@ -36,7 +36,7 @@ Game::Game(NVGcontext* nvg_ctx)
 
 	Application::register_resize_callback([this](size_t w, size_t h){
 		m_postfx_fbo->set_resolution(w, h);
-		m_shadow_fbo->set_resolution(8 * w, 8 * h);
+		m_shadow_fbo->set_resolution(4 * w, 4 * h);
 	});
 
 	texture_atlas = std::make_shared<TextureAtlas<32, 32>>("christmastextures.png");
@@ -117,7 +117,7 @@ void Game::on_update(float time, float dt) {
 	
 	m_world->lock();
 
-	m_world->update(time, m_camera);
+	m_world->update(time, dt, m_camera);
 
 	if (m_free_cam)
 		m_camera.process_keyboard(dt);
@@ -130,12 +130,12 @@ void Game::on_update(float time, float dt) {
 
 	if (Application::key_down(GLFW_KEY_PAGE_UP)) {
 		auto strength = m_water_renderer->get_wave_strength();
-		m_water_renderer->set_wave_strength(strength + 0.05f);
+		m_water_renderer->set_wave_strength(strength + 0.01f);
 	}
 
 	if (Application::key_down(GLFW_KEY_PAGE_DOWN)) {
 		auto strength = m_water_renderer->get_wave_strength();
-		m_water_renderer->set_wave_strength(strength - 0.05f);
+		m_water_renderer->set_wave_strength(strength - 0.01f);
 	}
 
 	if (Application::key_down(GLFW_KEY_MINUS)) {

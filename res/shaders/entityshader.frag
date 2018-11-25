@@ -21,7 +21,7 @@ void main(void){
 	vec3 ndc_low = project_shadow_coords(shadow_coords_low);
 	vec3 ndc_high = project_shadow_coords(shadow_coords_high);
 
-	float occlusion = get_shadow_occlusion(tex_unit1, ndc_low, tex_unit2, ndc_high, length(world_position.xyz - camera_position), 0.007);
+	float occlusion = 1.0;//get_shadow_occlusion(tex_unit1, ndc_low, tex_unit2, ndc_high, length(world_position.xyz - camera_position), 0.007);
 
 	float diffuse = max(dot(normal_fs, normalize(light_position - world_position.xyz)), 0.2);
 

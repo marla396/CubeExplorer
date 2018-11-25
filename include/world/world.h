@@ -6,6 +6,7 @@
 #include <thread>
 #include <mutex>
 
+
 #include <glm/glm.hpp>
 #include "camera.h"
 #include "misc/fft_noise_generator.h"
@@ -15,14 +16,15 @@
 #include "models/chunk_model.h"
 #include "models/water_model.h"
 #include "entities/player.h"
+#include "entities/sheep.h"
 #include "light.h"
 
-class World {
+class World : public std::enable_shared_from_this<World> {
 public:
 	World(uint32_t seed);
 	~World();
 
-	void update(float time, Camera& camera);
+	void update(float time, float dt, Camera& camera);
 	void generate_world(const std::shared_ptr<ITexture>& chunk_texture);
 	void lock();
 	void unlock();
@@ -45,6 +47,7 @@ private:
 	void generate_world_part(int n_workers, int id, const std::shared_ptr<ITexture>& chunk_texture);
 	void add_chunk(const std::shared_ptr<ChunkModel>& chunk);
 	void add_tree(const std::shared_ptr<ChunkModel>& tree);
+	glm::vec3 get_sheep_spawn_point() const;
 
 	std::shared_ptr<FFTNoiseGenerator> m_generator;
 	std::mutex m_generator_mutex;
@@ -57,6 +60,7 @@ private:
 	std::shared_ptr<std::vector<std::shared_ptr<ChunkModel>>> m_entities;
 	std::shared_ptr<std::vector<std::shared_ptr<WaterModel>>> m_water_models;
 	std::shared_ptr<Player> m_player;
+	std::vector<std::shared_ptr<Sheep>> m_sheep;
 	std::shared_ptr<Light> m_sun;
 	std::shared_ptr<MTexture<uint8_t>> m_height_map_texture;
 

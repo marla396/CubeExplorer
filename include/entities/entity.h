@@ -15,14 +15,13 @@ public:
 	virtual void update(const std::shared_ptr<World>& world, Camera& camera, float dt) = 0;
 
 	void set_position(const glm::vec3& pos);
+	glm::vec3 get_position() const;
 
 	glm::vec3 get_velocity() const;
 
 	std::shared_ptr<Model> get_model() const;
 
 protected:
-	void update_position(float dt);
-
 	std::shared_ptr<Model> m_model;
 
 	glm::vec3 m_position;

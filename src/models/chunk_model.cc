@@ -195,6 +195,20 @@ void ChunkModel::generate_face(int x, int y, int z, FaceDirection dir, const std
 		m_indices.push_back(start + 2);
 		m_indices.push_back(start + 3);
 		break;
+	case POSITIVE_NEGATIVE:
+		m_indices.push_back(start + 0);
+		m_indices.push_back(start + 1);
+		m_indices.push_back(start + 2);
+		m_indices.push_back(start + 1);
+		m_indices.push_back(start + 3);
+		m_indices.push_back(start + 2);
+		m_indices.push_back(start + 0);
+		m_indices.push_back(start + 2);
+		m_indices.push_back(start + 1);
+		m_indices.push_back(start + 1);
+		m_indices.push_back(start + 2);
+		m_indices.push_back(start + 3);
+		break;
 	}
 }
 
@@ -275,6 +289,26 @@ void ChunkModel::generate_face_texture(ChunkModel::BlockTexture texture) {
 	case PLAYER_ARM:
 		texture_x = 2;
 		texture_y = 3;
+		break;
+	case PLANT_1:
+		texture_x = 1;
+		texture_y = 4;
+		break;
+	case PLANT_2:
+		texture_x = 2;
+		texture_y = 4;
+		break;
+	case SHEEP_HEAD:
+		texture_x = 3;
+		texture_y = 4;
+		break;
+	case SHEEP_HEAD_FRONT:
+		texture_x = 4;
+		texture_y = 3;
+		break;
+	case SHEEP_BODY:
+		texture_x = 4;
+		texture_y = 4;
 		break;
 	default:
 		LOG("Invalid texture enum" << std::endl);

@@ -34,7 +34,7 @@ void main(void){
 
 	vec3 normal = texture(tex_unit4, tex_coords_frag).rbg;
 
-	vec2 dudv = texture(tex_unit7, tex_coords_frag).rg * 0.05 * displacement_factor;
+	vec2 dudv = texture(tex_unit7, tex_coords_frag).rg * displacement_factor;
 
 	normal = normalize(normal);
 

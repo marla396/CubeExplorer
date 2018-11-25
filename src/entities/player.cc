@@ -44,36 +44,6 @@ void Player::update(const std::shared_ptr<World>& world, Camera& camera, float d
 		m_velocity.y += PHYS_JUMP_VELOCITY;
 	}
 
-	/*if (std::abs(m_velocity.x) > 0.1f) {
-
-		if (m_velocity.x > 0) {
-			m_velocity.x -= PHYS_FRICTION * dt;
-		}
-		else {
-			m_velocity.x += PHYS_FRICTION * dt;
-		}
-	}
-	else {
-		m_velocity.x = 0.0f;
-	}
-
-	m_velocity.x = std::max(-PHYS_MAX_VELOCITY_XZ, std::min(PHYS_MAX_VELOCITY_XZ, m_velocity.x));
-
-	if (std::abs(m_velocity.z) > 0.1f) {
-
-		if (m_velocity.z > 0) {
-			m_velocity.z -= PHYS_FRICTION * dt;
-		}
-		else {
-			m_velocity.z += PHYS_FRICTION * dt;
-		}
-	}
-	else {
-		m_velocity.z = 0.0f;
-	}
-
-	m_velocity.z = std::max(-PHYS_MAX_VELOCITY_XZ, std::min(PHYS_MAX_VELOCITY_XZ, m_velocity.z));*/
-
 
 	m_velocity.y += PHYS_GRAVITY * dt;
 	m_velocity.y = std::max(-PHYS_MAX_VELOCITY_Y, std::min(m_velocity.y, PHYS_MAX_VELOCITY_Y));
@@ -94,5 +64,5 @@ void Player::update(const std::shared_ptr<World>& world, Camera& camera, float d
 	set_position(m_position);
 	m_model->set_rotation({ 0.0f, PI - camera.get_yaw(), 0.0f });
 	//camera.set_position(m_position + glm::vec3{ 0.0f, 3.0f, 0.0f }); //1st person
-	camera.set_position(m_position + glm::vec3{ 8.0f * std::sin(-camera.get_yaw()), 5.0f, 8.0f * std::cos(-camera.get_yaw()) });
+	camera.set_position(m_position + glm::vec3{ 8.0f * std::sin(-camera.get_yaw()), 5.0f, 8.0f * std::cos(-camera.get_yaw()) }); //3rd person
 }

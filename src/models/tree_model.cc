@@ -2,20 +2,28 @@
 
 #include "models/tree_model.h"
 
-TreeModel::TreeModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position) 
+TreeModel::TreeModel(TreeType type, const std::shared_ptr<ITexture>& texture, const glm::vec3& position)
 	: ChunkModel(texture, position, true), m_rng(std::random_device{}()), m_dist(0.0, 1.0){
-	generate_geometry();
+	generate_geometry(type);
 }
 
-void TreeModel::generate_geometry() {
-	generate_trunk(CHUNK_SIZE / 2, 0, CHUNK_SIZE / 2);
-	generate_trunk(CHUNK_SIZE / 2, 1, CHUNK_SIZE / 2);
-	generate_trunk(CHUNK_SIZE / 2, 2, CHUNK_SIZE / 2);
-	generate_trunk(CHUNK_SIZE / 2, 3, CHUNK_SIZE / 2);
+void TreeModel::generate_geometry(TreeType type) {
+	if (type == TREE) {
+		generate_trunk(CHUNK_SIZE / 2, 0, CHUNK_SIZE / 2);
+		generate_trunk(CHUNK_SIZE / 2, 1, CHUNK_SIZE / 2);
+		generate_trunk(CHUNK_SIZE / 2, 2, CHUNK_SIZE / 2);
+		generate_trunk(CHUNK_SIZE / 2, 3, CHUNK_SIZE / 2);
 
-	m_position -= glm::vec3 {CHUNK_SIZE / 2.0f, 0.0f, CHUNK_SIZE / 2.0f};
-	
-	generate_trunk_blocks(CHUNK_SIZE / 2, 4, CHUNK_SIZE / 2, 1);
+		m_position -= glm::vec3{ CHUNK_SIZE / 2.0f, 0.0f, CHUNK_SIZE / 2.0f };
+
+		generate_trunk_blocks(CHUNK_SIZE / 2, 4, CHUNK_SIZE / 2, 1);
+	}
+	else if (type == PLANT_1 || type == PLANT_2) {
+
+		m_position -= glm::vec3{ CHUNK_SIZE / 2.0f, 0.0f, CHUNK_SIZE / 2.0f };
+
+		generate_plant(CHUNK_SIZE / 2, 0, CHUNK_SIZE / 2, type);
+	}
 }
 
 void TreeModel::generate_trunk_blocks(int x, int y, int z, int depth) {
@@ -72,11 +80,6 @@ void TreeModel::generate_trunk_blocks(int x, int y, int z, int depth) {
 	}
 }
 
-void TreeModel::generate_branch_blocks(int x, int y, int z, int depth) {
-
-	
-}
-
 void TreeModel::generate_trunk(int x, int y, int z) {
 	
 	generate_face(x, y, z, POSITIVE, right_face);
@@ -128,4 +131,26 @@ void TreeModel::generate_branch(int x, int y, int z) {
 	generate_face(x, y, z, NEGATIVE, bottom_face);
 	generate_face_texture(ChunkModel::TREE_BRANCH);
 	generate_normals(bottom_normal);
+}
+
+void TreeModel::generate_plant(int x, int y, int z, TreeType type) {
+
+	ChunkModel::BlockTexture tex;
+
+	switch (type) {
+	case PLANT_1:
+		tex = ChunkModel::PLANT_1;
+		break;
+	case PLANT_2:
+		tex = ChunkModel::PLANT_2;
+		break;
+	}
+
+	generate_face(x, y, z, POSITIVE_NEGATIVE, front_face, { 1.0f, 1.0f, 1.0f }, { 0.0f, -0.1f, -0.5f });
+	generate_face_texture(tex);
+	generate_normals(front_normal);
+
+	generate_face(x, y, z, POSITIVE_NEGATIVE, left_face, { 1.0f, 1.0f, 1.0f }, { 0.5f, -0.1f, 0.0f });
+	generate_face_texture(tex);
+	generate_normals(left_normal);
 }

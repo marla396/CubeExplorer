@@ -272,6 +272,15 @@
     <ClCompile Include="..\..\src\shaders\postfx\ssao_blur_shader.cc">
       <Filter>src\shaders\postfx</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\models\sheep_model.cc">
+      <Filter>src\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\entities\sheep.cc">
+      <Filter>src\entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\misc\astar.cc">
+      <Filter>src\misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\application.h">
@@ -498,6 +507,15 @@
     </ClInclude>
     <ClInclude Include="..\..\include\shaders\postfx\ssao_blur_shader.h">
       <Filter>include\shaders\postfx</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\models\sheep_model.h">
+      <Filter>include\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\entities\sheep.h">
+      <Filter>include\entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\misc\astar.h">
+      <Filter>include\misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

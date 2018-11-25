@@ -4,7 +4,7 @@
 #include <thread>
 
 WaterRenderer::WaterRenderer(const std::shared_ptr<World>& world)
-	: m_generator(std::random_device{}()), m_time(0.0f), m_L(8250), m_amplitude(1.0f), m_wind_speed(50.0f),
+	: m_generator(std::random_device{}()), m_time(0.0f), m_L(12250), m_amplitude(1.0f), m_wind_speed(50.0f),
 	m_wind_direction({ 1.0f, 1.0f }), m_capillar_supress_factor(0.1f), m_wave_strength(1.0f), m_below_water(false){
 
 	m_depth_shader = std::make_unique<WaterShader>(true);

@@ -8,7 +8,9 @@ PostFXRenderer::PostFXRenderer() : m_fxaa(true), m_ssao(true) {
 	m_ssao_fbo = std::make_shared<FrameBuffer>(Application::get_width()/2, Application::get_height()/2, FBO_TEXTURE | FBO_RENDERBUFFER);
 
 	m_ssao_pingpong_texture = std::make_shared<MTexture<float>>(Application::get_width() / 2, Application::get_height() / 2, static_cast<float*>(nullptr));
+	m_ssao_pingpong_texture->set_wrap(GL_REPEAT);
 	m_pingpong_texture = std::make_shared<MTexture<float>>(Application::get_width(), Application::get_height(), static_cast<float*>(nullptr));
+	
 
 	Application::register_resize_callback([this](size_t w, size_t h) {
 		m_ssao_fbo->set_resolution(w / 2, h / 2);
@@ -45,6 +47,7 @@ void PostFXRenderer::render(const std::shared_ptr<FrameBuffer>& input_fbo, Camer
 
 		m_ssao_shader->bind();
 		m_ssao_shader->upload_projection_depth({ camera.get_near(), camera.get_far() });
+
 
 		input_fbo->get_depth_texture()->bind(GL_TEXTURE0);
 
@@ -152,7 +155,7 @@ void PostFXRenderer::init_ssao() {
 	std::vector<glm::vec3> ssao_kernel;
 
 
-	const float KERNEL_SIZE = 32.0f;
+	const float KERNEL_SIZE = 128.0f;
 
 	for (float i = 0.0f; i < KERNEL_SIZE; i += 1.0f) {
 		glm::vec3 sample = { dist(rng) * 2.0f - 1.0f, dist(rng) * 2.0f - 1.0f, dist(rng) };

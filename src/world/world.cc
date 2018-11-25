@@ -19,7 +19,7 @@ World::~World() {
 
 }
 
-void World::update(float time, Camera& camera) {
+void World::update(float time, float dt, Camera& camera) {
 
 	if (!m_all_blocks_initialized) {
 
@@ -47,6 +47,11 @@ void World::update(float time, Camera& camera) {
 			return glm::distance(pos, lhs->get_position()) > glm::distance(pos, rhs->get_position());
 		});
 	}
+
+	for (auto& s : m_sheep) {
+		s->update(shared_from_this(), camera, dt);
+	}
+
 
 	//time = -(50 * PI) / 4;
 	time = 0.0f;
@@ -89,9 +94,6 @@ void World::generate_world(const std::shared_ptr<ITexture>& chunk_texture) {
 	delete[] buffer;
 
 
-
-	
-
 	for (int x = 0; x < WATER_QUAD_DIMENSION; x++) {
 		for (int y = 0; y < WATER_QUAD_DIMENSION; y++) {
 			glm::vec2 pos = {
@@ -108,7 +110,15 @@ void World::generate_world(const std::shared_ptr<ITexture>& chunk_texture) {
 		}
 	}
 
+	/*for (int i = 0; i < WORLD_SHEEP_AMOUNT; i++) {
+		auto sheep = std::make_shared<Sheep>(chunk_texture);
+		sheep->set_position(get_sheep_spawn_point());
+		m_sheep.push_back(sheep);
+		m_entities->push_back(std::dynamic_pointer_cast<SheepModel>(sheep->get_model()));
+	}*/
+
 	m_entities->push_back(std::dynamic_pointer_cast<PlayerModel>(m_player->get_model()));
+	
 
 	int n_workers = WORLD_GENERATOR_THREADS;
 	for (int i = 0; i < n_workers; i++) {
@@ -182,6 +192,19 @@ void World::generate_world_part(int n_workers, int id, const std::shared_ptr<ITe
 		return dist(rng) > 0.99; 
 	};
 
+	auto make_plant = [&rng, &dist]() {
+		return dist(rng) > 0.99;
+	};
+
+	auto get_plant_type = [&rng, &dist]() {
+		auto r = dist(rng);
+
+		if (r > 0.5)
+			return TreeModel::PLANT_1;
+		else
+			return TreeModel::PLANT_2;
+	};
+
 	glm::vec3 previous_tree = glm::vec3{ std::numeric_limits<float>::max() };
 
 	for (int x = x_start; x < x_end; x++) {
@@ -211,9 +234,13 @@ void World::generate_world_part(int n_workers, int id, const std::shared_ptr<ITe
 									glm::vec3 pos = chunk_pos + glm::vec3{ cx, cy + 1, cz };
 									if (make_tree(pos)) {
 										previous_tree = pos;
-										auto tree = std::make_shared<TreeModel>(chunk_texture, pos);
+										auto tree = std::make_shared<TreeModel>(TreeModel::TREE, chunk_texture, pos);
 										add_tree(tree);
 										tree_positions.push_back(pos);
+									}
+									else if (make_plant()) {
+										auto plant = std::make_shared<TreeModel>(get_plant_type(), chunk_texture, pos);
+										add_tree(plant);
 									}
 								}
 
@@ -247,4 +274,32 @@ void World::add_tree(const std::shared_ptr<ChunkModel>& tree) {
 	m_all_blocks_initialized = false;
 
 	m_generator_mutex.unlock();
+}
+
+glm::vec3 World::get_sheep_spawn_point() const {
+	std::default_random_engine rng(m_seed);
+	std::uniform_int_distribution<int> dist(0, CHUNK_SIZE * WORLD_SIZE - 1);
+
+	auto has_sheep = [this](const glm::vec3& p) {
+		for (const auto& s : m_sheep) {
+			if (p == s->get_position()) {
+				return true;
+			}
+		}
+		return false;
+	};
+
+	for (;;) {
+		int x = dist(rng);
+		int z = dist(rng);
+		float y = m_height_map->noise[x][z];
+
+		if (y > WORLD_WATER_HEIGHT) {
+			glm::vec3 pos = { static_cast<float>(x), std::floor(y), static_cast<float>(z) };
+
+			if (!has_sheep(pos)) {
+				return pos;
+			}
+		}
+	}
 }
