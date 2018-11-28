@@ -22,12 +22,15 @@ ChunkShader::~ChunkShader() {
 void ChunkShader::get_uniform_locations() {
 	MVPShader::get_uniform_locations();
 	ClipShader::get_uniform_locations();
-	MultiTexShader::get_uniform_locations();
 
 
 	if (!m_depth) {
 		LightShader::get_uniform_locations();
 		ShadowShader::get_uniform_locations();
+		MultiTexShader::get_uniform_locations();
+	}
+	else {
+		MultiTexShader::get_uniform_locations(1);
 	}
 }
 

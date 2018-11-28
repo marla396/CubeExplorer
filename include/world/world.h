@@ -31,6 +31,7 @@ public:
 	void set_seed(uint32_t seed);
 
 	void clear_world();
+	bool is_initialized() const;
 	float height_at(float x, float z) const;
 
 	std::shared_ptr<FFTNoise<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>> get_height_map() const;

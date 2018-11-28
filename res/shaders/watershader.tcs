@@ -9,6 +9,10 @@ out vec2 tex_coords_tes[];
 uniform vec3 camera_position;
 
 float get_tess_level(float a, float b){
+
+	float avg = (a + b) / 2.0;
+
+	//return gl_MaxTessGenLevel * exp(-0.01*avg);
 	return gl_MaxTessGenLevel;
 }
 

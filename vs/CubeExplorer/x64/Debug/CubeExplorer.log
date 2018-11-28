@@ -10,7 +10,7 @@ l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(9): warning C4267: '=': 
           [
               T=uint8_t
           ]
-  l:\cubeexplorer\cubeexplorer\src\world\world.cc(86): note: see reference to class template instantiation 'MTexture<uint8_t>' being compiled
+  l:\cubeexplorer\cubeexplorer\src\world\world.cc(90): note: see reference to class template instantiation 'MTexture<uint8_t>' being compiled
 l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   CubeExplorer.vcxproj -> L:\CubeExplorer\CubeExplorer\vs\CubeExplorer\x64\Debug\CubeExplorer.exe

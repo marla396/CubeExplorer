@@ -7,7 +7,6 @@
 #include "gl.h"
 #include "models/block_model.h"
 #include "renderers/block_renderer.h"
-#include "texture/texture_atlas.h"
 #include "texture/ftexture.h"
 #include "texture/mtexture.h"
 #include "models/chunk_model.h"
@@ -15,12 +14,11 @@
 #include "misc/fft_noise_generator.h"
 #include "renderers/renderer.h"
 
-std::shared_ptr<TextureAtlas<32, 32>> texture_atlas;
 std::shared_ptr<SkyboxModel> skybox_model;
 std::shared_ptr<FTexture> skybox_texture;
 
 Game::Game(NVGcontext* nvg_ctx) 
-	: m_nvg_ctx(nvg_ctx), m_show_height_map(false), m_free_cam(true), m_show_hud(true), m_hidden_cursor(true){
+	: m_nvg_ctx(nvg_ctx), m_show_pip(false), m_pip(0), m_free_cam(true), m_show_hud(true), m_hidden_cursor(true){
 	m_camera.set_position({ 0.0f, 0.0f, 0.0f });
 
 	m_camera.set_near(0.01f);
@@ -39,7 +37,7 @@ Game::Game(NVGcontext* nvg_ctx)
 		m_shadow_fbo->set_resolution(4 * w, 4 * h);
 	});
 
-	texture_atlas = std::make_shared<TextureAtlas<32, 32>>("christmastextures.png");
+	m_texture_atlas = std::make_shared<TextureAtlas<32, 32>>("christmastextures.png");
 	skybox_texture = std::make_shared<FTexture>("skybox.png");
 	 
 	auto seed = std::random_device{}();
@@ -47,16 +45,10 @@ Game::Game(NVGcontext* nvg_ctx)
 
 	std::cout << "Seed: " << seed << std::endl;
 
-	m_world = std::make_shared<World>(seed);
-	m_world->generate_world(texture_atlas);
-
-	m_height_map_texture = std::make_shared<HUDTexture>(m_world->get_height_map_texture());
-	m_height_map_texture->set_position({ 0.6f, 0.6f });
-	m_height_map_texture->set_size({ 0.4f, 0.4f });
-
-
-
 	skybox_model = std::make_shared<SkyboxModel>(skybox_texture);
+
+	m_world = std::make_shared<World>(seed);
+	m_world->generate_world(m_texture_atlas);
 
 	m_chunk_renderer = std::make_unique<ChunkRenderer>();
 	m_entity_renderer = std::make_unique<EntityRenderer>();
@@ -64,7 +56,6 @@ Game::Game(NVGcontext* nvg_ctx)
 	m_hud_renderer = std::make_unique<HUDRenderer>(m_nvg_ctx);
 	m_skybox_renderer = std::make_unique<SkyboxRenderer>();
 	m_postfx_renderer = std::make_unique<PostFXRenderer>();
-
 }
 
 void Game::on_render() {
@@ -99,14 +90,9 @@ void Game::on_render() {
 
 	m_hud_textures.clear();
 
-	std::shared_ptr<HUDTexture> hud = std::make_shared<HUDTexture>(m_postfx_fbo->get_depth_texture());
-	hud->set_position({ 0.6f, 0.6f });
-	hud->set_size({ 0.4f, 0.4f });
-	std::shared_ptr<HUDTexture> hud2 = std::make_shared<HUDTexture>(m_shadow_fbo->get_depth_texture(0));
-	hud2->set_position({ 0.6f, -0.6f });
-	hud2->set_size({ 0.4f, 0.4f });
-	m_hud_textures.insert(std::make_pair("ComputeShader", hud));
-	//m_hud_textures.insert(std::make_pair("ComputeShadexr", hud2));
+	if (m_show_pip) {
+		insert_display_pip();
+	}
 	
 	if (m_show_hud)
 		m_hud_renderer->render(m_hud_textures, m_camera, m_world->get_player());
@@ -180,13 +166,8 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 
 	if (action == GLFW_PRESS) {
 		if (key == GLFW_KEY_F1) {
-			m_show_height_map = !m_show_height_map;
 
-			if (m_show_height_map) {
-				m_hud_textures.insert(std::make_pair("height_map_hud", m_height_map_texture));
-			} else {
-				m_hud_textures.erase("height_map_hud");
-			}
+			m_show_pip = !m_show_pip;
 		}
 
 		if (key == GLFW_KEY_F2) {
@@ -208,11 +189,11 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 			m_camera.toggle_lock_frustum();
 		}
 
-		if (key == GLFW_KEY_F6) {
+		if (key == GLFW_KEY_F6 && m_world->is_initialized()) {
 			m_world->lock();
 			m_world->clear_world();
 			m_world->set_seed(std::random_device{}());
-			m_world->generate_world(texture_atlas);
+			m_world->generate_world(m_texture_atlas);
 			m_world->unlock();
 		}
 
@@ -231,6 +212,14 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 
 		if (key == GLFW_KEY_F11) {
 			m_water_renderer->toggle_wireframe();
+		}
+
+		for (int k = GLFW_KEY_1; k <= GLFW_KEY_9; k++) {
+			if (mods & GLFW_MOD_CONTROL && key == k) {
+				m_pip = (512 << (k - GLFW_KEY_1));
+			} else if (key == k) {
+				m_pip = (1 << (k - GLFW_KEY_1));
+			}
 		}
 	}
 }
@@ -254,6 +243,8 @@ void Game::render_shadow_maps() {
 
 	m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun(), Light::HIGH);
 	m_entity_renderer->render_depth(*m_world->get_entities(), m_camera, m_world->get_sun(), Light::HIGH);
+	m_chunk_renderer->render_depth(*m_world->get_trees(), m_camera, m_world->get_sun(), Light::LOW);
+
 
 	GLC(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE));
 
@@ -266,4 +257,51 @@ void Game::render_shadow_maps() {
 	m_chunk_renderer->set_shadow_map_high(m_shadow_fbo->get_depth_texture(1));
 	m_entity_renderer->set_shadow_map_high(m_shadow_fbo->get_depth_texture(1));
 	m_water_renderer->set_shadow_map_high(m_shadow_fbo->get_depth_texture(1));
+}
+
+void Game::insert_display_pip() {
+	std::shared_ptr<HUDTexture> hud = nullptr;
+
+	switch (m_pip) {
+	case HEIGHT_MAP:
+		hud = std::make_shared<HUDTexture>(m_world->get_height_map_texture());
+		break;
+	case H0K:
+		hud = std::make_shared<HUDTexture>(m_water_renderer->get_tilde_h0k());
+		break;
+	case H0KMINUS:
+		hud = std::make_shared<HUDTexture>(m_water_renderer->get_tilde_h0minusk());
+		break;
+	case TWIDDLE:
+		hud = std::make_shared<HUDTexture>(m_water_renderer->get_twiddle_factors());
+		break;
+	case HKT:
+		hud = std::make_shared<HUDTexture>(m_water_renderer->get_tilde_hkt_dy());
+		break;
+	case DY:
+		hud = std::make_shared<HUDTexture>(m_water_renderer->get_dy());
+		break;
+	case NORMAL:
+		hud = std::make_shared<HUDTexture>(m_water_renderer->get_normal_map());
+		break;
+	case DUDV:
+		hud = std::make_shared<HUDTexture>(m_water_renderer->get_dudv_map());
+		break;
+	case REFRACTION:
+		hud = std::make_shared<HUDTexture>(m_water_renderer->get_refraction());
+		break;
+	case REFLECTION:
+		hud = std::make_shared<HUDTexture>(m_water_renderer->get_reflection());
+		break;
+	case SHADOW_MAP:
+		hud = std::make_shared<HUDTexture>(m_shadow_fbo->get_depth_texture(0));
+		break;
+	}
+
+	if (hud != nullptr) {
+		hud->set_position({ 0.0f, 0.0f });
+		hud->set_size({ 1.0f, 1.0f });
+		m_hud_textures.insert(std::make_pair("pip", hud));
+	}
+
 }

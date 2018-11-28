@@ -618,5 +618,8 @@
     <None Include="..\..\res\shaders\transparentdepthshader.frag">
       <Filter>res\shaders</Filter>
     </None>
+    <None Include="..\..\res\shaders\ext\complex.glsl">
+      <Filter>res\shaders\ext</Filter>
+    </None>
   </ItemGroup>
 </Project>

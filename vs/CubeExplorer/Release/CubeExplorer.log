@@ -1,8 +1,100 @@
-﻿  light.cc
-  Generating code
-l:\cubeexplorer\cubeexplorer\src\world\light.cc(49): warning C4715: 'Light::get_view_matrix': not all control paths return a value
-  10 of 5453 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  CubeExplorer.vcxproj -> L:\CubeExplorer\CubeExplorer\vs\CubeExplorer\Release\CubeExplorer.exe
+﻿  application.cc
+  game.cc
+  main.cc
+  chunk_renderer.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<3>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\renderers\chunk_renderer.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/chunk_shader.h(9): note: see reference to class template instantiation 'MultiTexShader<3>' being compiled (compiling source file ..\..\src\renderers\chunk_renderer.cc)
+  entity_renderer.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<3>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\application.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/chunk_shader.h(9): note: see reference to class template instantiation 'MultiTexShader<3>' being compiled (compiling source file ..\..\src\application.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<10>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\application.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/water_shader.h(9): note: see reference to class template instantiation 'MultiTexShader<10>' being compiled (compiling source file ..\..\src\application.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<6>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\application.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/h0k_shader.h(5): note: see reference to class template instantiation 'MultiTexShader<6>' being compiled (compiling source file ..\..\src\application.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<5>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\application.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/hkt_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<5>' being compiled (compiling source file ..\..\src\application.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<3>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\game.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/chunk_shader.h(9): note: see reference to class template instantiation 'MultiTexShader<3>' being compiled (compiling source file ..\..\src\game.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<2>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\application.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/normal_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<2>' being compiled (compiling source file ..\..\src\application.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<3>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\main.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/chunk_shader.h(9): note: see reference to class template instantiation 'MultiTexShader<3>' being compiled (compiling source file ..\..\src\main.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<10>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\game.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/water_shader.h(9): note: see reference to class template instantiation 'MultiTexShader<10>' being compiled (compiling source file ..\..\src\game.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<6>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\game.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/h0k_shader.h(5): note: see reference to class template instantiation 'MultiTexShader<6>' being compiled (compiling source file ..\..\src\game.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<5>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\game.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/hkt_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<5>' being compiled (compiling source file ..\..\src\game.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<2>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\game.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/normal_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<2>' being compiled (compiling source file ..\..\src\game.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<10>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\main.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/water_shader.h(9): note: see reference to class template instantiation 'MultiTexShader<10>' being compiled (compiling source file ..\..\src\main.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<6>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\main.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/h0k_shader.h(5): note: see reference to class template instantiation 'MultiTexShader<6>' being compiled (compiling source file ..\..\src\main.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<5>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\main.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/hkt_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<5>' being compiled (compiling source file ..\..\src\main.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<2>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\main.cc)
+  l:\cubeexplorer\cubeexplorer\include\shaders/normal_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<2>' being compiled (compiling source file ..\..\src\main.cc)
+  postfx_renderer.cc
+  water_renderer.cc
+  butterfly_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<3>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\renderers\entity_renderer.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/entity_shader.h(10): note: see reference to class template instantiation 'MultiTexShader<3>' being compiled (compiling source file ..\..\src\renderers\entity_renderer.cc)
+  chunk_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<3>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\butterfly_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/butterfly_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<3>' being compiled (compiling source file ..\..\src\shaders\butterfly_shader.cc)
+  dudv_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<10>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\renderers\water_renderer.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/water_shader.h(9): note: see reference to class template instantiation 'MultiTexShader<10>' being compiled (compiling source file ..\..\src\renderers\water_renderer.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<6>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\renderers\water_renderer.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/h0k_shader.h(5): note: see reference to class template instantiation 'MultiTexShader<6>' being compiled (compiling source file ..\..\src\renderers\water_renderer.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<5>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\renderers\water_renderer.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/hkt_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<5>' being compiled (compiling source file ..\..\src\renderers\water_renderer.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<3>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\renderers\water_renderer.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/butterfly_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<3>' being compiled (compiling source file ..\..\src\renderers\water_renderer.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<2>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\renderers\water_renderer.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/normal_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<2>' being compiled (compiling source file ..\..\src\renderers\water_renderer.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\postfx\../multi_tex_shader.h(22): error C3668: 'MultiTexShader<2>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\renderers\postfx_renderer.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/postfx/ssao_shader.h(8): note: see reference to class template instantiation 'MultiTexShader<2>' being compiled (compiling source file ..\..\src\renderers\postfx_renderer.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\postfx\../multi_tex_shader.h(22): error C3668: 'MultiTexShader<3>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\renderers\postfx_renderer.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/postfx/ssao_merge_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<3>' being compiled (compiling source file ..\..\src\renderers\postfx_renderer.cc)
+  entity_shader.cc
+  h0k_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<3>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\chunk_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/chunk_shader.h(9): note: see reference to class template instantiation 'MultiTexShader<3>' being compiled (compiling source file ..\..\src\shaders\chunk_shader.cc)
+  hkt_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<2>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\dudv_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/dudv_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<2>' being compiled (compiling source file ..\..\src\shaders\dudv_shader.cc)
+  inversion_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<3>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\entity_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/entity_shader.h(10): note: see reference to class template instantiation 'MultiTexShader<3>' being compiled (compiling source file ..\..\src\shaders\entity_shader.cc)
+  invert_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<6>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\h0k_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/h0k_shader.h(5): note: see reference to class template instantiation 'MultiTexShader<6>' being compiled (compiling source file ..\..\src\shaders\h0k_shader.cc)
+  normal_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<5>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\hkt_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/hkt_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<5>' being compiled (compiling source file ..\..\src\shaders\hkt_shader.cc)
+  fxaa_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<3>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\inversion_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/inversion_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<3>' being compiled (compiling source file ..\..\src\shaders\inversion_shader.cc)
+  ssao_blur_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<2>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\invert_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/invert_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<2>' being compiled (compiling source file ..\..\src\shaders\invert_shader.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<2>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\normal_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/normal_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<2>' being compiled (compiling source file ..\..\src\shaders\normal_shader.cc)
+  ssao_merge_shader.cc
+  ssao_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\postfx\../multi_tex_shader.h(22): error C3668: 'MultiTexShader<2>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\postfx\fxaa_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/postfx/fxaa_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<2>' being compiled (compiling source file ..\..\src\shaders\postfx\fxaa_shader.cc)
+  underwater_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\postfx\../multi_tex_shader.h(22): error C3668: 'MultiTexShader<2>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\postfx\ssao_blur_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/postfx/ssao_blur_shader.h(8): note: see reference to class template instantiation 'MultiTexShader<2>' being compiled (compiling source file ..\..\src\shaders\postfx\ssao_blur_shader.cc)
+  water_shader.cc
+l:\cubeexplorer\cubeexplorer\include\shaders\postfx\../multi_tex_shader.h(22): error C3668: 'MultiTexShader<2>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\postfx\ssao_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/postfx/ssao_shader.h(8): note: see reference to class template instantiation 'MultiTexShader<2>' being compiled (compiling source file ..\..\src\shaders\postfx\ssao_shader.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\postfx\../multi_tex_shader.h(22): error C3668: 'MultiTexShader<3>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\postfx\ssao_merge_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/postfx/ssao_merge_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<3>' being compiled (compiling source file ..\..\src\shaders\postfx\ssao_merge_shader.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\postfx\../multi_tex_shader.h(22): error C3668: 'MultiTexShader<2>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\postfx\underwater_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/postfx/underwater_shader.h(6): note: see reference to class template instantiation 'MultiTexShader<2>' being compiled (compiling source file ..\..\src\shaders\postfx\underwater_shader.cc)
+l:\cubeexplorer\cubeexplorer\include\shaders\multi_tex_shader.h(22): error C3668: 'MultiTexShader<10>::get_uniform_locations': method with override specifier 'override' did not override any base class methods (compiling source file ..\..\src\shaders\water_shader.cc)
+  L:\CubeExplorer\CubeExplorer\include\shaders/water_shader.h(9): note: see reference to class template instantiation 'MultiTexShader<10>' being compiled (compiling source file ..\..\src\shaders\water_shader.cc)

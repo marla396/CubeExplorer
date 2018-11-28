@@ -33,19 +33,6 @@ void HUDRenderer::render(const std::map<std::string, std::shared_ptr<HUDTexture>
 
     begin_frame();
 
-	if (m_height_map) {
-
-		//TODO: write pos indication on height map
-
-		/*nvgBeginPath(m_nvg_ctx);
-
-
-		set_fill_color(1.0f, 0.0f, 0.0f, 1.0f);
-		nvgRect(m_nvg_ctx, 100.0f, 100.0f, 10.0f, 10.0f);
-		nvgFill(m_nvg_ctx);*/
-
-	}
-
 	set_fill_color(1.0f, 1.0f, 1.0f, 1.0f);
     set_font_size(18.0f);
     set_text_align(NVG_ALIGN_LEFT);
@@ -60,7 +47,7 @@ void HUDRenderer::render(const std::map<std::string, std::shared_ptr<HUDTexture>
 
 	static float previous_fps = 0.0f;
 
-	float fps = 0.95f * previous_fps + 0.05f * Application::get_fps();
+	float fps = 0.9f * previous_fps + 0.1f * Application::get_fps();
 	if (fps != INFINITY)
 		previous_fps = fps;
     log << "FPS: " << fps;

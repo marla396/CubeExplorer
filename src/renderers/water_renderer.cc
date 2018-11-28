@@ -4,8 +4,8 @@
 #include <thread>
 
 WaterRenderer::WaterRenderer(const std::shared_ptr<World>& world)
-	: m_generator(std::random_device{}()), m_time(0.0f), m_L(12250), m_amplitude(1.0f), m_wind_speed(50.0f),
-	m_wind_direction({ 1.0f, 1.0f }), m_capillar_supress_factor(0.1f), m_wave_strength(1.0f), m_below_water(false){
+	: m_generator(std::random_device{}()), m_time(0.0f), m_L(30250), m_amplitude(0.3f), m_wind_speed(50.0f),
+	m_wind_direction({ 1.0f, 1.0f }), m_capillar_supress_factor(0.1f), m_wave_strength(0.3f), m_below_water(false){
 
 	m_depth_shader = std::make_unique<WaterShader>(true);
 
@@ -363,7 +363,7 @@ void WaterRenderer::compute_fft() const {
 	m_normal_shader->bind();
 	m_normal_shader->upload_tex_units({ 0, 1 });
 	m_normal_shader->upload_N(WATER_FFT_DIMENSION);
-	m_normal_shader->upload_strength(0.1f);
+	m_normal_shader->upload_strength(0.2f);
 
 	m_normal_map->bind_image_texture(0, GL_WRITE_ONLY, GL_RGBA32F);
 
@@ -375,7 +375,7 @@ void WaterRenderer::compute_fft() const {
 	m_dudv_shader->bind();
 	m_dudv_shader->upload_tex_units({ 0, 1 });
 	
-	m_normal_map->bind_image_texture(0, GL_READ_ONLY, GL_RGBA32F);
+	m_normal_map->bind(GL_TEXTURE0);
 	m_dudv_map->bind_image_texture(1, GL_WRITE_ONLY, GL_RGBA32F);
 
 	GLC(glDispatchCompute(WATER_FFT_DIMENSION / 16, WATER_FFT_DIMENSION / 16, 1));
@@ -470,22 +470,26 @@ void WaterRenderer::initialize_h0k() {
 	m_tilde_h0k = std::make_shared<TexStorage>();
 	m_tilde_h0minusk = std::make_shared<TexStorage>();
 
-	{
-		auto noise1 = m_generator.generate<float, 4 * WATER_FFT_DIMENSION, 4 * WATER_FFT_DIMENSION>(0.0f, 1.0f);
-		m_noise_r0 = std::make_unique<MTexture<float>>(WATER_FFT_DIMENSION, WATER_FFT_DIMENSION, reinterpret_cast<float*>(noise1.data()));
-	}
-	{
-		auto noise2 = m_generator.generate<float, 4 * WATER_FFT_DIMENSION, 4 * WATER_FFT_DIMENSION>(0.0f, 1.0f);
-		m_noise_i0 = std::make_unique<MTexture<float>>(WATER_FFT_DIMENSION, WATER_FFT_DIMENSION, reinterpret_cast<float*>(noise2.data()));
-	}
-	{
-		auto noise3 = m_generator.generate<float, 4 * WATER_FFT_DIMENSION, 4 * WATER_FFT_DIMENSION>(0.0f, 1.0f);
-		m_noise_r1 = std::make_unique<MTexture<float>>(WATER_FFT_DIMENSION, WATER_FFT_DIMENSION, reinterpret_cast<float*>(noise3.data()));
-	}
-	{
-		auto noise4 = m_generator.generate<float, 4 * WATER_FFT_DIMENSION, 4 * WATER_FFT_DIMENSION>(0.0f, 1.0f);
-		m_noise_i1 = std::make_unique<MTexture<float>>(WATER_FFT_DIMENSION, WATER_FFT_DIMENSION, reinterpret_cast<float*>(noise4.data()));
-	}
+	std::mt19937 rng{ std::random_device{}() };
+	std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+	float* noise = new float[4 * WATER_FFT_DIMENSION * WATER_FFT_DIMENSION];
+
+	auto gen_noise = [&dist, &rng](float* noise) {
+		std::generate(noise, noise + 4 * WATER_FFT_DIMENSION * WATER_FFT_DIMENSION, [&dist, &rng]() {
+			return dist(rng);
+		});
+	};
+
+	gen_noise(noise);
+	m_noise_r0 = std::make_unique<MTexture<float>>(WATER_FFT_DIMENSION, WATER_FFT_DIMENSION, noise);
+	gen_noise(noise);
+	m_noise_r1 = std::make_unique<MTexture<float>>(WATER_FFT_DIMENSION, WATER_FFT_DIMENSION, noise);
+	gen_noise(noise);
+	m_noise_i0 = std::make_unique<MTexture<float>>(WATER_FFT_DIMENSION, WATER_FFT_DIMENSION, noise);
+	gen_noise(noise);
+	m_noise_i1 = std::make_unique<MTexture<float>>(WATER_FFT_DIMENSION, WATER_FFT_DIMENSION, noise);
+
+	delete[] noise;
 }
 
 void WaterRenderer::initialize_hkt() {

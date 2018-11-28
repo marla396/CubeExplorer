@@ -72,6 +72,10 @@ void World::clear_world() {
 	m_trees->clear();
 }
 
+bool World::is_initialized() const {
+	return m_all_blocks_initialized;
+}
+
 float World::height_at(float x, float z) const {
 	if (x >= 0.0f && z >= 0.0f && x + 0.5f < static_cast<float>(WORLD_SIZE * CHUNK_SIZE) && z + 0.5f < static_cast<float>(WORLD_SIZE * CHUNK_SIZE)) {
 		return std::floor(m_height_map->noise[static_cast<int>(x + 0.5f)][static_cast<int>(z + 0.5f)]);
@@ -223,10 +227,11 @@ void World::generate_world_part(int n_workers, int id, const std::shared_ptr<ITe
 
 				for (int cx = 0; cx < CHUNK_SIZE; cx++) {
 					for (int cz = 0; cz < CHUNK_SIZE; cz++) {
-						int height = static_cast<int>(m_height_map->noise[x * CHUNK_SIZE + cx][z * CHUNK_SIZE + cz]) - y * CHUNK_SIZE;
+						int noise = static_cast<int>(m_height_map->noise[x * CHUNK_SIZE + cx][z * CHUNK_SIZE + cz]);
+						int height = noise - y * CHUNK_SIZE;
 
 							for (int cy = 0; cy < height && cy < CHUNK_SIZE; cy++) {
-								bool is_top = height == cy + 1 + y * CHUNK_SIZE;
+								bool is_top = noise == y * CHUNK_SIZE + cy + 1;
 
 								block_map.insert_block(cx, cy, cz, height < CHUNK_SIZE + 1);
 

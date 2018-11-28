@@ -8,10 +8,12 @@ in vec4 clip_space;
 in vec4 shadow_coords_low;
 in vec4 shadow_coords_high;
 
-uniform sampler2D tex_unit0; //displacement_map
+uniform sampler2D tex_unit0; //displacement_map dy
 uniform sampler2D tex_unit2; //reflection_texture
 uniform sampler2D tex_unit3; //refraction_texture
 uniform sampler2D tex_unit4; //normal_map
+uniform sampler2D tex_unit5; //displacement map dx
+uniform sampler2D tex_unit6; //displacement map dz
 uniform sampler2D tex_unit7; //dudv_map
 uniform sampler2D tex_unit8; //shadow_map_low
 uniform sampler2D tex_unit9; //shadow_map_high
@@ -24,6 +26,21 @@ uniform mat4 view_matrix;
 uniform mat4 projection_matrix;
 
 uniform float displacement_factor;
+
+float get_jacobian_det(vec2 coords){
+	vec2 ts = 1.0 / textureSize(tex_unit0, 0);
+
+	vec2 du = vec2(ts.x, 0.0);
+	vec2 dv = vec2(0.0, ts.y);
+
+	float dxdu = texture(tex_unit5, coords + du).r - texture(tex_unit5, coords - du).r;
+	float dxdv = texture(tex_unit5, coords + dv).r - texture(tex_unit5, coords - dv).r;
+	
+	float dzdu = texture(tex_unit6, coords + du).r - texture(tex_unit6, coords - du).r;
+	float dzdv = texture(tex_unit6, coords + dv).r - texture(tex_unit6, coords - dv).r;
+
+	return dzdu * dxdv - dxdu * dzdv;
+}
 
 void main(void){
 
@@ -56,28 +73,35 @@ void main(void){
 
 	vec3 reflected_light = reflect(normalize(world_position_frag - light_position), normal);
 	float specular = max(dot(reflected_light, view_vector), 0.0);
-	float diffuse = 0.0;//max(dot(normalize(world_position_frag - light_position), normal), 0.0);
-	specular = pow(specular, 10.0);
-	vec4 shade = vec4((diffuse * 0.9 + 1.3 * specular) * light_color, 0.0);
+	float diffuse = max(dot(normalize(world_position_frag - light_position), normal), 0.0);
+	specular = pow(specular, 20.0);
+	vec4 shade = vec4((diffuse * 0.0 + 0.6 * specular) * light_color, 0.0);
 
 	if (refractive_factor > 0.0)
 		color = mix(reflection, refraction, refractive_factor);
 	else
 		color = refraction;
 
-
-
-	//vec3 sndc = (shadow_coords.xyz / shadow_coords.w) * 0.5 + 0.5;
 	vec3 sndc_low = project_shadow_coords(shadow_coords_low);
 	vec3 sndc_high = project_shadow_coords(shadow_coords_high);
 	 
 	float shadow_occlusion = get_shadow_occlusion(tex_unit8, sndc_low, tex_unit9, sndc_high, length(world_position_frag - camera_position), 0.007);
 
-	/*if (shadow_occlusion > 0.0){
+	if (shadow_occlusion < 1.0){
 		shade = vec4(0.0);
+	}
+
+
+
+	float wave_break = 0.0f;
+	/*float jac = get_jacobian_det(tex_coords_frag);
+	if (jac < 0.1){
+		wave_break = 10.0 * pow(jac, 2.0);
 	}*/
 
-	color = mix(shadow_occlusion * color, vec4(0.0, 0.15, 0.25, 1.0) + shade, 0.4);
-	color = color * shadow_occlusion;
+
+
+	color = mix(shadow_occlusion * color, vec4(0.0, 0.15, 0.25, 1.0) + shade, 0.6);
+	color = color * shadow_occlusion + vec4(wave_break, wave_break, wave_break, 0.0);
 	color.a = 1.0;
 }

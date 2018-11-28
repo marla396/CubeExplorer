@@ -52,4 +52,5 @@ private:
 	std::shared_ptr<FrameBuffer> m_ssao_fbo;
 	std::shared_ptr<MTexture<float>> m_ssao_pingpong_texture;
 	std::shared_ptr<MTexture<float>> m_pingpong_texture;
+	std::shared_ptr<MTexture<float>> m_ssao_noise;
 };

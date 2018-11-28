@@ -27,7 +27,7 @@ bool AStar::path(glm::vec3 start, const glm::vec3& end, const std::shared_ptr<FF
 		return height_map->noise[static_cast<int>(pos.x)][static_cast<int>(pos.z)];
 	};
 
-	AStarOpenList closed_list;
+	std::unordered_set<NodePtr> closed_list;
 	AStarOpenList open_list;
 
 	open_list.push(current);
@@ -41,13 +41,7 @@ bool AStar::path(glm::vec3 start, const glm::vec3& end, const std::shared_ptr<FF
 
 		current = open_list.pop();
 
-		/*if (open_list.size() > 10) {
-			while (!open_list.empty()) {
-				std::cout << open_list.pop()->f << std::endl;;
-			}
-		}*/
-
-		closed_list.push(current);
+		closed_list.insert(current);
 
 		if (current->pos == end) {
 			found = true;
@@ -70,13 +64,13 @@ bool AStar::path(glm::vec3 start, const glm::vec3& end, const std::shared_ptr<FF
 
 			node->pos.y = std::floor(get_y(node->pos));
 
-			/*if (std::abs(node->pos.y - current->pos.y) > 1.0f) {
+			if (std::abs(node->pos.y - current->pos.y) > 1.0f) {
 				continue;
-			}*/
+			}
 
 			node->parent = current;
 
-			if (closed_list.get(node) != nullptr) {
+			if (closed_list.find(node) != closed_list.end()) {
 				continue;
 			}
 
@@ -124,15 +118,9 @@ AStar::NodePtr AStarOpenList::pop() {
 }
 
 AStar::NodePtr AStarOpenList::get(const AStar::NodePtr& n) const{
-	/*auto it = m_lookup.find(n);
+	auto it = m_lookup.find(n);
 	if (it != m_lookup.end()) {
 		return *it;
-	}*/
-
-	for (const auto& x : m_lookup) {
-		if (x->pos == n->pos) {
-			return x;
-		}
 	}
 
 	return nullptr;

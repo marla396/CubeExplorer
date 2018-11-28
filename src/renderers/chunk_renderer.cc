@@ -61,6 +61,7 @@ void ChunkRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>&
 
 	m_depth_shader->bind();
 
+	m_depth_shader->upload_tex_units({ 0 });
 	m_depth_shader->upload_view_projection_matrix(light->get_transform_matrix(camera, quality));
 	m_depth_shader->upload_clip_plane(m_clip_plane);
 
@@ -75,6 +76,7 @@ void ChunkRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>&
 		if (model->get_indices_count() > 0) {
 
 			model->bind();
+			model->bind_texture(GL_TEXTURE0);
 			m_depth_shader->upload_model_matrix(model->get_model_matrix());
 			DRAW_CALL(GLC(glDrawElements(GL_TRIANGLES, model->get_indices_count(), GL_UNSIGNED_INT, nullptr)));
 		}

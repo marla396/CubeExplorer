@@ -4,17 +4,16 @@
 #include <random>
 #include <numeric>
 
-PostFXRenderer::PostFXRenderer() : m_fxaa(true), m_ssao(true) {
-	m_ssao_fbo = std::make_shared<FrameBuffer>(Application::get_width()/2, Application::get_height()/2, FBO_TEXTURE | FBO_RENDERBUFFER);
+PostFXRenderer::PostFXRenderer() : m_fxaa(true), m_ssao(false) {
+	m_ssao_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_RENDERBUFFER);
 
-	m_ssao_pingpong_texture = std::make_shared<MTexture<float>>(Application::get_width() / 2, Application::get_height() / 2, static_cast<float*>(nullptr));
-	m_ssao_pingpong_texture->set_wrap(GL_REPEAT);
+	m_ssao_pingpong_texture = std::make_shared<MTexture<float>>(Application::get_width(), Application::get_height(), static_cast<float*>(nullptr));
 	m_pingpong_texture = std::make_shared<MTexture<float>>(Application::get_width(), Application::get_height(), static_cast<float*>(nullptr));
 	
 
 	Application::register_resize_callback([this](size_t w, size_t h) {
-		m_ssao_fbo->set_resolution(w / 2, h / 2);
-		m_ssao_pingpong_texture = std::make_shared<MTexture<float>>(w / 2, h / 2, static_cast<float*>(nullptr));
+		m_ssao_fbo->set_resolution(w, h);
+		m_ssao_pingpong_texture = std::make_shared<MTexture<float>>(w, h, static_cast<float*>(nullptr));
 		m_pingpong_texture = std::make_shared<MTexture<float>>(w, h, static_cast<float*>(nullptr));
 	});
 
@@ -47,22 +46,22 @@ void PostFXRenderer::render(const std::shared_ptr<FrameBuffer>& input_fbo, Camer
 
 		m_ssao_shader->bind();
 		m_ssao_shader->upload_projection_depth({ camera.get_near(), camera.get_far() });
-
+		m_ssao_shader->upload_screen_dimensions(glm::vec2{ static_cast<float>(Application::get_width()), static_cast<float>(Application::get_height()) });
 
 		input_fbo->get_depth_texture()->bind(GL_TEXTURE0);
+		m_ssao_noise->bind(GL_TEXTURE1);
 
 		m_quad->bind();
 		DRAW_CALL(GLC(glDrawElements(GL_TRIANGLES, m_quad->get_indices_count(), GL_UNSIGNED_INT, nullptr)));
 
 		unbind_fbo();
 		
+		auto work = get_work_groups();
 
 		m_ssao_blur_shader->bind();
 		m_ssao_fbo->get_texture()->bind_image_texture(0, GL_READ_ONLY, GL_RGBA32F);
 		m_ssao_pingpong_texture->bind_image_texture(1, GL_WRITE_ONLY, GL_RGBA32F);
 		
-		auto work = get_work_groups(2);
-
 		GLC(glDispatchCompute(work.x, work.y, work.z));
 		GLC(glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT));
 
@@ -143,11 +142,10 @@ void PostFXRenderer::fxaa(const std::shared_ptr<ITexture>& input, const std::sha
 	GLC(glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT));
 }
 
-
 void PostFXRenderer::init_ssao() {
 
 	m_ssao_shader = std::make_unique<SSAOShader>();
-	m_ssao_shader->upload_tex_unit(0);
+	m_ssao_shader->upload_tex_units({ 0, 1 });
 
 
 	std::uniform_real_distribution<float> dist(0.0f, 1.0f);
@@ -155,7 +153,7 @@ void PostFXRenderer::init_ssao() {
 	std::vector<glm::vec3> ssao_kernel;
 
 
-	const float KERNEL_SIZE = 128.0f;
+	const float KERNEL_SIZE = 64.0f;
 
 	for (float i = 0.0f; i < KERNEL_SIZE; i += 1.0f) {
 		glm::vec3 sample = { dist(rng) * 2.0f - 1.0f, dist(rng) * 2.0f - 1.0f, dist(rng) };
@@ -172,6 +170,19 @@ void PostFXRenderer::init_ssao() {
 
 	m_ssao_shader->upload_kernel(ssao_kernel);
 
+	std::vector<float> ssao_noise;
+
+	for (int i = 0; i < 16; i++) {
+		ssao_noise.push_back(dist(rng) * 2.0f - 1.0f);
+		ssao_noise.push_back(dist(rng) * 2.0f - 1.0f);
+		ssao_noise.push_back(dist(rng) * 2.0f - 1.0f);
+		ssao_noise.push_back(0.0f);
+	}
+
+	m_ssao_noise = std::make_unique<MTexture<float>>(4, 4, &ssao_noise[0]);
+	m_ssao_noise->set_wrap(GL_REPEAT);
+	m_ssao_noise->set_filter(GL_LINEAR);
+
 	m_ssao_merge_shader = std::make_unique<SSAOMergeShader>();
 	m_ssao_merge_shader->upload_tex_units({ 0, 1, 2 });
 	m_ssao_merge_shader->upload_factors({ 1.0f, 1.0f });
@@ -180,6 +191,8 @@ void PostFXRenderer::init_ssao() {
 
 	m_ssao_blur_shader->bind();
 	m_ssao_blur_shader->upload_tex_units({ 0, 1 });
+
+
 }
 
 
@@ -192,8 +205,8 @@ glm::ivec3 PostFXRenderer::get_work_groups(int scale) const {
 	int w = static_cast<int>(Application::get_width()) / scale;
 	int h = static_cast<int>(Application::get_height()) / scale;
 
-	int work_x = (w / 16) + w % 16;
-	int work_y = (h / 16) + h % 16;
+	int work_x = (w + (16 - (w % 16))) / 16;
+	int work_y = (h + (16 - (h % 16))) / 16;
 	int work_z = 1;
 
 	return { work_x, work_y, work_z };

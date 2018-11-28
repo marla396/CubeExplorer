@@ -1,21 +1,21 @@
-﻿  postfx_renderer.cc
-..\..\src\renderers\postfx_renderer.cc(55): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-..\..\src\renderers\postfx_renderer.cc(102): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+﻿  water_renderer.cc
+..\..\src\renderers\water_renderer.cc(176): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\renderers\water_renderer.cc(218): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data
   L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(8): note: while compiling class template member function 'MTexture<float>::MTexture(::size_t,::size_t,const T *)'
           with
           [
               T=float
           ]
-  L:\Visual Studio\VC\Tools\MSVC\14.12.25827\include\memory(1849): note: see reference to function template instantiation 'MTexture<float>::MTexture(::size_t,::size_t,const T *)' being compiled
+  L:\Visual Studio\VC\Tools\MSVC\14.12.25827\include\memory(2585): note: see reference to function template instantiation 'MTexture<float>::MTexture(::size_t,::size_t,const T *)' being compiled
           with
           [
               T=float
           ]
-  ..\..\src\renderers\postfx_renderer.cc(11): note: see reference to class template instantiation 'MTexture<float>' being compiled
+  ..\..\src\renderers\water_renderer.cc(251): note: see reference to class template instantiation 'MTexture<float>' being compiled
 L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data
   Generating code
-  0 of 5631 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  0 of 6066 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
