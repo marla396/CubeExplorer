@@ -37,7 +37,7 @@ Game::Game(NVGcontext* nvg_ctx)
 		m_shadow_fbo->set_resolution(4 * w, 4 * h);
 	});
 
-	m_texture_atlas = std::make_shared<TextureAtlas<32, 32>>("christmastextures.png");
+	m_texture_atlas = std::make_shared<TextureAtlas<32, 32>>("blocktextures.png");
 	skybox_texture = std::make_shared<FTexture>("skybox.png");
 	 
 	auto seed = std::random_device{}();

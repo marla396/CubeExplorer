@@ -9,11 +9,11 @@ constexpr float WORLD_WATER_HEIGHT = 15.5f;
 constexpr float WORLD_BEACH_HEIGHT = WORLD_WATER_HEIGHT + 1.0f;
 constexpr size_t WATER_FFT_DIMENSION = 1024;
 constexpr size_t WATER_FFT_DIMENSION_LOG2 = 10;
-constexpr int WATER_QUAD_DIMENSION = 16;
+constexpr int WATER_QUAD_DIMENSION = 8;
 
 constexpr int WORLD_SHEEP_AMOUNT = 0;
 
-constexpr int WORLD_GENERATOR_THREADS = 1;
+constexpr int WORLD_GENERATOR_THREADS = 4;
 
 const glm::vec3 WORLD_CENTER = glm::vec3 { static_cast<float>(WORLD_SIZE * CHUNK_SIZE), static_cast<float>(WORLD_MAX_HEIGHT), static_cast<float>(WORLD_SIZE * CHUNK_SIZE) } * 0.5f;
 

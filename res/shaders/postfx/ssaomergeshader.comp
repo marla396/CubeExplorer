@@ -10,7 +10,7 @@ void main(void){
 	
 	ivec2 coords = ivec2(gl_GlobalInvocationID.xy);
 
-	vec4 ssao = imageLoad(tex_unit1, coords);
+	vec4 ssao = imageLoad(tex_unit1, coords / 2);
 	vec4 color = imageLoad(tex_unit0, coords);
 
 	vec4 pixel = color * ssao.x;

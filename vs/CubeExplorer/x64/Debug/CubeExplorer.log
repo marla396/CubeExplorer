@@ -1,16 +1,24 @@
-﻿  world.cc
+﻿  postfx_renderer.cc
+l:\cubeexplorer\cubeexplorer\src\renderers\postfx_renderer.cc(55): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+l:\cubeexplorer\cubeexplorer\src\renderers\postfx_renderer.cc(101): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data
-  l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(8): note: while compiling class template member function 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)'
+  l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(8): note: while compiling class template member function 'MTexture<float>::MTexture(::size_t,::size_t,const T *)'
           with
           [
-              T=uint8_t
+              T=float
           ]
-  l:\visual studio\vc\tools\msvc\14.12.25827\include\memory(1849): note: see reference to function template instantiation 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)' being compiled
+  l:\visual studio\vc\tools\msvc\14.12.25827\include\memory(2585): note: see reference to function template instantiation 'MTexture<float>::MTexture(::size_t,::size_t,const T *)' being compiled
           with
           [
-              T=uint8_t
+              T=float
           ]
-  l:\cubeexplorer\cubeexplorer\src\world\world.cc(90): note: see reference to class template instantiation 'MTexture<uint8_t>' being compiled
+  l:\visual studio\vc\tools\msvc\14.12.25827\include\type_traits(517): note: see reference to class template instantiation 'MTexture<float>' being compiled
+  l:\visual studio\vc\tools\msvc\14.12.25827\include\memory(1284): note: see reference to class template instantiation 'std::is_convertible<_Yty *,_Ty *>' being compiled
+          with
+          [
+              _Yty=MTexture<float>,
+              _Ty=ITexture
+          ]
+  l:\cubeexplorer\cubeexplorer\src\renderers\postfx_renderer.cc(39): note: see reference to class template instantiation 'std::_SP_pointer_compatible<MTexture<float>,ITexture>' being compiled
 l:\cubeexplorer\cubeexplorer\include\texture\mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   CubeExplorer.vcxproj -> L:\CubeExplorer\CubeExplorer\vs\CubeExplorer\x64\Debug\CubeExplorer.exe
