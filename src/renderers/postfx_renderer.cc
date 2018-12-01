@@ -5,15 +5,15 @@
 #include <numeric>
 
 PostFXRenderer::PostFXRenderer() : m_fxaa(true), m_ssao(false) {
-	m_ssao_fbo = std::make_shared<FrameBuffer>(Application::get_width() / 2, Application::get_height() / 2, FBO_TEXTURE | FBO_RENDERBUFFER);
+	m_ssao_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_RENDERBUFFER);
 
-	m_ssao_pingpong_texture = std::make_shared<MTexture<float>>(Application::get_width() / 2, Application::get_height() / 2, static_cast<float*>(nullptr));
+	m_ssao_pingpong_texture = std::make_shared<MTexture<float>>(Application::get_width(), Application::get_height(), static_cast<float*>(nullptr));
 	m_pingpong_texture = std::make_shared<MTexture<float>>(Application::get_width(), Application::get_height(), static_cast<float*>(nullptr));
 	
 
 	Application::register_resize_callback([this](size_t w, size_t h) {
-		m_ssao_fbo->set_resolution(w / 2, h / 2);
-		m_ssao_pingpong_texture = std::make_shared<MTexture<float>>(w / 2, h / 2, static_cast<float*>(nullptr));
+		m_ssao_fbo->set_resolution(w, h);
+		m_ssao_pingpong_texture = std::make_shared<MTexture<float>>(w, h, static_cast<float*>(nullptr));
 		m_pingpong_texture = std::make_shared<MTexture<float>>(w, h, static_cast<float*>(nullptr));
 	});
 
@@ -153,7 +153,7 @@ void PostFXRenderer::init_ssao() {
 	std::vector<glm::vec3> ssao_kernel;
 
 
-	const float KERNEL_SIZE = 64.0f;
+	const float KERNEL_SIZE = 128.0f;
 
 	for (float i = 0.0f; i < KERNEL_SIZE; i += 1.0f) {
 		glm::vec3 sample = { dist(rng) * 2.0f - 1.0f, dist(rng) * 2.0f - 1.0f, dist(rng) };
@@ -181,11 +181,9 @@ void PostFXRenderer::init_ssao() {
 
 	m_ssao_noise = std::make_unique<MTexture<float>>(4, 4, &ssao_noise[0]);
 	m_ssao_noise->set_wrap(GL_REPEAT);
-	//m_ssao_noise->set_filter(GL_LINEAR);
 
 	m_ssao_merge_shader = std::make_unique<SSAOMergeShader>();
 	m_ssao_merge_shader->upload_tex_units({ 0, 1, 2 });
-	m_ssao_merge_shader->upload_factors({ 1.0f, 1.0f });
 
 	m_ssao_blur_shader = std::make_unique<SSAOBlurShader>();
 

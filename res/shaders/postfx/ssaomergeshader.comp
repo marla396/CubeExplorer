@@ -4,13 +4,11 @@ layout(binding = 0, rgba32f) readonly uniform image2D tex_unit0; //color
 layout(binding = 1, rgba32f) readonly uniform image2D tex_unit1; //ssao
 layout(binding = 2, rgba32f) writeonly uniform image2D tex_unit2; //output
 
-uniform vec2 factors;
-
 void main(void){
 	
 	ivec2 coords = ivec2(gl_GlobalInvocationID.xy);
 
-	vec4 ssao = imageLoad(tex_unit1, coords / 2);
+	vec4 ssao = imageLoad(tex_unit1, coords);
 	vec4 color = imageLoad(tex_unit0, coords);
 
 	vec4 pixel = color * ssao.x;

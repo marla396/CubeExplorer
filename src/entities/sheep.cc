@@ -42,12 +42,15 @@ void Sheep::evaluate_plan(const std::shared_ptr<World>& world) {
 		glm::vec3 center = WORLD_CENTER;
 
 		center.y = world->height_at(center.x, center.z);
+		center.y += 1.0f;
+		float length = glm::length(m_position - center);
+		if (length > 3.0f) {
 
-		if (glm::length(m_position - center) > 1.0f) {
-
-
-
-			m_has_plan = AStar::path(m_position, center, world->get_height_map(), m_current_plan);
+			auto start = m_position;
+			start.x = std::floor(start.x);
+			start.y = std::floor(start.y);
+			start.z = std::floor(start.z);
+			m_has_plan = AStar::path( start, center, world->get_height_map(), m_current_plan);
 		}
 		else {
 			m_has_plan = false;
@@ -65,7 +68,10 @@ void Sheep::evaluate_plan(const std::shared_ptr<World>& world) {
 
 		if (m_position != node->pos) {
 
-			m_position += get_walking_direction(node) * 0.1f;
+			auto dir = get_walking_direction(node);
+			m_position += dir * 0.1f;
+			glm::vec3 rot = { 0.0f, std::sin(dir.x) * std::cos(dir.z), 0.0f };
+			m_model->set_rotation(rot);
 		}
 	}
 }

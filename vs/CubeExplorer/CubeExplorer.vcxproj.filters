@@ -281,6 +281,9 @@
     <ClCompile Include="..\..\src\misc\astar.cc">
       <Filter>src\misc</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\texture\cube_texture.cc">
+      <Filter>src\texture</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\application.h">
@@ -516,6 +519,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\misc\astar.h">
       <Filter>include\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\texture\cube_texture.h">
+      <Filter>include\texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

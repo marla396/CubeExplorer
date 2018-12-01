@@ -1,6 +1,6 @@
 in vec2 tex_coords_fs;
 
-#define KERNEL_SIZE 32
+#define KERNEL_SIZE 128
 
 uniform sampler2D tex_unit0; //depth
 uniform sampler2D tex_unit1; //noise
@@ -10,8 +10,7 @@ uniform vec2 projection_depth;
 uniform vec2 screen_dimensions;
 uniform mat4 projection_matrix;
 
-const float RADIUS = 0.1;
-const float BIAS = 0.05;
+const float RADIUS = 0.5;
 
 out vec4 color;
 

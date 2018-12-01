@@ -33,8 +33,9 @@ bool AStar::path(glm::vec3 start, const glm::vec3& end, const std::shared_ptr<FF
 	open_list.push(current);
 	int iterations = 0;
 
+
+
 	while (!open_list.empty()) {
-		
 		++iterations;
 		if (iterations >= MAX_SEARCH)
 			break;
@@ -43,7 +44,7 @@ bool AStar::path(glm::vec3 start, const glm::vec3& end, const std::shared_ptr<FF
 
 		closed_list.insert(current);
 
-		if (current->pos == end) {
+		if (current->pos.x == end.x && current->pos.z == end.z) {
 			found = true;
 			break;
 		}
@@ -64,9 +65,9 @@ bool AStar::path(glm::vec3 start, const glm::vec3& end, const std::shared_ptr<FF
 
 			node->pos.y = std::floor(get_y(node->pos));
 
-			if (std::abs(node->pos.y - current->pos.y) > 1.0f) {
+			/*if (std::abs(node->pos.y - current->pos.y) > 1.0f) {
 				continue;
-			}
+			}*/
 
 			node->parent = current;
 

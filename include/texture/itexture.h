@@ -17,8 +17,8 @@ public:
 
 	void destroy();
 
-	void bind() const;
-	void bind(GLenum texture_unit) const;
+	virtual void bind() const;
+	virtual void bind(GLenum texture_unit) const;
 	void bind_image_texture(uint32_t texture_unit, GLenum access, GLenum format) const;
 	void set_parameter(GLenum name, int parameter) const;
 	void set_filter(int filter) const;

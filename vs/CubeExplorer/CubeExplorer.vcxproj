@@ -208,6 +208,7 @@
     <ClCompile Include="..\..\src\shaders\water_shader.cc" />
     <ClCompile Include="..\..\src\texture\ftexture.cc" />
     <ClCompile Include="..\..\src\texture\itexture.cc" />
+    <ClCompile Include="..\..\src\texture\cube_texture.cc" />
     <ClCompile Include="..\..\src\world\block.cc" />
     <ClCompile Include="..\..\src\world\block_map.cc" />
     <ClCompile Include="..\..\src\world\light.cc" />
@@ -276,6 +277,7 @@
     <ClInclude Include="..\..\include\shaders\tex_shader.h" />
     <ClInclude Include="..\..\include\shaders\twiddle_shader.h" />
     <ClInclude Include="..\..\include\shaders\water_shader.h" />
+    <ClInclude Include="..\..\include\texture\cube_texture.h" />
     <ClInclude Include="..\..\include\texture\ftexture.h" />
     <ClInclude Include="..\..\include\texture\itexture.h" />
     <ClInclude Include="..\..\include\texture\mtexture.h" />
