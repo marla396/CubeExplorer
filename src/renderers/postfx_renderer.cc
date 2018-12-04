@@ -131,7 +131,7 @@ void PostFXRenderer::underwater(const std::shared_ptr<ITexture>& input, const st
 void PostFXRenderer::fxaa(const std::shared_ptr<ITexture>& input, const std::shared_ptr<ITexture>& output){
 
 	m_fxaa_shader->bind();
-	m_fxaa_shader->upload_threshold(1.0f/32.0f);
+	m_fxaa_shader->upload_threshold(1.0f/16.0f);
 
 	input->bind_image_texture(0, GL_READ_ONLY, GL_RGBA32F);
 	output->bind_image_texture(1, GL_WRITE_ONLY, GL_RGBA32F);

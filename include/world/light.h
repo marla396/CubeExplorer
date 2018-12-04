@@ -1,20 +1,16 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <array>
 
 #include "camera.h"
+#include "world_const.h"
 
 class Light {
 public:
-
-	enum ShadowMapQuality {
-		HIGH,
-		LOW
-	};
-
-	static constexpr float LIGHT_HIGH_DISTANCE = 160.0f;
-
 	Light(const glm::vec3& position, const glm::vec3& color);
+
+	void update(Camera& camera, float time);
 
 	glm::vec3 get_position() const;	
 	void set_position(const glm::vec3& position);
@@ -22,14 +18,20 @@ public:
 	glm::vec3 get_color() const;
 	void set_color(const glm::vec3& color);
 
-	glm::mat4 get_view_matrix(const Camera& camera, ShadowMapQuality quality) const;
-	glm::mat4 get_projection_matrix(const Camera& camera, ShadowMapQuality quality) const;
+	glm::mat4 get_view_matrix(int cascade) const;
+	glm::mat4 get_projection_matrix(int cascade) const;
+	glm::mat4 get_transform_matrix(int cascade) const;
+	float get_shadow_cascade_end(int cascade) const;
 
-	glm::mat4 get_transform_matrix(const Camera& camera, ShadowMapQuality quality) const;
-	
-	glm::vec3 m_player_position;
+
 
 private:
+
+	std::array<float, SHADOW_CASCADES + 1> m_shadow_cascades;
+	std::array<glm::mat4, SHADOW_CASCADES> m_view_matrices;
+	std::array<glm::mat4, SHADOW_CASCADES> m_projection_matrices;
+	std::array<glm::mat4, SHADOW_CASCADES> m_transform_matrices;
+
 	glm::vec3 m_position;
 	glm::vec3 m_color;
 };

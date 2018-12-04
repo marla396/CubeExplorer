@@ -15,7 +15,6 @@ public:
 	void upload_screen_dimensions(const glm::vec2& dimensions) const;
 	void upload_kernel(const std::vector<glm::vec3>& kernel) const;
 	void upload_projection_depth(const glm::vec2& depth) const;
-	void upload_projection_matrix(const glm::mat4& matrix) const;
 
 private:
 	void get_uniform_locations() override;
@@ -23,5 +22,4 @@ private:
 	int m_screen_dimensions_location;
 	int m_kernel_location;
 	int m_projection_depth_location;
-	int m_projection_matrix_location;
 };

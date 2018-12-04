@@ -1,34 +1,44 @@
 ﻿  application.cc
+  player.cc
+  sheep.cc
   game.cc
+..\..\src\application.cc(158): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
   main.cc
-  postfx_renderer.cc
-..\..\src\renderers\postfx_renderer.cc(55): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-..\..\src\renderers\postfx_renderer.cc(101): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\postfx_renderer.cc)
+  chunk_model.cc
+  water_renderer.cc
+  world.cc
+..\..\src\models\chunk_model.cc(170): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
+..\..\src\renderers\water_renderer.cc(181): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+..\..\src\renderers\water_renderer.cc(224): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\water_renderer.cc)
   L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(8): note: while compiling class template member function 'MTexture<float>::MTexture(::size_t,::size_t,const T *)'
           with
           [
               T=float
-          ] (compiling source file ..\..\src\renderers\postfx_renderer.cc)
+          ] (compiling source file ..\..\src\renderers\water_renderer.cc)
   L:\Visual Studio\VC\Tools\MSVC\14.12.25827\include\memory(2585): note: see reference to function template instantiation 'MTexture<float>::MTexture(::size_t,::size_t,const T *)' being compiled
           with
           [
               T=float
-          ] (compiling source file ..\..\src\renderers\postfx_renderer.cc)
-  L:\Visual Studio\VC\Tools\MSVC\14.12.25827\include\type_traits(517): note: see reference to class template instantiation 'MTexture<float>' being compiled (compiling source file ..\..\src\renderers\postfx_renderer.cc)
-  L:\Visual Studio\VC\Tools\MSVC\14.12.25827\include\memory(1284): note: see reference to class template instantiation 'std::is_convertible<_Yty *,_Ty *>' being compiled
+          ] (compiling source file ..\..\src\renderers\water_renderer.cc)
+  ..\..\src\renderers\water_renderer.cc(254): note: see reference to class template instantiation 'MTexture<float>' being compiled
+L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\water_renderer.cc)
+L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\world\world.cc)
+  L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(8): note: while compiling class template member function 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)'
           with
           [
-              _Yty=MTexture<float>,
-              _Ty=ITexture
-          ] (compiling source file ..\..\src\renderers\postfx_renderer.cc)
-  ..\..\src\renderers\postfx_renderer.cc(39): note: see reference to class template instantiation 'std::_SP_pointer_compatible<MTexture<float>,ITexture>' being compiled
-L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\postfx_renderer.cc)
-..\..\src\application.cc(158): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  ssao_merge_shader.cc
+              T=uint8_t
+          ] (compiling source file ..\..\src\world\world.cc)
+  L:\Visual Studio\VC\Tools\MSVC\14.12.25827\include\memory(1849): note: see reference to function template instantiation 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)' being compiled
+          with
+          [
+              T=uint8_t
+          ] (compiling source file ..\..\src\world\world.cc)
+  ..\..\src\world\world.cc(91): note: see reference to class template instantiation 'MTexture<uint8_t>' being compiled
+L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\world\world.cc)
   Generating code
-  8 of 6074 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+  17 of 6179 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    10 functions had inline decision re-evaluated but remain unchanged
+    5 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   CubeExplorer.vcxproj -> L:\CubeExplorer\CubeExplorer\vs\CubeExplorer\x64\Release\CubeExplorer.exe

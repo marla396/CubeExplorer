@@ -609,9 +609,6 @@
     <None Include="..\..\res\shaders\postfx\underwatershader.comp">
       <Filter>res\shaders\postfx</Filter>
     </None>
-    <None Include="..\..\res\shaders\ext\shadows.glsl">
-      <Filter>res\shaders\ext</Filter>
-    </None>
     <None Include="..\..\res\shaders\postfx\fxaashader.comp">
       <Filter>res\shaders\postfx</Filter>
     </None>
@@ -625,6 +622,12 @@
       <Filter>res\shaders</Filter>
     </None>
     <None Include="..\..\res\shaders\ext\complex.glsl">
+      <Filter>res\shaders\ext</Filter>
+    </None>
+    <None Include="..\..\res\shaders\ext\shadows_vert.glsl">
+      <Filter>res\shaders\ext</Filter>
+    </None>
+    <None Include="..\..\res\shaders\ext\shadows_frag.glsl">
       <Filter>res\shaders\ext</Filter>
     </None>
   </ItemGroup>

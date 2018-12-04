@@ -1,13 +1,13 @@
 layout(triangles, fractional_odd_spacing, ccw) in;
 
+#include "ext/shadows_vert.glsl"
+
 in vec3 world_position_tes[];
 in vec2 tex_coords_tes[];
 
 out vec3 world_position_frag;
 out vec2 tex_coords_frag;
 out vec4 clip_space;
-out vec4 shadow_coords_low;
-out vec4 shadow_coords_high;
 
 uniform mat4 view_projection_matrix;
 
@@ -20,9 +20,6 @@ uniform float water_height;
 uniform float displacement_factor;
 uniform vec2 quad_instance;
 uniform int quad_dimension;
-
-uniform mat4 shadow_transform_low;
-uniform mat4 shadow_transform_high;
 
 vec2 lerp2D(vec2 v0, vec2 v1, vec2 v2)
 {
@@ -60,8 +57,8 @@ void main(void){
 	world_position_frag.z += displacement_z * water_depth * displacement_factor;
 
 	clip_space = view_projection_matrix * vec4(world_position_frag, 1.0);
-	shadow_coords_low = shadow_transform_low * vec4(world_position_frag, 1.0);
-	shadow_coords_high = shadow_transform_high * vec4(world_position_frag, 1.0);
+
+	transform_shadow_coords(vec4(world_position_frag, 1.0), clip_space.z);
 
 	gl_Position = clip_space;
 }

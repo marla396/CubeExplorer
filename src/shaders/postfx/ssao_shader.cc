@@ -17,15 +17,10 @@ void SSAOShader::upload_projection_depth(const glm::vec2& depth) const {
 	upload_uniform(m_projection_depth_location, depth);
 }
 
-void SSAOShader::upload_projection_matrix(const glm::mat4& matrix) const {
-	upload_uniform(m_projection_matrix_location, matrix);
-}
-
 void SSAOShader::get_uniform_locations() {
 	MultiTexShader::get_uniform_locations();
 
 	m_screen_dimensions_location = get_uniform_location("screen_dimensions");
 	m_kernel_location = get_uniform_location("kernel");
 	m_projection_depth_location = get_uniform_location("projection_depth");
-	m_projection_matrix_location = get_uniform_location("projection_matrix");
 }

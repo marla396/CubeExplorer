@@ -7,7 +7,7 @@
 #include "clip_shader.h"
 #include "shadow_shader.h"
 
-class EntityShader : public Shader, public MVPShader, public MultiTexShader<3>, public LightShader, public ClipShader, public ShadowShader {
+class EntityShader : public Shader, public MVPShader, public MultiTexShader<1>, public LightShader, public ClipShader, public ShadowShader {
 public:
 	EntityShader();
 	EntityShader(bool depth);

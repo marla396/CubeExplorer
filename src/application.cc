@@ -89,7 +89,7 @@ void Application::run() {
 
 	using namespace std::chrono_literals;
 
-	GLC(glClearColor(0.0f, 0.0f, 0.0f, 0.0f));
+	GLC(glClearColor(0.35686274509803921568627450980392f, 0.73725490196078431372549019607843f, 1.0f, 1.0f));
 
 	while (!glfwWindowShouldClose(m_window))
 	{

@@ -27,14 +27,14 @@ Game::Game(NVGcontext* nvg_ctx)
 	m_camera.set_fov(PI / 4.0f);
 
 	m_camera.set_position({ 0.0f, WORLD_MAX_HEIGHT, 0.0f });
-	m_camera.set_yaw((3.0f * PI) / 4.0f);
+	m_camera.set_yaw(PI / 2.0f);
 
-	m_postfx_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_DEPTH_TEXTURE | FBO_RENDERBUFFER);
-	m_shadow_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_DEPTH_TEXTURE | FBO_DEPTH_TEXTURE2);
+	m_postfx_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_DEPTH_TEXTURE1 | FBO_RENDERBUFFER);
+	m_shadow_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_DEPTH_TEXTURE1 | FBO_DEPTH_TEXTURE2 | FBO_DEPTH_TEXTURE3 | FBO_DEPTH_TEXTURE4 | FBO_DEPTH_TEXTURE5 | FBO_DEPTH_TEXTURE6);
 
 	Application::register_resize_callback([this](size_t w, size_t h){
 		m_postfx_fbo->set_resolution(w, h);
-		m_shadow_fbo->set_resolution(4 * w, 4 * h);
+		m_shadow_fbo->set_resolution(w, h);
 	});
 
 	m_texture_atlas = std::make_shared<TextureAtlas<32, 32>>("blocktextures.png");
@@ -60,6 +60,8 @@ Game::Game(NVGcontext* nvg_ctx)
 
 void Game::on_render() {
 
+
+
 	GLC(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 
 	bind_fbo(m_postfx_fbo);
@@ -70,6 +72,9 @@ void Game::on_render() {
 	m_world->lock();
 
 	render_shadow_maps();
+
+	m_water_renderer->render_refraction(m_camera);
+	m_water_renderer->render_reflection(m_camera);
 
 	auto chunks = m_world->get_chunks();
 	auto entities = m_world->get_entities();
@@ -103,12 +108,15 @@ void Game::on_update(float time, float dt) {
 	
 	m_world->lock();
 
-	m_world->update(time, dt, m_camera);
+	m_camera.update(time);
 
 	if (m_free_cam)
 		m_camera.process_keyboard(dt);
 	else
 		m_world->get_player()->update(m_world, m_camera, dt);
+
+	m_world->update(time, dt, m_camera);
+
 
 	auto chunks = m_world->get_chunks();
 	auto entities = m_world->get_entities();
@@ -162,7 +170,6 @@ void Game::on_cursor(float dx, float dy) {
 void Game::on_key(int key, int scan_code, int action, int mods) {
 	
 	UNUSED(scan_code);
-	UNUSED(mods);
 
 	if (action == GLFW_PRESS) {
 		if (key == GLFW_KEY_F1) {
@@ -205,6 +212,10 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 			m_postfx_renderer->toggle_ssao();
 		}
 
+		if (key == GLFW_KEY_F9) {
+			m_camera.toggle_flyover();
+		}
+
 		if (key == GLFW_KEY_ESCAPE) {
 			Application::exit();
 			return;
@@ -229,34 +240,24 @@ void Game::render_shadow_maps() {
 
 	GLC(glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE));
 
-	m_shadow_fbo->bind_depth_texture(0);
+	for (int i = 0; i < SHADOW_CASCADES; i++) {
+		m_shadow_fbo->bind_depth_texture(i);
 
-	GLC(glClear(GL_DEPTH_BUFFER_BIT));
+		GLC(glClear(GL_DEPTH_BUFFER_BIT));
 
-	m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun(), Light::LOW);
-	m_entity_renderer->render_depth(*m_world->get_entities(), m_camera, m_world->get_sun(), Light::LOW);
-	m_chunk_renderer->render_depth(*m_world->get_trees(), m_camera, m_world->get_sun(), Light::LOW);
+		m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun(), i);
+		m_entity_renderer->render_depth(*m_world->get_entities(), m_camera, m_world->get_sun(), i);
+		m_chunk_renderer->render_depth(*m_world->get_trees(), m_camera, m_world->get_sun(), i);
 
-	m_shadow_fbo->bind_depth_texture(1);
-
-	GLC(glClear(GL_DEPTH_BUFFER_BIT));
-
-	m_chunk_renderer->render_depth(*m_world->get_chunks(), m_camera, m_world->get_sun(), Light::HIGH);
-	m_entity_renderer->render_depth(*m_world->get_entities(), m_camera, m_world->get_sun(), Light::HIGH);
-	m_chunk_renderer->render_depth(*m_world->get_trees(), m_camera, m_world->get_sun(), Light::LOW);
+		m_chunk_renderer->set_shadow_map(m_shadow_fbo->get_depth_texture(i), i);
+		m_entity_renderer->set_shadow_map(m_shadow_fbo->get_depth_texture(i), i);
+		m_water_renderer->set_shadow_map(m_shadow_fbo->get_depth_texture(i), i);
+	}
 
 
 	GLC(glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE));
 
 	unbind_fbo();
-
-	m_chunk_renderer->set_shadow_map_low(m_shadow_fbo->get_depth_texture(0));
-	m_entity_renderer->set_shadow_map_low(m_shadow_fbo->get_depth_texture(0));
-	m_water_renderer->set_shadow_map_low(m_shadow_fbo->get_depth_texture(0));
-
-	m_chunk_renderer->set_shadow_map_high(m_shadow_fbo->get_depth_texture(1));
-	m_entity_renderer->set_shadow_map_high(m_shadow_fbo->get_depth_texture(1));
-	m_water_renderer->set_shadow_map_high(m_shadow_fbo->get_depth_texture(1));
 }
 
 void Game::insert_display_pip() {
@@ -293,14 +294,21 @@ void Game::insert_display_pip() {
 	case REFLECTION:
 		hud = std::make_shared<HUDTexture>(m_water_renderer->get_reflection());
 		break;
-	case SHADOW_MAP:
-		hud = std::make_shared<HUDTexture>(m_shadow_fbo->get_depth_texture(0));
-		break;
+	case SHADOW_MAPS:
+		for (int i = 0; i < SHADOW_CASCADES; i++) {
+			auto h = std::make_shared<HUDTexture>(m_shadow_fbo->get_depth_texture(i));
+
+			h->set_size({ 0.15f, 0.15f });
+			h->set_position({ i * 0.3f - 0.45f, 0.85f });
+
+			m_hud_textures.insert(std::make_pair("pip" + std::to_string(i), h));
+		}
+		return;
 	}
 
 	if (hud != nullptr) {
-		hud->set_position({ 0.0f, 0.0f });
-		hud->set_size({ 1.0f, 1.0f });
+		hud->set_position({ 0.6f, 0.6f });
+		hud->set_size({ 0.4f, 0.4f });
 		m_hud_textures.insert(std::make_pair("pip", hud));
 	}
 

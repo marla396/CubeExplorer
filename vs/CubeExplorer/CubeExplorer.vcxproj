@@ -84,8 +84,8 @@
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\Windows\glfw\x86;$(SolutionDir)..\..\Windows\glew\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <StackReserveSize>100000000</StackReserveSize>
-      <StackCommitSize>100000000</StackCommitSize>
+      <StackReserveSize>33554432</StackReserveSize>
+      <StackCommitSize>33554432</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -102,8 +102,8 @@
     <Link>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\Windows\glfw\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <StackReserveSize>2147483648</StackReserveSize>
-      <StackCommitSize>2147483648</StackCommitSize>
+      <StackReserveSize>33554432</StackReserveSize>
+      <StackCommitSize>33554432</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -123,8 +123,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\Windows\glfw\x86;$(SolutionDir)..\..\Windows\glew\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <StackReserveSize>100000000</StackReserveSize>
-      <StackCommitSize>100000000</StackCommitSize>
+      <StackReserveSize>33554432</StackReserveSize>
+      <StackCommitSize>33554432</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -144,8 +144,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;glfw3dll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)..\..\Windows\glfw\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <StackReserveSize>2147483648</StackReserveSize>
-      <StackCommitSize>2147483648</StackCommitSize>
+      <StackReserveSize>33554432</StackReserveSize>
+      <StackCommitSize>33554432</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -307,7 +307,8 @@
     <None Include="..\..\res\shaders\entityshader.frag" />
     <None Include="..\..\res\shaders\entityshader.vert" />
     <None Include="..\..\res\shaders\ext\complex.glsl" />
-    <None Include="..\..\res\shaders\ext\shadows.glsl" />
+    <None Include="..\..\res\shaders\ext\shadows_frag.glsl" />
+    <None Include="..\..\res\shaders\ext\shadows_vert.glsl" />
     <None Include="..\..\res\shaders\h0kshader.comp" />
     <None Include="..\..\res\shaders\hktshader.comp" />
     <None Include="..\..\res\shaders\hudshader.frag" />

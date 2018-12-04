@@ -7,7 +7,7 @@ World::World(uint32_t seed) : m_all_blocks_initialized(false), m_seed(seed) {
 
 	m_sun = std::make_shared<Light>( glm::vec3 { WORLD_SIZE * CHUNK_SIZE * 1.2f, WORLD_MAX_HEIGHT * 1.5f, WORLD_SIZE * CHUNK_SIZE * 1.2f}, glm::vec3 { 1.0f, 1.0f, 1.0f });
 
-	m_generator = std::make_shared<FFTNoiseGenerator>(seed, 0.005f, 2.0f, 1.0f);
+	m_generator = std::make_shared<FFTNoiseGenerator>(seed, 0.00001f, 2.0f, 1.0f);
 
 	m_chunks = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
 	m_entities = std::make_shared<std::vector<std::shared_ptr<ChunkModel>>>();
@@ -52,17 +52,18 @@ void World::update(float time, float dt, Camera& camera) {
 		s->update(shared_from_this(), camera, dt);
 	}
 
-
 	//time = -(50 * PI) / 4;
-	time = 0.0f;
+	//time = 0.0f;
 
-	float r = WORLD_CENTER.x * 1.2f;
+	float r = WORLD_CENTER.x * 50.2f;
 
-	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time/5.0f + PI/4), WORLD_CENTER.y + r * std::sin(time/5.0f + PI/4), WORLD_CENTER.z + r * std::cos(time / 5.0f + PI/4) };
+	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time/500.0f + PI/4), WORLD_CENTER.y + r * std::sin(time/500.0f + PI/4), WORLD_CENTER.z + r * std::cos(time / 500.0f + PI/4) };
+
+	//glm::vec3 new_pos = { 0.0f, 0.0f, 0.0f };
 
 	m_sun->set_position(new_pos);
+	m_sun->update(camera, time);
 
-	m_sun->m_player_position = { camera.get_position().x + Light::LIGHT_HIGH_DISTANCE * std::cos(time / 5.0f + PI / 2), camera.get_position().y + Light::LIGHT_HIGH_DISTANCE * std::sin(time / 5.0f + PI / 2), camera.get_position().z + Light::LIGHT_HIGH_DISTANCE * std::cos(time / 5.0f + PI / 2) };
 }
 
 void World::clear_world() {

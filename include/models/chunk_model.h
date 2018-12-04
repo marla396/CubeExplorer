@@ -81,8 +81,6 @@ public:
 	bool is_initialized() const;
 	void generate_geometry(const BlockMap& block_map);
 
-	BlockMap get_block_map() const;
-
 	glm::vec3 get_center() const override;
 	float get_bounding_radius() const override;
 
@@ -132,7 +130,5 @@ private:
 	bool occluded(const BlockMap& height_map, int x, int y, int z) const;
 	void generate_block(const BlockMap& height_map, int x, int y, int z, bool is_top_block);
 
-
-	BlockMap m_block_map;
 	bool m_initialized;
 };

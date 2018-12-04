@@ -9,7 +9,7 @@ ChunkModel::ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3
 }
 
 ChunkModel::ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position, const BlockMap& block_map)
-	: Model(true), m_block_map(block_map), m_initialized(false) {
+	: Model(true), m_initialized(false) {
 	
 	set_position(position);
 	set_texture(texture);
@@ -46,10 +46,6 @@ void ChunkModel::generate_geometry(const BlockMap& block_map) {
 			}
 		}
 	}
-}
-
-BlockMap ChunkModel::get_block_map() const {
-	return m_block_map;
 }
 
 glm::vec3 ChunkModel::get_center() const {

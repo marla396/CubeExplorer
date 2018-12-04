@@ -82,7 +82,6 @@ int Shader::get_uniform_location(const std::string& name) {
 	return location;
 }
 
-
 void Shader::compile(const std::string& file) {
 
 	uint32_t shader_type = get_shader_type(file);
@@ -132,8 +131,7 @@ bool Shader::preprocess_shader(std::string& in, std::string& out) const{
 		}
 	}
 
-	out = "#define LIGHT_HIGH_DISTANCE " + std::to_string(Light::LIGHT_HIGH_DISTANCE / 2 - 5.0f) + "\n" + in;
-	out = "#define SHADOW_EPSILON_HIGH 0.001\n#define SHADOW_EPSILON_LOW 0.005\n" + out;
+	out = "#define SHADOW_CASCADES " + std::to_string(SHADOW_CASCADES) + "\n" + in;
 	out = "#define M_PI 3.1415926535897932384626433832795\n" + out;
 	out = "#version " + GLSL_VERSION + "\n" + out;
 	

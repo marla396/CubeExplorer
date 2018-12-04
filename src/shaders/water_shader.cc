@@ -16,6 +16,10 @@ WaterShader::~WaterShader() {
 
 }
 
+void WaterShader::upload_camera_position(const glm::vec3& position) const {
+	upload_uniform(m_camera_position_location, position);
+}
+
 void WaterShader::upload_displacement_factor(float factor) const {
 	upload_uniform(m_displacement_factor_location, factor);
 }
@@ -41,6 +45,7 @@ void WaterShader::get_uniform_locations() {
 		ShadowShader::get_uniform_locations();
 	}
 
+	m_camera_position_location = get_uniform_location("camera_position");
 	m_displacement_factor_location = get_uniform_location("displacement_factor");
 	m_water_height_location = get_uniform_location("water_height");
 	m_quad_dimension_location = get_uniform_location("quad_dimension");

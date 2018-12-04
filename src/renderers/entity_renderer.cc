@@ -11,18 +11,24 @@ void EntityRenderer::render(const std::vector<std::shared_ptr<ChunkModel>>& mode
 
 	m_shader->bind();
 
-	m_shader->upload_tex_units({ 0, 1, 2 });
+	m_shader->upload_tex_units({ 0 });
 	m_shader->upload_view_projection_matrix(camera.get_view_projection_matrix());
 	m_shader->upload_light_source(light);
-	m_shader->upload_shadow_transform_low(light->get_transform_matrix(camera, Light::LOW));
-	m_shader->upload_shadow_transform_high(light->get_transform_matrix(camera, Light::HIGH));
+	m_shader->upload_shadow_transforms(light);
 	m_shader->upload_clip_plane(m_clip_plane);
+	m_shader->upload_shadow_cascade_end(camera, light);
+	m_shader->upload_view_matrix(camera.get_view_projection_matrix());
+	m_shader->upload_projection_depth({ camera.get_near(), camera.get_far() });
 
-	if (m_shadow_map_low)
-		m_shadow_map_low->bind(GL_TEXTURE1);
 
-	if (m_shadow_map_high)
-		m_shadow_map_high->bind(GL_TEXTURE2);
+
+	for (int i = 0; i < SHADOW_CASCADES; i++) {
+		if (m_shadow_maps[i]) {
+			m_shadow_maps[i]->bind(GL_TEXTURE1 + i);
+		}
+	}
+
+	m_shader->upload_shadow_maps(1);
 
 	GLC(glEnable(GL_DEPTH_TEST));
 	GLC(glEnable(GL_CULL_FACE));
@@ -32,7 +38,7 @@ void EntityRenderer::render(const std::vector<std::shared_ptr<ChunkModel>>& mode
 	GLC(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 
-	for (const auto& model : models) {
+	for (const auto& model : models) {	
 		if (model->get_indices_count() > 0) {
 
 			if (!intersects_frustum(model, camera)) {
@@ -52,13 +58,13 @@ void EntityRenderer::render(const std::vector<std::shared_ptr<ChunkModel>>& mode
 	GLC(glDisable(GL_CLIP_DISTANCE0));
 }
 
-void EntityRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>& models, Camera& camera, const std::shared_ptr<Light>& light, Light::ShadowMapQuality quality) {
+void EntityRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>& models, Camera& camera, const std::shared_ptr<Light>& light, int cascade) {
 	if (models.empty()) {
 		return;
 	}
 
 	m_depth_shader->bind();
-	m_depth_shader->upload_view_projection_matrix(light->get_transform_matrix(camera, quality));
+	m_depth_shader->upload_view_projection_matrix(light->get_transform_matrix(cascade));
 	m_depth_shader->upload_clip_plane(m_clip_plane);
 
 

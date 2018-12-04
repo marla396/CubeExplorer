@@ -27,6 +27,7 @@ public:
 
 	const float MAX_PITCH = PI / 2;
 
+	void update(float time);
 	void process_mouse(float dx, float dy);
 	void process_keyboard(float dt);
 
@@ -54,18 +55,27 @@ public:
 	void set_fov(float fov);
 	float get_fov() const;
 
-	void toggle_lock_frustum();
+	void look_at(const glm::vec3& pos, const glm::vec3& center, const glm::vec3& up = { 0.0f, 1.0f, 0.0f });
 
+	glm::vec3 get_forward() const;
+	glm::vec3 get_right() const;
+	glm::vec3 get_up() const;
+
+	void toggle_lock_frustum();
+	void toggle_flyover();
+
+	glm::mat4 get_view_matrix() const;
+	glm::mat4 get_projection_matrix() const;
+	glm::mat4 get_view_projection_matrix() const;
 	std::array<FrustumPlane, 6> get_frustum_planes() const;
 
-	glm::mat4 get_view_matrix();
-	glm::mat4 get_projection_matrix();
-	glm::mat4 get_view_projection_matrix();
 private:
 	glm::mat4 update_view_matrix();
 	glm::mat4 update_projection_matrix();
 	glm::mat4 update_view_projection_matrix();
 	std::array<FrustumPlane, 6> update_frustum_planes();
+	glm::mat4 flyover(float time);
+
 
 	void notify_projection() const;
 	void notify_view() const;
@@ -77,6 +87,8 @@ private:
 	float m_far;
 	float m_fov;
 	float m_aspect;
+	float m_flyover;
+	float m_time;
 
 	bool m_lock_frustum;
 	glm::mat4 m_locked_view_matrix;

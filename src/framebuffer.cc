@@ -64,7 +64,7 @@ void FrameBuffer::attach_depth_texture() {
 	bind();
 
 
-	if (m_attachments == (FBO_DEPTH_TEXTURE | FBO_DEPTH_TEXTURE2) && m_attachments == FBO_DEPTH_TEXTURE) {
+	if (m_attachments == (FBO_DEPTH_TEXTURE1 | FBO_DEPTH_TEXTURE2 | FBO_DEPTH_TEXTURE3 | FBO_DEPTH_TEXTURE4 | FBO_DEPTH_TEXTURE5 | FBO_DEPTH_TEXTURE6)) {
 		GLC(glDrawBuffer(GL_NONE));
 		GLC(glReadBuffer(GL_NONE));
 	}
@@ -73,7 +73,7 @@ void FrameBuffer::attach_depth_texture() {
 	std::shared_ptr<ITexture> texture = std::make_shared<ITexture>();
 	texture->bind();
 	GLC(glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_width, m_height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr));
-	texture->set_filter(GL_LINEAR);
+	texture->set_filter(GL_NEAREST);
 	texture->set_wrap(GL_CLAMP_TO_EDGE);
 
 	GLC(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texture->get_id(), 0));
@@ -104,7 +104,7 @@ void FrameBuffer::create() {
 		attach_texture(GL_COLOR_ATTACHMENT0);
 	}
 
-	if (m_attachments & FBO_DEPTH_TEXTURE) {
+	if (m_attachments & FBO_DEPTH_TEXTURE1) {
 		attach_depth_texture();
 	}
 
@@ -113,6 +113,22 @@ void FrameBuffer::create() {
 	}
 
 	if (m_attachments & FBO_DEPTH_TEXTURE2) {
+		attach_depth_texture();
+	}
+
+	if (m_attachments & FBO_DEPTH_TEXTURE3) {
+		attach_depth_texture();
+	}
+
+	if (m_attachments & FBO_DEPTH_TEXTURE4) {
+		attach_depth_texture();
+	}
+
+	if (m_attachments & FBO_DEPTH_TEXTURE5) {
+		attach_depth_texture();
+	}
+
+	if (m_attachments & FBO_DEPTH_TEXTURE6) {
 		attach_depth_texture();
 	}
 }

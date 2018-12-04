@@ -9,7 +9,7 @@ public:
 
 	}
 
-	T get() {
+	T get() const{
 		if (m_dirty) {
 			m_object = m_update_function();
 			m_dirty = false;
@@ -17,11 +17,21 @@ public:
 		return m_object;
 	}
 
-	void notify() {
+	void set(const T& obj) {
+		m_object = obj;
+		m_dirty = false;
+	}
+
+	void notify() const{
+		m_dirty = true;
+	}
+
+	void set_update_function(const std::function<T()>& f) {
+		m_update_function = f;
 		m_dirty = true;
 	}
 private:
-	T m_object;
+	mutable T m_object;
 	std::function<T()> m_update_function;
-	bool m_dirty;
+	mutable bool m_dirty;
 };

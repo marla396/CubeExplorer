@@ -123,16 +123,19 @@ void WaterRenderer::render(const std::vector<std::shared_ptr<WaterModel>>& model
 
 	m_shader->bind();
 
-	m_shader->upload_tex_units({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
-	m_shader->upload_camera_position(camera.get_position());
+	m_shader->upload_tex_units({ 0, 1, 2, 3, 4, 5, 6, 7});
 	m_shader->upload_displacement_factor(m_wave_strength);
 	m_shader->upload_water_height(WORLD_WATER_HEIGHT / static_cast<float>(WORLD_MAX_HEIGHT));
 	m_shader->upload_light_source(light);
 	m_shader->upload_quad_dimension(WATER_QUAD_DIMENSION);
+	m_shader->upload_camera_position(camera.get_position());
+
 
 	m_shader->upload_view_projection_matrix(camera.get_view_projection_matrix());
-	m_shader->upload_shadow_transform_low(light->get_transform_matrix(camera, Light::LOW));
-	m_shader->upload_shadow_transform_high(light->get_transform_matrix(camera, Light::HIGH));
+	m_shader->upload_shadow_transforms(light);
+	m_shader->upload_shadow_cascade_end(camera, light);
+	m_shader->upload_view_matrix(camera.get_view_projection_matrix());
+	m_shader->upload_projection_depth({ camera.get_near(), camera.get_far() });
 
 	m_dy->bind(GL_TEXTURE0);
 	m_world->get_height_map_texture()->bind(GL_TEXTURE1);
@@ -143,13 +146,15 @@ void WaterRenderer::render(const std::vector<std::shared_ptr<WaterModel>>& model
 	m_dz->bind(GL_TEXTURE6);
 	m_dudv_map->bind(GL_TEXTURE7);
 
-	if (m_shadow_map_low) {
-		m_shadow_map_low->bind(GL_TEXTURE8);
+
+	for (int i = 0; i < SHADOW_CASCADES; i++) {
+		if (m_shadow_maps[i]) {
+			m_shadow_maps[i]->bind(GL_TEXTURE8 + i);
+		}
 	}
-	
-	if (m_shadow_map_high) {
-		m_shadow_map_high->bind(GL_TEXTURE9);
-	}
+
+	m_shader->upload_shadow_maps(8);
+
 
 	GLC(glPatchParameteri(GL_PATCH_VERTICES, 3));
 	GLC(glEnable(GL_DEPTH_TEST));
@@ -185,7 +190,7 @@ void WaterRenderer::render(const std::vector<std::shared_ptr<WaterModel>>& model
 	GLC(glDisable(GL_BLEND));
 }
 
-void WaterRenderer::render_depth(const std::vector<std::shared_ptr<WaterModel>>& models, Camera& camera, const std::shared_ptr<Light>& light, Light::ShadowMapQuality quality) {
+void WaterRenderer::render_depth(const std::vector<std::shared_ptr<WaterModel>>& models, Camera& camera, const std::shared_ptr<Light>& light, int cascade) {
 	if (models.empty()) {
 		return;
 	}
@@ -193,12 +198,13 @@ void WaterRenderer::render_depth(const std::vector<std::shared_ptr<WaterModel>>&
 	m_depth_shader->bind();
 
 	m_depth_shader->upload_tex_units({ 0, 1, 2, 3, 4, 5, 6 });
-	m_depth_shader->upload_camera_position(camera.get_position());
 	m_depth_shader->upload_displacement_factor(m_wave_strength);
 	m_depth_shader->upload_water_height(WORLD_WATER_HEIGHT / static_cast<float>(WORLD_MAX_HEIGHT));
 	m_depth_shader->upload_quad_dimension(WATER_QUAD_DIMENSION);
+	m_depth_shader->upload_camera_position(camera.get_position());
 
-	m_depth_shader->upload_view_projection_matrix(light->get_transform_matrix(camera, quality));
+
+	m_depth_shader->upload_view_projection_matrix(light->get_transform_matrix(cascade));
 
 	m_dy->bind(GL_TEXTURE0);
 	m_world->get_height_map_texture()->bind(GL_TEXTURE1);
@@ -226,9 +232,6 @@ void WaterRenderer::update(Camera& camera, float time) {
 	m_time = 3.0f * time;
 
 	m_below_water = camera.get_position().y < WORLD_WATER_HEIGHT;
-
-	render_refraction(camera);
-	render_reflection(camera);
 
 	compute_hkt();
 	compute_fft();

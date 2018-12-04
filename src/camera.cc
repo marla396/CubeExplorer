@@ -4,10 +4,10 @@
 
 #include "camera.h"
 #include "application.h"
-
+#include "world/world_const.h"
 
 Camera::Camera() 
-	: m_position(0.0f, 0.0f, 0.0f), m_rotation({ 0.0f, 0.0f, 0.0f }), m_lock_frustum(false) {
+	: m_position(0.0f, 0.0f, 0.0f), m_rotation({ 0.0f, 0.0f, 0.0f }), m_lock_frustum(false), m_flyover(false), m_time(0.0f) {
 
 	m_view_matrix = std::make_unique<LazyObject<glm::mat4>>([this]() {
 		return update_view_matrix();
@@ -29,6 +29,10 @@ Camera::Camera()
 
 Camera::~Camera() {
 
+}
+
+void Camera::update(float time) {
+	m_time = time;
 }
 
 void Camera::process_mouse(float dx, float dy) {
@@ -78,6 +82,17 @@ void Camera::process_keyboard(float dt) {
 	}
 
 	notify_view();
+}
+
+glm::mat4 Camera::flyover(float time) {
+
+	float radius = WORLD_CENTER.x * 1.3f;
+
+	glm::vec3 pos = { WORLD_CENTER.x + radius * std::cos(time / 5.0f), 4.0f * WORLD_MAX_HEIGHT, WORLD_CENTER.z + radius * std::sin(time / 5.0f) };
+
+	look_at(pos, WORLD_CENTER);
+
+	return update_view_matrix();
 }
 
 void Camera::set_position(const glm::vec3& position) {
@@ -152,6 +167,37 @@ float Camera::get_fov() const {
 	return m_fov;
 }
 
+void Camera::look_at(const glm::vec3& pos, const glm::vec3& center, const glm::vec3& up) {
+	m_position = pos;
+
+	glm::vec3 direction = glm::normalize(center - pos);
+	glm::vec3 s = glm::cross(direction, up);
+	glm::vec3 w = glm::normalize(glm::vec3 { -direction.y, direction.x, 0.0f });
+	glm::vec3 u = glm::cross(direction, w);
+
+	m_rotation.y = std::atan2(direction.y, direction.x);
+	m_rotation.x = 0.0f;// std::asin(direction.z);
+	m_rotation.z = 0.0f;// std::atan2(glm::dot(w, u), glm::dot(u, up));
+}
+
+glm::vec3 Camera::get_forward() const {
+	auto view = get_view_matrix();
+
+	return { -view[0][2], -view[1][2], -view[2][2] };
+}
+
+glm::vec3 Camera::get_right() const {
+	auto view = get_view_matrix();
+
+	return { view[0][0], view[1][0], view[2][0] };
+}
+
+glm::vec3 Camera::get_up() const {
+	auto view = get_view_matrix();
+
+	return { view[0][1], view[1][1], view[2][1] };
+}
+
 void Camera::toggle_lock_frustum() {
 	m_lock_frustum = !m_lock_frustum;
 
@@ -160,20 +206,35 @@ void Camera::toggle_lock_frustum() {
 	}
 }
 
-std::array<FrustumPlane, 6> Camera::get_frustum_planes() const {
-	return m_frustum_planes->get();
+void Camera::toggle_flyover() {
+	m_flyover = !m_flyover;
+
+	if (m_flyover) {
+		m_view_matrix->set_update_function([this]() {
+			return flyover(m_time);
+		});
+	}
+	else {
+		m_view_matrix = std::make_unique<LazyObject<glm::mat4>>([this]() {
+			return update_view_matrix();
+		});
+	}
 }
 
-glm::mat4 Camera::get_view_matrix() {
+glm::mat4 Camera::get_view_matrix() const{
 	return m_view_matrix->get();
 }
 
-glm::mat4 Camera::get_projection_matrix() {	
+glm::mat4 Camera::get_projection_matrix() const{	
 	return m_projection_matrix->get();
 }
 
-glm::mat4 Camera::get_view_projection_matrix() {
+glm::mat4 Camera::get_view_projection_matrix() const{
 	return m_view_projection_matrix->get();
+}
+
+std::array<FrustumPlane, 6> Camera::get_frustum_planes() const {
+	return m_frustum_planes->get();
 }
 
 glm::mat4 Camera::update_view_matrix() {

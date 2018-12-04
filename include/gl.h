@@ -32,7 +32,7 @@ void check_framebuffer_status();
 #ifdef _WIN32
 #define TRAP				__debugbreak()
 #else
-#define TRAP				NOP//asm("int 0x3")
+#define TRAP				__asm__("int3"); __asm__("int3"); __asm__("int3");
 #endif
 
 #define GL_ASSERT(stmt)	if (!(stmt)) TRAP;

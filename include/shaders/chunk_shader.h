@@ -6,7 +6,7 @@
 #include "light_shader.h"
 #include "shadow_shader.h"
 
-class ChunkShader : public Shader, public MVPShader, public MultiTexShader<3>, public ClipShader, public LightShader, public ShadowShader {
+class ChunkShader : public Shader, public MVPShader, public MultiTexShader<1>, public ClipShader, public LightShader, public ShadowShader {
 public:
 	ChunkShader();
 	ChunkShader(bool depth);

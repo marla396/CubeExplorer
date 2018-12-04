@@ -4,9 +4,11 @@
 #include "world/light.h"
 #include "shaders/shader.h"
 #include "models/model.h"
+#include "world/world_const.h"
 #include "../camera.h"
 
 #include <glm/glm.hpp>
+#include <array>
 
 template<typename ShaderProgram, typename M>
 class Renderer{
@@ -35,12 +37,8 @@ public:
 		m_clip_plane = clip_plane;
 	}
 
-	void set_shadow_map_low(const std::shared_ptr<ITexture>& shadow_map) {
-		m_shadow_map_low = shadow_map;
-	}
-
-	void set_shadow_map_high(const std::shared_ptr<ITexture>& shadow_map) {
-		m_shadow_map_high = shadow_map;
+	void set_shadow_map(const std::shared_ptr<ITexture>& shadow_map, int cascade) {
+		m_shadow_maps[cascade] = shadow_map;
 	}
 
 	void toggle_wireframe() {
@@ -58,8 +56,7 @@ public:
 
 protected:
 	glm::vec4 m_clip_plane;
-	std::shared_ptr<ITexture> m_shadow_map_low;
-	std::shared_ptr<ITexture> m_shadow_map_high;
+	std::array<std::shared_ptr<ITexture>, SHADOW_CASCADES> m_shadow_maps;
 	std::unique_ptr<ShaderProgram> m_shader;
 
 	bool m_wireframe;

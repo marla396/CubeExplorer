@@ -12,6 +12,119 @@ Light::Light(const glm::vec3& position, const glm::vec3& color)
 
 }
 
+void Light::update(Camera& camera, float time) {
+	float diagonal_size;
+
+	diagonal_size = 1.1f * std::sqrt(2.0f) * static_cast<float>(CHUNK_SIZE * WORLD_SIZE);
+	m_projection_matrices[0] = glm::ortho(-diagonal_size / 2.0f, diagonal_size / 2.0f, -diagonal_size / 2.0f, diagonal_size / 2.0f, 0.1f, diagonal_size);
+	m_projection_matrices[1] = m_projection_matrices[0];
+	m_view_matrices[0] = glm::lookAt(m_position, WORLD_CENTER, { 0.0f, 1.0f, 0.0f });
+	m_view_matrices[1] = m_view_matrices[0];
+
+	for (int i = 0; i < SHADOW_CASCADES; i++) {
+		m_transform_matrices[i] = m_projection_matrices[i] * m_view_matrices[i];
+	}
+
+	float frustum_length = camera.get_far() - camera.get_near();	
+
+	/*for (int i = 0; i < SHADOW_CASCADES; i++) {
+		m_shadow_cascades[i] = camera.get_near() + static_cast<float>(i) * (frustum_length / static_cast<float>(SHADOW_CASCADES));
+	}*/
+
+
+	m_shadow_cascades[0] = -20.0f;
+	m_shadow_cascades[1] = 20.0f;
+	m_shadow_cascades[2] = 50.0f;
+	m_shadow_cascades[3] = 100.0f;
+	m_shadow_cascades[4] = 200.0f;
+	m_shadow_cascades[5] = 400.0f;
+	m_shadow_cascades[6] = camera.get_far();
+	//m_shadow_cascades[SHADOW_CASCADES] = camera.get_far();
+
+	glm::mat4 view = camera.get_view_matrix();
+	glm::mat4 view_inv = glm::inverse(camera.get_view_matrix());
+	//glm::mat4 vm = glm::lookAt({ 0.0f, 0.0f, 0.0f }, WORLD_CENTER, { 0.0f, 1.0f, 0.0f });
+
+	glm::vec3 f(glm::normalize(WORLD_CENTER - m_position));
+	glm::vec3 s(glm::normalize(glm::cross(f, { 0.0f, 1.0f, 0.0f })));
+	glm::vec3 u(glm::cross(s, f));
+
+	glm::mat4 vm = glm::identity<glm::mat4>();
+	vm[0][0] = s.x;
+	vm[1][0] = s.y;
+	vm[2][0] = s.z;
+	vm[0][1] = u.x;
+	vm[1][1] = u.y;
+	vm[2][1] = u.z;
+	vm[0][2] = -f.x;
+	vm[1][2] = -f.y;
+	vm[2][2] = -f.z;
+	vm[3][3] = 1.0f;
+
+	glm::vec3 up = camera.get_up();
+	glm::vec3 forward = camera.get_forward();
+	glm::vec3 right = camera.get_right();
+
+	float tan_fov = std::tan(camera.get_fov() / 2.0f);
+
+	for (int i = 0; i < SHADOW_CASCADES; i++) {
+		float height_near = tan_fov * m_shadow_cascades[i];
+		float width_near = height_near * camera.get_aspect();
+
+		float height_far = tan_fov * m_shadow_cascades[i + 1];
+		float width_far = height_far * camera.get_aspect();
+
+		glm::vec3 center_near = camera.get_position() + m_shadow_cascades[i] * forward;
+		glm::vec3 center_far = camera.get_position() + m_shadow_cascades[i + 1] * forward;
+
+		std::array<glm::vec3, 8> corners = {
+			//Near corners
+			center_near + up * height_near - (width_near * right),
+			center_near + up * height_near + (width_near * right),
+			center_near - up * height_near - (width_near * right),
+			center_near - up * height_near + (width_near * right),
+
+			//Far corners
+			center_far + up * height_far - (width_far * right),
+			center_far + up * height_far + (width_far * right),
+			center_far - up * height_far - (width_far * right),
+			center_far - up * height_far + (width_far * right),
+
+		};
+
+		//Transform to light space coordinates
+		for (auto &v : corners) {
+			glm::vec4 t = glm::vec4(v, 1.0f);
+			v = glm::vec3(vm * t);
+		}
+
+		float min_x, min_y, min_z;
+		float max_x, max_y, max_z;
+
+		min_x = min_y = min_z = 1000000.0f;
+		max_x = max_y = max_z = -1000000.0f;
+
+		std::array<glm::vec4, 8> corners_l;
+
+		for (int j = 0; j < 8; j++) {
+
+			glm::vec3 corner = corners[j];
+
+			min_x = std::min(min_x, corner.x);
+			min_y = std::min(min_y, corner.y);
+			min_z = std::min(min_z, corner.z);
+
+			max_x = std::max(max_x, corner.x);
+			max_y = std::max(max_y, corner.y);
+			max_z = std::max(max_z, corner.z);
+		}
+		
+		m_projection_matrices[i] = glm::ortho(min_x, max_x, min_y, max_y, -max_z, -min_z);
+		m_view_matrices[i] = vm;
+		m_transform_matrices[i] = m_projection_matrices[i] * vm;
+	}
+}
+
 glm::vec3 Light::get_position() const {
 	return m_position;
 }
@@ -28,97 +141,18 @@ void Light::set_color(const glm::vec3& color) {
 	m_color = color;
 }
 
-glm::mat4 Light::get_view_matrix(const Camera& camera, ShadowMapQuality quality) const {
-
-	if (quality == LOW) {
-		return glm::lookAt(m_position, WORLD_CENTER, { 0.0f, 1.0f, 0.0f });
-	}
-	else if (quality == HIGH) {
-		glm::vec3 n = glm::normalize(m_position); //normalize sun vector
-
-		glm::vec3 pos = LIGHT_HIGH_DISTANCE * glm::dot(n, camera.get_position()) * camera.get_position(); //scale sun vector
-	
-//		pos += camera.get_position(); // move it in parallel towards the camera
-
-
-		return glm::lookAt(m_player_position, camera.get_position(), { 0.0f, 1.0f, 0.0f });
-	}
+glm::mat4 Light::get_view_matrix(int cascade) const {
+	return m_view_matrices[cascade];
 }
 
-glm::mat4 Light::get_projection_matrix(const Camera& camera, ShadowMapQuality quality) const {
-
-	float diagonal_size;
-	
-	//if (quality == LOW) {
-		diagonal_size = 1.1f * std::sqrt(2.0f) * static_cast<float>(CHUNK_SIZE * WORLD_SIZE);
-		return glm::ortho(-diagonal_size / 2.0f, diagonal_size / 2.0f, -diagonal_size / 2.0f, diagonal_size / 2.0f, 0.1f, quality == LOW ? diagonal_size : diagonal_size / 2.0f);
-//	}
-//	else if (quality == HIGH) {
-//		diagonal_size = 1.1f * LIGHT_HIGH_DISTANCE;
-//		return glm::ortho(-diagonal_size / 2.0f, diagonal_size / 2.0f, -diagonal_size / 2.0f, diagonal_size / 2.0f, 0.1f, diagonal_size * 2.0f);
-//	}
-
-	/*glm::mat4 view = get_view_matrix(camera, quality);
-
-	glm::mat4 inv_view = glm::inverse(view);
-
-	//glm::mat4 lm = glm::lookAt({ 0.0f, 0.0f, 0.0f }, glm::normalize(WORLD_CENTER - m_position), { 0.0f, 1.0f, 0.0 });
-
-	float thhf = std::tan(camera.get_fov() / 2.0);
-	float thvf = std::tan((camera.get_fov() * camera.get_aspect()) / 2.0f);
-
-	float cascade_begin;
-	float cascade_end;
-
-	if (quality == Light::HIGH) {
-		cascade_begin = camera.get_near();
-		cascade_end = camera.get_near() + 60.0f;
-	}
-	else {
-		cascade_begin = camera.get_near() + 60.0f;
-		cascade_end = camera.get_far();
-	}
-
-	float xn = cascade_begin * thhf;
-	float xf = cascade_end * thhf;
-	float yn = cascade_begin * thvf;
-	float yf = cascade_end * thvf;
-
-	std::array<glm::vec4, 8> corners = {
-		glm::vec4 { xn, yn, cascade_begin, 1.0 },
-		glm::vec4 { -xn, yn, cascade_begin, 1.0 },
-		glm::vec4 { xn, -yn, cascade_begin, 1.0 },
-		glm::vec4 { -xn, -yn, cascade_begin, 1.0 },
-		glm::vec4 { xf, yf, cascade_end, 1.0 },
-		glm::vec4 { -xf, yf, cascade_end, 1.0 },
-		glm::vec4 { xf, -yf, cascade_end, 1.0 },
-		glm::vec4 { -xf, -yf, cascade_end, 1.0 },
-	};
-
-	float min_x = std::numeric_limits<float>::max();
-	float min_y = std::numeric_limits<float>::max();
-	float min_z = std::numeric_limits<float>::max();
-	float max_x = std::numeric_limits<float>::min();
-	float max_y = std::numeric_limits<float>::min();
-	float max_z = std::numeric_limits<float>::min();
-
-	for (auto& c : corners) {
-		glm::vec4 vw = inv_view * c;
-
-		c = view * vw;
-
-		min_x = std::min(min_x, c.x);
-		min_y = std::min(min_y, c.y);
-		min_z = std::min(min_z, c.z);
-		max_x = std::max(max_x, c.x);
-		max_y = std::max(max_y, c.y);
-		max_z = std::max(max_z, c.z);
-
-	}
-
-	return glm::ortho(min_x, max_x, min_y, max_y, min_z, max_z);*/
+glm::mat4 Light::get_projection_matrix(int cascade) const {
+	return m_projection_matrices[cascade];
 }
 
-glm::mat4 Light::get_transform_matrix(const Camera& camera, ShadowMapQuality quality) const {
-	return get_projection_matrix(camera, quality) * get_view_matrix(camera, quality);
+glm::mat4 Light::get_transform_matrix(int cascade) const {
+	return m_transform_matrices[cascade];
+}
+
+float Light::get_shadow_cascade_end(int cascade) const {
+	return m_shadow_cascades[cascade + 1];
 }

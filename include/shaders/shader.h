@@ -40,7 +40,6 @@ public:
 	//Have to be public in order to handle templated extension shaders
 	virtual void get_uniform_locations() = 0;
 	int get_uniform_location(const std::string& name);
-
 private:
 	void compile(const std::string& file);
 	bool preprocess_shader(std::string& in, std::string& out) const;

@@ -39,7 +39,7 @@ private:
 		DUDV = 128,
 		REFRACTION = 256,
 		REFLECTION = 512,
-		SHADOW_MAP = 1024,
+		SHADOW_MAPS = 1024,
 	};
 
 	NVGcontext* m_nvg_ctx;

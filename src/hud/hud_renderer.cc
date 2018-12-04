@@ -68,6 +68,22 @@ void HUDRenderer::render(const std::map<std::string, std::shared_ptr<HUDTexture>
 	log << "Velocity: " << player->get_velocity().x << ", " << player->get_velocity().y << ", " << player->get_velocity().z;
 	render_shadow_text(log.str(), 10.0f, 120.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
+	log.str("");
+	log.clear();
+	log << "Forward: " << camera.get_forward().x << ", " << camera.get_forward().y << ", " << camera.get_forward().z;
+	render_shadow_text(log.str(), 10.0f, 145.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+
+	log.str("");
+	log.clear();
+	log << "Right: " << camera.get_right().x << ", " << camera.get_right().y << ", " << camera.get_right().z;
+	render_shadow_text(log.str(), 10.0f, 170.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+
+	log.str("");
+	log.clear();
+	log << "Up: " << camera.get_up().x << ", " << camera.get_up().y << ", " << camera.get_up().z;
+	render_shadow_text(log.str(), 10.0f, 195.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+	
+
 
 	set_stroke_color(1.0f, 1.0f, 1.0f, 1.0f);
 	set_stroke_width(3.0f);
