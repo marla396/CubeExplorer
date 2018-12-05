@@ -284,6 +284,12 @@
     <ClCompile Include="..\..\src\texture\cube_texture.cc">
       <Filter>src\texture</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\config_file.cc">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\world\world_const.cc">
+      <Filter>src\world</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\application.h">
@@ -523,6 +529,9 @@
     <ClInclude Include="..\..\include\texture\cube_texture.h">
       <Filter>include\texture</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\config_file.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\res\shaders\blockshader.frag">
@@ -630,5 +639,6 @@
     <None Include="..\..\res\shaders\ext\shadows_frag.glsl">
       <Filter>res\shaders\ext</Filter>
     </None>
+    <None Include="..\..\world_config.cfg" />
   </ItemGroup>
 </Project>

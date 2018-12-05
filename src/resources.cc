@@ -27,6 +27,10 @@ std::string Resources::resolve_texture_path(const std::string& relative_texture_
 	return resolve_path("/res/textures/" + relative_texture_path);
 }
 
+std::string Resources::resolve_root_path(const std::string& relative_root_path) {
+	return resolve_path(relative_root_path);
+}
+
 std::string Resources::read_file(const std::string& path) {
 	std::ifstream file(path, std::ios::ate);
 

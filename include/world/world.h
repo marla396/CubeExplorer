@@ -49,6 +49,7 @@ private:
 	void add_chunk(const std::shared_ptr<ChunkModel>& chunk);
 	void add_tree(const std::shared_ptr<ChunkModel>& tree);
 	glm::vec3 get_sheep_spawn_point() const;
+	void read_configuration() const;
 
 	std::shared_ptr<FFTNoiseGenerator> m_generator;
 	std::mutex m_generator_mutex;

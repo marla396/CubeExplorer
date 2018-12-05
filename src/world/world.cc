@@ -2,6 +2,8 @@
 
 #include "world/world.h"
 #include "models/tree_model.h"
+#include "config_file.h"
+#include "resources.h"
 
 World::World(uint32_t seed) : m_all_blocks_initialized(false), m_seed(seed) {
 
@@ -85,6 +87,8 @@ float World::height_at(float x, float z) const {
 }
 
 void World::generate_world(const std::shared_ptr<ITexture>& chunk_texture) {
+
+	read_configuration();
 
 	m_height_map = m_generator->generate_height_map<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>(1.0f, static_cast<float>(WORLD_MAX_HEIGHT));
 
@@ -308,4 +312,19 @@ glm::vec3 World::get_sheep_spawn_point() const {
 			}
 		}
 	}
+}
+
+void World::read_configuration() const {
+	ConfigFile cfg(Resources::resolve_root_path("world_config.cfg"));
+
+	WORLD_MAX_HEIGHT = cfg.get<int>("WORLD_MAX_HEIGHT");
+	WORLD_WATER_HEIGHT = cfg.get<float>("WORLD_WATER_HEIGHT");
+	WORLD_BEACH_HEIGHT = cfg.get<float>("WORLD_BEACH_HEIGHT");
+	WATER_QUAD_DIMENSION = cfg.get<int>("WATER_QUAD_DIMENSION");
+
+	float fft_cutoff = cfg.get<float>("FFT_CUTOFF_FREQUENCY");
+	float fft_order = cfg.get<float>("FFT_FILTER_ORDER");
+
+	m_generator->set_cutoff(fft_cutoff);
+	m_generator->set_order(fft_order);
 }

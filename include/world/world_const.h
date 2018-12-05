@@ -1,15 +1,15 @@
-#pragma once
-
+#ifndef WORLD_CONST_H
+#define WORLD_CONST_H
 #include <glm/glm.hpp>
 
 constexpr int CHUNK_SIZE = 16;
 constexpr int WORLD_SIZE = 16;
-constexpr int WORLD_MAX_HEIGHT = 48;
-constexpr float WORLD_WATER_HEIGHT = 15.5f;
-constexpr float WORLD_BEACH_HEIGHT = WORLD_WATER_HEIGHT + 1.0f;
+extern int WORLD_MAX_HEIGHT;
+extern float WORLD_WATER_HEIGHT;
+extern float WORLD_BEACH_HEIGHT;
 constexpr size_t WATER_FFT_DIMENSION = 1024;
 constexpr size_t WATER_FFT_DIMENSION_LOG2 = 10;
-constexpr int WATER_QUAD_DIMENSION = 16;
+extern int WATER_QUAD_DIMENSION;
 
 constexpr int WORLD_SHEEP_AMOUNT = 0;
 
@@ -31,3 +31,4 @@ public:
 		return (v.x * p1) ^ (v.y * p2) ^ (v.z * p3);
 	}
 };
+#endif

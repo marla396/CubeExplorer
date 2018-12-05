@@ -152,6 +152,7 @@
     <ClCompile Include="..\..\lib\nanovg\nanovg.c" />
     <ClCompile Include="..\..\src\application.cc" />
     <ClCompile Include="..\..\src\camera.cc" />
+    <ClCompile Include="..\..\src\config_file.cc" />
     <ClCompile Include="..\..\src\entities\entity.cc" />
     <ClCompile Include="..\..\src\entities\player.cc" />
     <ClCompile Include="..\..\src\entities\sheep.cc" />
@@ -213,11 +214,13 @@
     <ClCompile Include="..\..\src\world\block_map.cc" />
     <ClCompile Include="..\..\src\world\light.cc" />
     <ClCompile Include="..\..\src\world\world.cc" />
+    <ClCompile Include="..\..\src\world\world_const.cc" />
     <ClCompile Include="..\..\Windows\glad\src\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\application.h" />
     <ClInclude Include="..\..\include\camera.h" />
+    <ClInclude Include="..\..\include\config_file.h" />
     <ClInclude Include="..\..\include\entities\entity.h" />
     <ClInclude Include="..\..\include\entities\physics_const.h" />
     <ClInclude Include="..\..\include\entities\player.h" />
@@ -332,6 +335,7 @@
     <None Include="..\..\res\shaders\watershader.tcs" />
     <None Include="..\..\res\shaders\watershader.tes" />
     <None Include="..\..\res\shaders\watershader.vert" />
+    <None Include="..\..\world_config.cfg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
