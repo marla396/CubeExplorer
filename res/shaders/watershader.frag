@@ -46,10 +46,9 @@ void main(void){
 	vec2 refract_coords = vec2(ndc.x, ndc.y);
 
 	vec3 normal = texture(tex_unit4, tex_coords_frag).rbg;
+	normal = normalize(normal);
 
 	vec2 dudv = texture(tex_unit7, tex_coords_frag).rg * displacement_factor;
-
-	normal = normalize(normal);
 
 	reflect_coords += dudv;
 	refract_coords += dudv;
@@ -65,7 +64,6 @@ void main(void){
 	vec3 view_vector = normalize(camera_position - world_position_frag);
 	float refractive_factor = dot(view_vector, vec3(0.0, 1.0, 0.0));
 	refractive_factor = max(0.0, pow(refractive_factor, 4.0));
-
 
 	vec3 reflected_light = reflect(normalize(world_position_frag - light_position), normal);
 	float specular = max(dot(reflected_light, view_vector), 0.0);

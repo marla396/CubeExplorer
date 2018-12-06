@@ -40,6 +40,7 @@ private:
 		REFRACTION = 256,
 		REFLECTION = 512,
 		SHADOW_MAPS = 1024,
+		SSAO = 2048,
 	};
 
 	NVGcontext* m_nvg_ctx;

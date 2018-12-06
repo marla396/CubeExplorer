@@ -24,7 +24,11 @@ public:
 	void update(float time);
 	void toggle_fxaa();
 	void toggle_ssao();
+
+	std::shared_ptr<ITexture> get_ssao_texture() const;
 private:
+	static constexpr int SSAO_SCALE = 2;
+
 	void underwater(const std::shared_ptr<ITexture>& input, const std::shared_ptr<ITexture>& output, float depth);
 	void fxaa(const std::shared_ptr<ITexture>& input, const std::shared_ptr<ITexture>& output);
 	

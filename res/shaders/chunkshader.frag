@@ -19,7 +19,7 @@ void main(void){
 
 	float occlusion = get_shadow_occlusion();
 
-	float diffuse = max(1.4 * dot(normal_fs, normalize(light_position - world_position.xyz)), 0.3);
+	float diffuse = max(1.2 * dot(normal_fs, normalize(light_position - world_position.xyz)), 0.3);
 
 	color = vec4(light_color, 1.0) * texture(tex_unit0, tex_coords_fs);
 

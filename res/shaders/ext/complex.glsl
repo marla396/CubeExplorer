@@ -10,8 +10,7 @@ complex mul(complex c0, complex c1){
 	return c;
 }
 
-complex add(complex c0, complex c1)
-{
+complex add(complex c0, complex c1){
 	complex c;
 	c.real = c0.real + c1.real;
 	c.im   = c0.im   + c1.im;

@@ -27,7 +27,7 @@ public:
 
 private:
 
-	std::array<float, SHADOW_CASCADES + 1> m_shadow_cascades;
+	std::array<glm::vec2, SHADOW_CASCADES> m_shadow_cascades;
 	std::array<glm::mat4, SHADOW_CASCADES> m_view_matrices;
 	std::array<glm::mat4, SHADOW_CASCADES> m_projection_matrices;
 	std::array<glm::mat4, SHADOW_CASCADES> m_transform_matrices;

@@ -32,7 +32,7 @@ void ConfigFile::parse(const std::string& file) {
 			}
 		}
 		else {
-			LOG("Failed to parse config: " << file << "\n" << "No \'=\' found at line " << line << std::endl);
+			LOG("Failed to parse config: " << file << "\n" << "No \'=\' found at line " << line_number << std::endl);
 		}
 	}
 }

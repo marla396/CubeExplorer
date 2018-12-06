@@ -27,7 +27,7 @@ float get_shadow_value(sampler2D shadow_map, vec3 coords, float epsilon){
 	
 	float occlusion = 0.0;
 
-	vec2 offset = vec2(1.0 / (1.5 * 2048.0));
+	const vec2 offset = vec2(1.0 / (2048.0));
 	
 
 	for (int y = -1; y <= 1; y++){
@@ -48,9 +48,13 @@ float get_shadow_occlusion(){
 	float depth = view_space_pos.z / projection_depth.y;
 
 	for (int i = 0; i < SHADOW_CASCADES; i++){
-			if (depth <= shadow_cascade_end[i] + 0.001){
+			if (depth < shadow_cascade_end[i]){
 				vec3 coords = project_shadow_coords(shadow_coords[i]);
-				return get_shadow_value(shadow_maps[i], coords, 0.0000005);
+				if (test_shadow_map(shadow_maps[i], coords, 0.00000002))
+					return 0.5;
+				else
+					break;
+				//return get_shadow_value(shadow_maps[i], coords, 0.00000002);
 			}
 	}
 

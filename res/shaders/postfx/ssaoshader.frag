@@ -1,6 +1,6 @@
 in vec2 tex_coords_fs;
 
-#define KERNEL_SIZE 128
+#define KERNEL_SIZE 64
 
 uniform sampler2D tex_unit0; //depth
 uniform sampler2D tex_unit1; //noise
@@ -10,7 +10,7 @@ uniform vec2 projection_depth;
 uniform vec2 screen_dimensions;
 uniform mat4 projection_matrix;
 
-const float RADIUS = 0.5;
+const float RADIUS = 1.0;
 
 out vec4 color;
 
@@ -59,8 +59,8 @@ void main(void){
 	vec3 frag_pos = vec3(tex_coords_fs, depth);
 	vec3 normal = get_normal(depth, tex_coords_fs);
 
-	vec3 randomVec = get_random(tex_coords_fs);
-	vec3 tangent = normalize(randomVec - normal * dot(randomVec, normal));
+	vec3 random = get_random(tex_coords_fs);
+	vec3 tangent = normalize(random - normal * dot(random, normal));
 	vec3 bitangent = cross(normal, tangent);
 	mat3 TBN = mat3(tangent, bitangent, normal);
 
@@ -74,10 +74,11 @@ void main(void){
 
 		float range_check = smoothstep(0.0, 1.0, RADIUS / abs(frag_pos.z - sample_depth));
 
-		occlusion += (sample_depth < d.z ? 1.0 : 0.0) * range_check;
+		occlusion += (sample_depth + 0.001 < d.z ? 1.0 : 0.0) * range_check;
 	}
 
 	occlusion = 1.0 - occlusion / KERNEL_SIZE;
 	
 	color.rgb = vec3(occlusion);
+	color.a = 1.0;
 }

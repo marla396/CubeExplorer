@@ -30,11 +30,11 @@ Game::Game(NVGcontext* nvg_ctx)
 	m_camera.set_yaw(PI / 2.0f);
 
 	m_postfx_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_TEXTURE | FBO_DEPTH_TEXTURE1 | FBO_RENDERBUFFER);
-	m_shadow_fbo = std::make_shared<FrameBuffer>(Application::get_width(), Application::get_height(), FBO_DEPTH_TEXTURE1 | FBO_DEPTH_TEXTURE2 | FBO_DEPTH_TEXTURE3 | FBO_DEPTH_TEXTURE4 | FBO_DEPTH_TEXTURE5 | FBO_DEPTH_TEXTURE6);
+	m_shadow_fbo = std::make_shared<FrameBuffer>(4096, 4096, FBO_DEPTH_TEXTURE1 | FBO_DEPTH_TEXTURE2 | FBO_DEPTH_TEXTURE3 | FBO_DEPTH_TEXTURE4 | FBO_DEPTH_TEXTURE5 | FBO_DEPTH_TEXTURE6);
 
 	Application::register_resize_callback([this](size_t w, size_t h){
 		m_postfx_fbo->set_resolution(w, h);
-		m_shadow_fbo->set_resolution(w, h);
+		m_shadow_fbo->set_resolution(4096, 4096);
 	});
 
 	m_texture_atlas = std::make_shared<TextureAtlas<32, 32>>("blocktextures.png");
@@ -304,6 +304,9 @@ void Game::insert_display_pip() {
 			m_hud_textures.insert(std::make_pair("pip" + std::to_string(i), h));
 		}
 		return;
+	case SSAO:
+		hud = std::make_shared<HUDTexture>(m_postfx_renderer->get_ssao_texture());
+		break;
 	}
 
 	if (hud != nullptr) {
