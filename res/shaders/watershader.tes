@@ -8,6 +8,7 @@ in vec2 tex_coords_tes[];
 out vec3 world_position_frag;
 out vec2 tex_coords_frag;
 out vec4 clip_space;
+out vec3 tangent;
 
 uniform mat4 view_projection_matrix;
 
@@ -21,6 +22,30 @@ uniform float displacement_factor;
 uniform vec2 quad_instance;
 uniform int quad_dimension;
 
+void calculate_tangent(){
+	vec3 v0 = world_position_tes[0];
+	vec3 v1 = world_position_tes[1].xyz;
+	vec3 v2 = world_position_tes[2].xyz;
+
+    vec3 e1 = v1 - v0;
+    vec3 e2 = v2 - v0;
+
+    float dU1 = tex_coords_tes[1].x - tex_coords_tes[0].x;
+    float dV1 = tex_coords_tes[1].y - tex_coords_tes[0].y;
+    float dU2 = tex_coords_tes[2].x - tex_coords_tes[0].x;
+    float dV2 = tex_coords_tes[2].y - tex_coords_tes[0].y;
+
+    float f = 1.0 / (dU1 * dV2 - dU2 * dV1);
+
+    vec3 t;
+
+    t.x = f * (dV2 * e1.x - dV1 * e2.x);
+    t.y = f * (dV2 * e1.y - dV1 * e2.y);
+    t.z = f * (dV2 * e1.z - dV1 * e2.z);
+	
+	tangent = normalize(t);
+}
+
 vec2 lerp2D(vec2 v0, vec2 v1, vec2 v2)
 {
    	return vec2(gl_TessCoord.x) * v0 + vec2(gl_TessCoord.y) * v1 + vec2(gl_TessCoord.z) * v2;
@@ -33,6 +58,7 @@ vec3 lerp3D(vec3 v0, vec3 v1, vec3 v2)
 
 void main(void){
 
+	calculate_tangent();
    	world_position_frag = lerp3D(world_position_tes[0], world_position_tes[1], world_position_tes[2]);
 	tex_coords_frag = lerp2D(tex_coords_tes[0], tex_coords_tes[1], tex_coords_tes[2]);
 

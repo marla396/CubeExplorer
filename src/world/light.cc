@@ -13,31 +13,16 @@ Light::Light(const glm::vec3& position, const glm::vec3& color)
 }
 
 void Light::update(Camera& camera, float time) {
-	float diagonal_size;
 
-	diagonal_size = 1.1f * std::sqrt(2.0f) * static_cast<float>(CHUNK_SIZE * WORLD_SIZE);
-	m_projection_matrices[0] = glm::ortho(-diagonal_size / 2.0f, diagonal_size / 2.0f, -diagonal_size / 2.0f, diagonal_size / 2.0f, 0.1f, diagonal_size);
-	m_projection_matrices[1] = m_projection_matrices[0];
-	m_view_matrices[0] = glm::lookAt(m_position, WORLD_CENTER, { 0.0f, 1.0f, 0.0f });
-	m_view_matrices[1] = m_view_matrices[0];
-
-	for (int i = 0; i < SHADOW_CASCADES; i++) {
-		m_transform_matrices[i] = m_projection_matrices[i] * m_view_matrices[i];
-	}
-
-	float frustum_length = camera.get_far();	
-
-	/*for (int i = 0; i < SHADOW_CASCADES; i++) {
-		m_shadow_cascades[i] = camera.get_near() + static_cast<float>(i) * (frustum_length / static_cast<float>(SHADOW_CASCADES));
-	}*/
+	float frustum_length = camera.get_far() - camera.get_near();	
 
 	const float split[] = {
+			-0.005f, 0.005f,
 			-0.015f, 0.015f,
-			-0.025f, 0.05f,
-			0.0f, 0.07f,
-			0.06f, 0.14f,
-			0.12f, 0.34f,
-			0.3f, 0.6f
+			-0.025f, 0.04f,
+			0.03f, 0.1f,
+			0.09f, 0.25f,
+			0.24f, 0.6f
 	};
 
 	for (int i = 0; i < SHADOW_CASCADES * 2; i += 2) {
@@ -45,27 +30,21 @@ void Light::update(Camera& camera, float time) {
 	}
 
 
-	//m_shadow_cascades[SHADOW_CASCADES] = camera.get_far();
-
-	glm::mat4 view = camera.get_view_matrix();
-	glm::mat4 view_inv = glm::inverse(camera.get_view_matrix());
-	//glm::mat4 vm = glm::lookAt({ 0.0f, 0.0f, 0.0f }, WORLD_CENTER, { 0.0f, 1.0f, 0.0f });
-
 	glm::vec3 f(glm::normalize(WORLD_CENTER - m_position));
 	glm::vec3 s(glm::normalize(glm::cross(f, { 0.0f, 1.0f, 0.0f })));
 	glm::vec3 u(glm::cross(s, f));
 
-	glm::mat4 vm = glm::identity<glm::mat4>();
-	vm[0][0] = s.x;
-	vm[1][0] = s.y;
-	vm[2][0] = s.z;
-	vm[0][1] = u.x;
-	vm[1][1] = u.y;
-	vm[2][1] = u.z;
-	vm[0][2] = -f.x;
-	vm[1][2] = -f.y;
-	vm[2][2] = -f.z;
-	vm[3][3] = 1.0f;
+	m_view_matrix = glm::identity<glm::mat4>();
+	m_view_matrix[0][0] = s.x;
+	m_view_matrix[1][0] = s.y;
+	m_view_matrix[2][0] = s.z;
+	m_view_matrix[0][1] = u.x;
+	m_view_matrix[1][1] = u.y;
+	m_view_matrix[2][1] = u.z;
+	m_view_matrix[0][2] = -f.x;
+	m_view_matrix[1][2] = -f.y;
+	m_view_matrix[2][2] = -f.z;
+	m_view_matrix[3][3] = 1.0f;
 
 	glm::vec3 up = camera.get_up();
 	glm::vec3 forward = camera.get_forward();
@@ -101,7 +80,7 @@ void Light::update(Camera& camera, float time) {
 		//Transform to light space coordinates
 		for (auto &v : corners) {
 			glm::vec4 t = glm::vec4(v, 1.0f);
-			v = glm::vec3(vm * t);
+			v = glm::vec3(m_view_matrix * t);
 		}
 
 		float min_x, min_y, min_z;
@@ -126,8 +105,7 @@ void Light::update(Camera& camera, float time) {
 		}
 		
 		m_projection_matrices[i] = glm::ortho(min_x - 10.0f, max_x + 10.0f, min_y - 10.0f, max_y + 10.0f, -max_z - 10.0f, -min_z + 10.0f);
-		m_view_matrices[i] = vm;
-		m_transform_matrices[i] = m_projection_matrices[i] * vm;
+		m_transform_matrices[i] = m_projection_matrices[i] * m_view_matrix;
 	}
 }
 
@@ -147,8 +125,8 @@ void Light::set_color(const glm::vec3& color) {
 	m_color = color;
 }
 
-glm::mat4 Light::get_view_matrix(int cascade) const {
-	return m_view_matrices[cascade];
+glm::mat4 Light::get_view_matrix() const {
+	return m_view_matrix;
 }
 
 glm::mat4 Light::get_projection_matrix(int cascade) const {

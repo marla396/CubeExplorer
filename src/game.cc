@@ -41,7 +41,6 @@ Game::Game(NVGcontext* nvg_ctx)
 	skybox_texture = std::make_shared<FTexture>("skybox.png");
 	 
 	auto seed = std::random_device{}();
-	//auto seed = 1337;
 
 	std::cout << "Seed: " << seed << std::endl;
 
@@ -165,6 +164,72 @@ void Game::on_resize(size_t width, size_t height) {
 
 void Game::on_cursor(float dx, float dy) {
 	m_camera.process_mouse(dx, dy);
+}
+
+void Game::benchmark_water() {
+
+	uint32_t query;
+	uint64_t time_elapsed;
+	int32_t done = 0;
+
+	GLC(glCreateQueries(GL_TIME_ELAPSED, 1, &query));
+	GLC(glBeginQuery(GL_TIME_ELAPSED, query));
+	
+	for (int i = 0; i < 100; i++) {
+		m_water_renderer->compute_h0k();
+	}
+
+	GLC(glEndQuery(GL_TIME_ELAPSED));
+	while (!done) {
+		GLC(glGetQueryObjectiv(query, GL_QUERY_RESULT_AVAILABLE, &done));
+	}
+
+	glGetQueryObjectui64v(query, GL_QUERY_RESULT, &time_elapsed);
+
+	double initial_spectrum = (static_cast<double>(time_elapsed) / 100.0) * 1e-9;
+
+	std::cout << "Initial water spectrum calculated in " << initial_spectrum << " seconds." << std::endl;
+
+	m_water_renderer->compute_twiddle();
+	done = 0;
+
+	GLC(glBeginQuery(GL_TIME_ELAPSED, query));
+
+	for (int i = 0; i < 100; i++) {
+		m_water_renderer->compute_hkt();
+	}
+
+	GLC(glEndQuery(GL_TIME_ELAPSED));
+	while (!done) {
+		GLC(glGetQueryObjectiv(query, GL_QUERY_RESULT_AVAILABLE, &done));
+	}
+
+	glGetQueryObjectui64v(query, GL_QUERY_RESULT, &time_elapsed);
+
+	double time_spectrum = (static_cast<double>(time_elapsed) / 100.0) * 1e-9;
+
+	std::cout << "Water time spectrum calculated in " << time_spectrum << " seconds." << std::endl;
+
+	done = 0;
+
+	GLC(glBeginQuery(GL_TIME_ELAPSED, query));
+
+	for (int i = 0; i < 100; i++) {
+		m_water_renderer->compute_fft();
+	}
+
+	GLC(glEndQuery(GL_TIME_ELAPSED));
+	while (!done) {
+		GLC(glGetQueryObjectiv(query, GL_QUERY_RESULT_AVAILABLE, &done));
+	}
+
+	glGetQueryObjectui64v(query, GL_QUERY_RESULT, &time_elapsed);
+
+	double fft_spectrum = (static_cast<double>(time_elapsed) / 100.0) * 1e-9;
+
+	std::cout << "Water FFT (and normals, dudv) calculated in " << fft_spectrum << " seconds." << std::endl;
+
+	GLC(glDeleteQueries(1, &query));
 }
 
 void Game::on_key(int key, int scan_code, int action, int mods) {

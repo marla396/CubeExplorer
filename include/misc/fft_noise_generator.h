@@ -6,6 +6,7 @@
 
 #include <simple_fft/fft.hpp>
 #include "fft_noise.h"
+#include "world/world_const.h"
 
 #include "gl.h"
 

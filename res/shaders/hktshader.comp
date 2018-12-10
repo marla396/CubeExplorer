@@ -17,9 +17,8 @@ void main(void){
 	
 	vec2 k = vec2(2.0 * M_PI * x.x/L, 2.0 * M_PI * x.y/L);
 	
-	float magnitude = length(k);
-	if (magnitude < 0.00001) magnitude = 0.00001;
-	
+	float magnitude = max(length(k), 0.00001);
+
 	float w = sqrt(9.81 * magnitude);
 	
 	complex fourier_amp = complex(imageLoad(tex_unit3, ivec2(gl_GlobalInvocationID.xy)).r, 

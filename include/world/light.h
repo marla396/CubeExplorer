@@ -18,7 +18,7 @@ public:
 	glm::vec3 get_color() const;
 	void set_color(const glm::vec3& color);
 
-	glm::mat4 get_view_matrix(int cascade) const;
+	glm::mat4 get_view_matrix() const;
 	glm::mat4 get_projection_matrix(int cascade) const;
 	glm::mat4 get_transform_matrix(int cascade) const;
 	float get_shadow_cascade_end(int cascade) const;
@@ -28,7 +28,7 @@ public:
 private:
 
 	std::array<glm::vec2, SHADOW_CASCADES> m_shadow_cascades;
-	std::array<glm::mat4, SHADOW_CASCADES> m_view_matrices;
+	glm::mat4 m_view_matrix;
 	std::array<glm::mat4, SHADOW_CASCADES> m_projection_matrices;
 	std::array<glm::mat4, SHADOW_CASCADES> m_transform_matrices;
 

@@ -21,6 +21,8 @@
 
 class World : public std::enable_shared_from_this<World> {
 public:
+	using HeightMap = std::shared_ptr<FFTNoise<WORLD_SIZE * CHUNK_SIZE, WORLD_SIZE * CHUNK_SIZE>>;
+
 	World(uint32_t seed);
 	~World();
 

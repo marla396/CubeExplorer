@@ -1,63 +1,7 @@
-﻿  application.cc
-  player.cc
-  sheep.cc
-  game.cc
-..\..\src\application.cc(158): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  main.cc
-  chunk_model.cc
-  block_renderer.cc
-  chunk_renderer.cc
-..\..\src\models\chunk_model.cc(170): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
-..\..\src\renderers\block_renderer.cc(26): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  entity_renderer.cc
-  skybox_renderer.cc
-  water_renderer.cc
-..\..\src\renderers\chunk_renderer.cc(51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-..\..\src\renderers\chunk_renderer.cc(85): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  chunk_shader.cc
-..\..\src\renderers\entity_renderer.cc(51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-..\..\src\renderers\entity_renderer.cc(81): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-..\..\src\renderers\skybox_renderer.cc(30): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  entity_shader.cc
-  light_shader.cc
-..\..\src\renderers\water_renderer.cc(181): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-..\..\src\renderers\water_renderer.cc(224): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\water_renderer.cc)
-  L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(8): note: while compiling class template member function 'MTexture<float>::MTexture(::size_t,::size_t,const T *)'
-          with
-          [
-              T=float
-          ] (compiling source file ..\..\src\renderers\water_renderer.cc)
-  L:\Visual Studio\VC\Tools\MSVC\14.12.25827\include\memory(2585): note: see reference to function template instantiation 'MTexture<float>::MTexture(::size_t,::size_t,const T *)' being compiled
-          with
-          [
-              T=float
-          ] (compiling source file ..\..\src\renderers\water_renderer.cc)
-  ..\..\src\renderers\water_renderer.cc(254): note: see reference to class template instantiation 'MTexture<float>' being compiled
-L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\water_renderer.cc)
-  shader.cc
-  shadow_shader.cc
-  water_shader.cc
-  light.cc
-..\..\src\shaders\shader.cc(67): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-..\..\src\shaders\shader.cc(71): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  world.cc
-..\..\src\world\light.cc(113): warning C4101: 'corners_l': unreferenced local variable
-L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\world\world.cc)
-  L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(8): note: while compiling class template member function 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)'
-          with
-          [
-              T=uint8_t
-          ] (compiling source file ..\..\src\world\world.cc)
-  L:\Visual Studio\VC\Tools\MSVC\14.12.25827\include\memory(1849): note: see reference to function template instantiation 'MTexture<uint8_t>::MTexture(::size_t,::size_t,const T *)' being compiled
-          with
-          [
-              T=uint8_t
-          ] (compiling source file ..\..\src\world\world.cc)
-  ..\..\src\world\world.cc(95): note: see reference to class template instantiation 'MTexture<uint8_t>' being compiled
-L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\world\world.cc)
+﻿  light.cc
+..\..\src\world\light.cc(92): warning C4101: 'corners_l': unreferenced local variable
   Generating code
-  1 of 6343 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  1 of 6333 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     1 functions had inline decision re-evaluated but remain unchanged
   Finished generating code

@@ -87,24 +87,28 @@ bool Application::initialize(int argc, char** argv){
 
 void Application::run() {
 
-	using namespace std::chrono_literals;
+	if (m_benchmark_water) {
+		m_game->benchmark_water();
+	}
+	else {
 
-	GLC(glClearColor(0.35686274509803921568627450980392f, 0.73725490196078431372549019607843f, 1.0f, 1.0f));
+		GLC(glClearColor(0.36f, 0.74f, 1.0f, 1.0f));
 
-	while (!glfwWindowShouldClose(m_window))
-	{
-		start_render_timer();
-		sleep_until_next_frame();
-		
-		m_game->on_update(m_time, m_time - m_previous_time);
-		m_game->on_render();
-		
-		glfwSwapBuffers(m_window);
-		glfwPollEvents();
+		while (!glfwWindowShouldClose(m_window))
+		{
+			start_render_timer();
+			sleep_until_next_frame();
 
-		stop_render_timer();
-		m_previous_time = m_time;
-		m_time += (m_render_time / 1000000.0f) * m_time_warp_factor;
+			m_game->on_update(m_time, m_time - m_previous_time);
+			m_game->on_render();
+
+			glfwSwapBuffers(m_window);
+			glfwPollEvents();
+
+			stop_render_timer();
+			m_previous_time = m_time;
+			m_time += (m_render_time / 1000000.0f) * m_time_warp_factor;
+		}
 	}
 	
 	nvgDeleteGL3(m_nvg_ctx);
@@ -184,6 +188,7 @@ bool Application::parse_arguments(const std::vector<std::string>& arguments) {
 	m_width = DEFAULT_WIDTH;
 	m_height = DEFAULT_HEIGHT;
 	m_fullscreen = false;
+	m_benchmark_water = false;
 
 	auto check_end = [&arguments](auto& it) { return ++it != arguments.end(); };
 
@@ -220,6 +225,9 @@ bool Application::parse_arguments(const std::vector<std::string>& arguments) {
 		}
 		else if (*it == "--fullscreen" || *it == "-f") {
 			m_fullscreen = true;
+		}
+		else if (*it == "--benchmark" || *it == "-b") {
+			m_benchmark_water = true;
 		}
 	}
 

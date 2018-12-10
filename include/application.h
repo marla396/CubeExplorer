@@ -64,6 +64,7 @@ private:
 	double m_center_x;
 	double m_center_y;
 	bool m_fullscreen;
+	bool m_benchmark_water;
 
 	float m_time;
 	float m_previous_time;

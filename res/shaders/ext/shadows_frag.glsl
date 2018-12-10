@@ -27,20 +27,25 @@ float get_shadow_value(sampler2D shadow_map, vec3 coords, float epsilon){
 	
 	float occlusion = 0.0;
 
-	const vec2 offset = vec2(1.0 / (2048.0));
+	const vec2 offset = vec2(1.0 / (4096.0 / 3));
 	
+	const float kernel[3][3] = {
+		{1.0, 2.0, 1.0},
+		{2.0, 4.0, 2.0},
+		{1.0, 2.0, 1.0},
+	};
 
 	for (int y = -1; y <= 1; y++){
 		for (int x = -1; x <= 1; x++){
 			vec3 offset = vec3(x * offset.x, y * offset.y, 0.0);
 			if (test_shadow_map(shadow_map, coords + offset, epsilon)){
-				occlusion += 1.0;
+				occlusion += kernel[x + 1][y + 1] / 16.0;
 			}
 		}
 	}
 
 	
-	return 1.0 - (occlusion / (3.0 * 3.0)) * 0.7;
+	return 1.0 - occlusion * 0.7;
 }
 
 float get_shadow_occlusion(){
@@ -50,11 +55,11 @@ float get_shadow_occlusion(){
 	for (int i = 0; i < SHADOW_CASCADES; i++){
 			if (depth < shadow_cascade_end[i]){
 				vec3 coords = project_shadow_coords(shadow_coords[i]);
-				if (test_shadow_map(shadow_maps[i], coords, 0.00000002))
-					return 0.5;
+				/*if (test_shadow_map(shadow_maps[i], coords, 0.00000001))
+					return 0.3;
 				else
-					break;
-				//return get_shadow_value(shadow_maps[i], coords, 0.00000002);
+					break;*/
+				return get_shadow_value(shadow_maps[i], coords, 0.00000001);
 			}
 	}
 

@@ -125,7 +125,7 @@ protected:
 
 private:
 
-;
+	;
 
 	bool occluded(const BlockMap& height_map, int x, int y, int z) const;
 	void generate_block(const BlockMap& height_map, int x, int y, int z, bool is_top_block);

@@ -10,7 +10,7 @@ ChunkModel::ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3
 
 ChunkModel::ChunkModel(const std::shared_ptr<ITexture>& texture, const glm::vec3& position, const BlockMap& block_map)
 	: Model(true), m_initialized(false) {
-	
+
 	set_position(position);
 	set_texture(texture);
 	generate_geometry(block_map);
@@ -21,7 +21,7 @@ ChunkModel::~ChunkModel() {
 }
 
 void ChunkModel::gpu_init() {
-	
+
 	late_init();
 	upload_geometry();
 	clear_geometry();
@@ -33,7 +33,7 @@ bool ChunkModel::is_initialized() const {
 }
 
 void ChunkModel::generate_geometry(const BlockMap& block_map) {
-	
+
 	for (int x = 0; x < CHUNK_SIZE; x++) {
 		for (int z = 0; z < CHUNK_SIZE; z++) {
 			for (int y = 0; y < CHUNK_SIZE; y++) {
@@ -56,11 +56,11 @@ float ChunkModel::get_bounding_radius() const {
 	return std::sqrt(2.0f) * CHUNK_SIZE;
 }
 
-bool ChunkModel::occluded(const BlockMap& block_map, int x, int y, int z) const{
+bool ChunkModel::occluded(const BlockMap& block_map, int x, int y, int z) const {
 
 	if (!block_map(x, y, z))
 		return true;
-	
+
 	if (x == 0 || y == 0 || z == 0)
 		return false;
 
@@ -313,7 +313,7 @@ void ChunkModel::generate_face_texture(ChunkModel::BlockTexture texture) {
 
 	auto coords = m_texture->get_texture_coords(texture_x, texture_y);
 	m_tex_coords.insert(m_tex_coords.end(), coords.begin(), coords.end());
-	
+
 }
 
 void ChunkModel::generate_normals(const std::array<float, 3>& normals) {

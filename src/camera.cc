@@ -170,14 +170,9 @@ float Camera::get_fov() const {
 void Camera::look_at(const glm::vec3& pos, const glm::vec3& center, const glm::vec3& up) {
 	m_position = pos;
 
-	glm::vec3 direction = glm::normalize(center - pos);
-	glm::vec3 s = glm::cross(direction, up);
-	glm::vec3 w = glm::normalize(glm::vec3 { -direction.y, direction.x, 0.0f });
-	glm::vec3 u = glm::cross(direction, w);
+	auto dir = glm::normalize(center - pos);
 
-	m_rotation.y = std::atan2(direction.y, direction.x);
-	m_rotation.x = 0.0f;// std::asin(direction.z);
-	m_rotation.z = 0.0f;// std::atan2(glm::dot(w, u), glm::dot(u, up));
+	m_rotation.y = std::atan2(dir.z, dir.x) + PI / 2.0f;
 }
 
 glm::vec3 Camera::get_forward() const {

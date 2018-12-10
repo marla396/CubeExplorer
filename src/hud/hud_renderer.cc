@@ -16,18 +16,11 @@ HUDRenderer::HUDRenderer(NVGcontext* nvg_ctx) : m_nvg_ctx(nvg_ctx) {
 
 void HUDRenderer::render(const std::map<std::string, std::shared_ptr<HUDTexture>>& hud_textures, const Camera& camera, const std::shared_ptr<Player>& player){
 
-	bool m_height_map = false;
-
 	if (!hud_textures.empty()) {
 		m_shader->bind();
 		for (const auto& h : hud_textures) {
 			m_shader->upload_transformation_matrix(h.second->get_transformation_matrix());
 			h.second->render();
-
-			if (h.first == "height_map_hud") {
-				m_height_map = true;
-				
-			}
 		}
 	}
 
@@ -95,7 +88,7 @@ void HUDRenderer::render(const std::map<std::string, std::shared_ptr<HUDTexture>
 	nvgLineTo(m_nvg_ctx, center.x, center.y + 10.0f);
 	nvgStroke(m_nvg_ctx);
 
-
+	
     end_frame();
 }
 

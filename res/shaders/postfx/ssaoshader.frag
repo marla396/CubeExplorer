@@ -74,7 +74,7 @@ void main(void){
 
 		float range_check = smoothstep(0.0, 1.0, RADIUS / abs(frag_pos.z - sample_depth));
 
-		occlusion += (sample_depth + 0.001 < d.z ? 1.0 : 0.0) * range_check;
+		occlusion += (sample_depth < d.z - 0.15 ? 1.0 : 0.0) * range_check;
 	}
 
 	occlusion = 1.0 - occlusion / KERNEL_SIZE;

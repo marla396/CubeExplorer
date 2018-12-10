@@ -79,6 +79,10 @@ void ChunkRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>&
 	for (const auto& model : models) {
 		if (model->get_indices_count() > 0) {
 
+			/*if (!intersects_frustum(model, camera)) {
+				continue;
+			}*/
+
 			model->bind();
 			model->bind_texture(GL_TEXTURE0);
 			m_depth_shader->upload_model_matrix(model->get_model_matrix());

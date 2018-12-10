@@ -12,8 +12,7 @@ float get_tess_level(float a, float b){
 
 	float avg = (a + b) / 2.0;
 
-	//return gl_MaxTessGenLevel * exp(-0.01*avg);
-	return gl_MaxTessGenLevel;
+	return gl_MaxTessGenLevel * exp(-0.025*avg);
 }
 
 void main(void) {

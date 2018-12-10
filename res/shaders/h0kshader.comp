@@ -45,11 +45,11 @@ void main(void){
 	
 	//sqrt(Ph(k))/sqrt(2)
 	float h0k = clamp(sqrt((amplitude/(magSq*magSq)) * pow(abs(dot(normalize(k), normalize(wind_direction))), 2.0) * 
-				exp(-(1.0/(magSq * L_ * L_))) * exp(-magSq*pow(capillar_supress_factor,2.0)))/ sqrt(2.0), -40000.0, 40000.0);
+				exp(-(1.0/(magSq * L_ * L_))) * exp(-magSq*pow(capillar_supress_factor,2.0)))/ sqrt(2.0), -100000.0, 100000.0);
 	
 	//sqrt(Ph(-k))/sqrt(2)
 	float h0minusk = clamp(sqrt((amplitude/(magSq*magSq)) * pow(abs(dot(normalize(-k), normalize(wind_direction))), 2.0) * 
-					 exp(-(1.0/(magSq * L_ * L_))) * exp(-magSq*pow(capillar_supress_factor,2.0)))/ sqrt(2.0), -40000.0, 40000.0);
+					 exp(-(1.0/(magSq * L_ * L_))) * exp(-magSq*pow(capillar_supress_factor,2.0)))/ sqrt(2.0), -100000.0, 100000.0);
 	
 	vec4 rnd = gauss_random();
 	

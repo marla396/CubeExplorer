@@ -24,6 +24,7 @@ public:
 	void on_resize(size_t width, size_t height);
 	void on_cursor(float dx, float dy);
 	void on_key(int key, int scan_code, int action, int mods);
+	void benchmark_water();
 private:
 	void render_shadow_maps();
 	void insert_display_pip();

@@ -5,6 +5,7 @@ out vec4 color;
 in vec3 world_position_frag;
 in vec2 tex_coords_frag;
 in vec4 clip_space;
+in vec3 tangent;
 
 uniform sampler2D tex_unit0; //displacement_map dy
 uniform sampler2D tex_unit2; //reflection_texture
@@ -46,7 +47,18 @@ void main(void){
 	vec2 refract_coords = vec2(ndc.x, ndc.y);
 
 	vec3 normal = texture(tex_unit4, tex_coords_frag).rbg;
-	normal = normalize(normal);
+
+	float dist = length(camera_position - world_position_frag);
+
+	float attenuation = clamp(-dist/projection_depth.y + 1,0.0,1.0);
+	vec3 bitangent = normalize(cross(tangent, normal));
+	mat3 TBN = mat3(tangent,bitangent,normal);
+	vec3 bump_normal = texture(tex_unit4, tex_coords_frag * 8.0).rgb;
+	bump_normal.z *= 4.0;
+	bump_normal.xy *= attenuation;
+	bump_normal = normalize(bump_normal);
+	normal = normalize(TBN * bump_normal);
+
 
 	vec2 dudv = texture(tex_unit7, tex_coords_frag).rg * displacement_factor;
 
@@ -67,9 +79,8 @@ void main(void){
 
 	vec3 reflected_light = reflect(normalize(world_position_frag - light_position), normal);
 	float specular = max(dot(reflected_light, view_vector), 0.0);
-	float diffuse = max(dot(normalize(world_position_frag - light_position), normal), 0.0);
 	specular = pow(specular, 45.0);
-	vec4 shade = vec4((diffuse * 0.0 + 0.8 * specular) * light_color, 0.0);
+	vec4 shade = vec4(0.8 * specular * light_color, 0.0);
 
 	if (refractive_factor > 0.0)
 		color = mix(reflection, refraction, refractive_factor);

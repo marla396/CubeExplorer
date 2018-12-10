@@ -7,7 +7,7 @@
 
 World::World(uint32_t seed) : m_all_blocks_initialized(false), m_seed(seed) {
 
-	m_sun = std::make_shared<Light>( glm::vec3 { WORLD_SIZE * CHUNK_SIZE * 1.2f, WORLD_MAX_HEIGHT * 1.5f, WORLD_SIZE * CHUNK_SIZE * 1.2f}, glm::vec3 { 1.0f, 1.0f, 1.0f });
+	m_sun = std::make_shared<Light>(glm::vec3{ WORLD_SIZE * CHUNK_SIZE * 1.2f, WORLD_MAX_HEIGHT * 1.5f, WORLD_SIZE * CHUNK_SIZE * 1.2f }, glm::vec3{ 1.0f, 1.0f, 1.0f });
 
 	m_generator = std::make_shared<FFTNoiseGenerator>(seed, 0.00001f, 2.0f, 1.0f);
 
@@ -58,14 +58,14 @@ void World::update(float time, float dt, Camera& camera) {
 	//time = 0.0f;
 
 	float r = WORLD_CENTER.x * 50.2f;
+	float phase = PI / 5.0f;
 
-	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time/500.0f + PI/4), WORLD_CENTER.y + r * std::sin(time/500.0f + PI/4), WORLD_CENTER.z + r * std::cos(time / 500.0f + PI/4) };
+	glm::vec3 new_pos = { WORLD_CENTER.x + r * std::cos(time / 500.0f + phase), WORLD_CENTER.y + r * std::sin(time / 500.0f + phase), WORLD_CENTER.z + r * std::cos(time / 500.0f + phase) };
 
 	//glm::vec3 new_pos = { 0.0f, 0.0f, 0.0f };
 
 	m_sun->set_position(new_pos);
 	m_sun->update(camera, time);
-
 }
 
 void World::clear_world() {
@@ -120,14 +120,14 @@ void World::generate_world(const std::shared_ptr<ITexture>& chunk_texture) {
 	}
 
 	/*for (int i = 0; i < WORLD_SHEEP_AMOUNT; i++) {
-		auto sheep = std::make_shared<Sheep>(chunk_texture);
-		sheep->set_position(get_sheep_spawn_point());
-		m_sheep.push_back(sheep);
-		m_entities->push_back(std::dynamic_pointer_cast<SheepModel>(sheep->get_model()));
+	auto sheep = std::make_shared<Sheep>(chunk_texture);
+	sheep->set_position(get_sheep_spawn_point());
+	m_sheep.push_back(sheep);
+	m_entities->push_back(std::dynamic_pointer_cast<SheepModel>(sheep->get_model()));
 	}*/
 
 	m_entities->push_back(std::dynamic_pointer_cast<PlayerModel>(m_player->get_model()));
-	
+
 
 	int n_workers = WORLD_GENERATOR_THREADS;
 	for (int i = 0; i < n_workers; i++) {
@@ -191,14 +191,14 @@ void World::generate_world_part(int n_workers, int id, const std::shared_ptr<ITe
 	std::uniform_real_distribution<float> dist(0.0f, 1.0f);
 	std::vector<glm::vec3> tree_positions;
 
-	auto make_tree = [&rng, &dist, &tree_positions](const glm::vec3& pos) { 
+	auto make_tree = [&rng, &dist, &tree_positions](const glm::vec3& pos) {
 
 		for (const auto& t : tree_positions) {
 			if (glm::distance(pos, t) < 10.0f)
 				return false;
 		}
 
-		return dist(rng) > 0.99; 
+		return dist(rng) > 0.99;
 	};
 
 	auto make_plant = [&rng, &dist]() {
@@ -235,33 +235,33 @@ void World::generate_world_part(int n_workers, int id, const std::shared_ptr<ITe
 						int noise = static_cast<int>(m_height_map->noise[x * CHUNK_SIZE + cx][z * CHUNK_SIZE + cz]);
 						int height = noise - y * CHUNK_SIZE;
 
-							for (int cy = 0; cy < height && cy < CHUNK_SIZE; cy++) {
-								bool is_top = noise == y * CHUNK_SIZE + cy + 1;
+						for (int cy = 0; cy < height && cy < CHUNK_SIZE; cy++) {
+							bool is_top = noise == y * CHUNK_SIZE + cy + 1;
 
-								block_map.insert_block(cx, cy, cz, height < CHUNK_SIZE + 1);
+							block_map.insert_block(cx, cy, cz, height < CHUNK_SIZE + 1);
 
-								if (is_top && y * CHUNK_SIZE + cy > WORLD_BEACH_HEIGHT) {
-									glm::vec3 pos = chunk_pos + glm::vec3{ cx, cy + 1, cz };
-									if (make_tree(pos)) {
-										previous_tree = pos;
-										auto tree = std::make_shared<TreeModel>(TreeModel::TREE, chunk_texture, pos);
-										add_tree(tree);
-										tree_positions.push_back(pos);
-									}
-									else if (make_plant()) {
-										auto plant = std::make_shared<TreeModel>(get_plant_type(), chunk_texture, pos);
-										add_tree(plant);
-									}
+							if (is_top && y * CHUNK_SIZE + cy > WORLD_BEACH_HEIGHT) {
+								glm::vec3 pos = chunk_pos + glm::vec3{ cx, cy + 1, cz };
+								if (make_tree(pos)) {
+									previous_tree = pos;
+									auto tree = std::make_shared<TreeModel>(TreeModel::TREE, chunk_texture, pos);
+									add_tree(tree);
+									tree_positions.push_back(pos);
 								}
-
+								else if (make_plant()) {
+									auto plant = std::make_shared<TreeModel>(get_plant_type(), chunk_texture, pos);
+									add_tree(plant);
+								}
 							}
+
+						}
 					}
 				}
 
-					auto chunk = std::make_shared<ChunkModel>(chunk_texture, chunk_pos, block_map);
-					add_chunk(chunk);
+				auto chunk = std::make_shared<ChunkModel>(chunk_texture, chunk_pos, block_map);
+				add_chunk(chunk);
 
-					
+
 			}
 		}
 	}
@@ -270,7 +270,7 @@ void World::generate_world_part(int n_workers, int id, const std::shared_ptr<ITe
 void World::add_chunk(const std::shared_ptr<ChunkModel>& chunk) {
 	m_generator_mutex.lock();
 
-	m_chunks->push_back(chunk);	
+	m_chunks->push_back(chunk);
 	m_all_blocks_initialized = false;
 
 	m_generator_mutex.unlock();

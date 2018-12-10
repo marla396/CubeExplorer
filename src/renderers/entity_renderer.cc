@@ -76,6 +76,10 @@ void EntityRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>
 	for (const auto& model : models) {
 		if (model->get_indices_count() > 0) {
 
+			/*if (!intersects_frustum(model, camera)) {
+				continue;
+			}*/
+
 			model->bind();
 			m_depth_shader->upload_model_matrix(model->get_model_matrix());
 			DRAW_CALL(GLC(glDrawElements(GL_TRIANGLES, model->get_indices_count(), GL_UNSIGNED_INT, nullptr)));
