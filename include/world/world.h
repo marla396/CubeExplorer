@@ -32,6 +32,7 @@ public:
 	void unlock();
 	void set_seed(uint32_t seed);
 
+	void regenerate_world(const std::shared_ptr<ITexture>& chunk_texture);
 	void clear_world();
 	bool is_initialized() const;
 	float height_at(float x, float z) const;

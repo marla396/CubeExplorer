@@ -1,5 +1,6 @@
 #include "renderers/water_renderer.h"
 #include "resources.h"
+#include "config_file.h"
 
 #include <thread>
 
@@ -10,6 +11,8 @@ WaterRenderer::WaterRenderer(const std::shared_ptr<World>& world)
 	m_depth_shader = std::make_unique<WaterShader>(true);
 
 	m_world = world;
+
+	read_configuration();
 
 	initialize_h0k();
 	initialize_hkt();
@@ -465,6 +468,16 @@ void WaterRenderer::render_refraction(Camera& camera) {
 	}
 
 	unbind_fbo();
+}
+
+void WaterRenderer::read_configuration(){
+	ConfigFile file(Resources::resolve_path("water_config.cfg"));
+
+	m_L = file.get<int>("WATER_DENSITY");
+	m_amplitude = file.get<float>("WATER_AMPLITUDE");
+	m_wind_speed = file.get<float>("WATER_WIND_SPEED");
+	m_capillar_supress_factor = file.get<float>("WATER_CAPILLAR_SUPRESS");
+	m_wind_direction = glm::vec2 { file.get<float>("WATER_WIND_DIRECTION_X"), file.get<float>("WATER_WIND_DIRECTION_Z") };
 }
 
 void WaterRenderer::initialize_h0k() {

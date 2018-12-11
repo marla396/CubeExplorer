@@ -68,6 +68,14 @@ void World::update(float time, float dt, Camera& camera) {
 	m_sun->update(camera, time);
 }
 
+void World::regenerate_world(const std::shared_ptr<ITexture>& chunk_texture){
+	lock();
+	clear_world();
+	set_seed(std::random_device{}());
+	generate_world(chunk_texture);
+	unlock();
+}
+
 void World::clear_world() {
 	m_chunks->clear();
 	m_entities->clear();

@@ -61,6 +61,7 @@ public:
 	void compute_fft() const;
 	void render_reflection(Camera& camera);
 	void render_refraction(Camera& camera);
+	void read_configuration();
 private:
 	void run_fft(int& pingpong) const;
 

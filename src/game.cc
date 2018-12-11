@@ -59,8 +59,6 @@ Game::Game(NVGcontext* nvg_ctx)
 
 void Game::on_render() {
 
-
-
 	GLC(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT));
 
 	bind_fbo(m_postfx_fbo);
@@ -262,11 +260,9 @@ void Game::on_key(int key, int scan_code, int action, int mods) {
 		}
 
 		if (key == GLFW_KEY_F6 && m_world->is_initialized()) {
-			m_world->lock();
-			m_world->clear_world();
-			m_world->set_seed(std::random_device{}());
-			m_world->generate_world(m_texture_atlas);
-			m_world->unlock();
+			m_world->regenerate_world(m_texture_atlas);
+			m_water_renderer->read_configuration();
+			m_water_renderer->compute_h0k();
 		}
 
 		if (key == GLFW_KEY_F7){
