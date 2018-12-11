@@ -255,6 +255,9 @@ void Application::print_info() const{
 }
 
 void Application::glfw_error_callback(int error, const char* description){
+	MAYBE_UNUSED(error);
+	MAYBE_UNUSED(description);
+	
 	LOG("GLFW error [" << error << "] " << description << std::endl);
 }
 

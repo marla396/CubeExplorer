@@ -119,7 +119,7 @@ bool Shader::preprocess_shader(std::string& in, std::string& out) const{
 
 	while (std::regex_search(tmp, match, include)) {
 
-		for (int i = 1; i < match.size(); i++) {
+		for (size_t i = 1; i < match.size(); i++) {
 
 			std::string ext = Resources::read_file(Resources::resolve_shader_path(match[i].str()));
 
@@ -173,6 +173,8 @@ uint32_t Shader::get_shader_type(const std::string& file) const{
 bool Shader::compiler_error(const std::string& file, uint32_t s) const{
 	int log_length;
 
+	MAYBE_UNUSED(file);
+
 	GLC(glGetShaderiv(s, GL_INFO_LOG_LENGTH, &log_length));
 
 	if (log_length > 2) {
@@ -203,6 +205,7 @@ void Shader::check_linker_errors(const std::initializer_list<std::string>& files
 
 		LOG("Error linking shader ");
 		for (const auto& f : files) {
+			MAYBE_UNUSED(f);
 			LOG(f << " ");
 		}
 		LOG("\n" << error_msg << std::endl);

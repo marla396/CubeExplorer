@@ -58,7 +58,7 @@ void ChunkRenderer::render(const std::vector<std::shared_ptr<ChunkModel>>& model
 	GLC(glDisable(GL_CLIP_DISTANCE0));
 }
 
-void ChunkRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>& models, Camera& camera, const std::shared_ptr<Light>& light, int cascade) {
+void ChunkRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>& models, Camera&, const std::shared_ptr<Light>& light, int cascade) {
 	if (models.empty()) {
 		return;
 	}

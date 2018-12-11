@@ -144,6 +144,8 @@ void TreeModel::generate_plant(int x, int y, int z, TreeType type) {
 	case PLANT_2:
 		tex = ChunkModel::PLANT_2;
 		break;
+	default:
+		return;
 	}
 
 	generate_face(x, y, z, POSITIVE_NEGATIVE, front_face, { 1.0f, 1.0f, 1.0f }, { 0.0f, -0.1f, -0.5f });

@@ -12,7 +12,7 @@ Light::Light(const glm::vec3& position, const glm::vec3& color)
 
 }
 
-void Light::update(Camera& camera, float time) {
+void Light::update(Camera& camera, float) {
 
 	float frustum_length = camera.get_far() - camera.get_near();	
 

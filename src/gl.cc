@@ -8,7 +8,12 @@ void clear_OpenGL_errors() {
 
 bool check_OpenGL_errors(const char* function, const char* file, int line) {
 
+	MAYBE_UNUSED(function);
+	MAYBE_UNUSED(file);
+	MAYBE_UNUSED(line);
+
 	while (GLenum err = glGetError()) {
+		MAYBE_UNUSED(err);
 		LOG("OpenGL error [" << err << "] in " << file << "::" << function << " at line " << line);
 
 		return false;

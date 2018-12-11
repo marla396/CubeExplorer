@@ -87,10 +87,10 @@ private:
 	float m_far;
 	float m_fov;
 	float m_aspect;
-	float m_flyover;
+	bool m_lock_frustum;
+	bool m_flyover;
 	float m_time;
 
-	bool m_lock_frustum;
 	glm::mat4 m_locked_view_matrix;
 
 	std::unique_ptr<LazyObject<glm::mat4>> m_view_matrix;

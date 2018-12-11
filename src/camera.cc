@@ -167,7 +167,8 @@ float Camera::get_fov() const {
 	return m_fov;
 }
 
-void Camera::look_at(const glm::vec3& pos, const glm::vec3& center, const glm::vec3& up) {
+void Camera::look_at(const glm::vec3& pos, const glm::vec3& center, const glm::vec3&) {
+
 	m_position = pos;
 
 	auto dir = glm::normalize(center - pos);

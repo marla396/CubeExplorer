@@ -3,17 +3,17 @@
 #include <glm/glm.hpp>
 
 constexpr int CHUNK_SIZE = 16;
-constexpr int WORLD_SIZE = 16;
+constexpr int WORLD_SIZE = 2;
 extern int WORLD_MAX_HEIGHT;
 extern float WORLD_WATER_HEIGHT;
 extern float WORLD_BEACH_HEIGHT;
-constexpr size_t WATER_FFT_DIMENSION = 1024;
-constexpr size_t WATER_FFT_DIMENSION_LOG2 = 10;
+constexpr size_t WATER_FFT_DIMENSION = 256;
+constexpr size_t WATER_FFT_DIMENSION_LOG2 = 8;
 extern int WATER_QUAD_DIMENSION;
 
 constexpr int WORLD_SHEEP_AMOUNT = 0;
 
-constexpr int WORLD_GENERATOR_THREADS = 4;
+constexpr int WORLD_GENERATOR_THREADS = 1;
 
 constexpr int SHADOW_CASCADES = 6;
 

@@ -9,7 +9,7 @@ Sheep::Sheep(const std::shared_ptr<ITexture>& texture) : m_has_plan(false) {
 	m->gpu_init();
 }
 
-void Sheep::update(const std::shared_ptr<World>& world, Camera& camera, float dt) {
+void Sheep::update(const std::shared_ptr<World>& world, Camera&, float dt) {
 
 	evaluate_plan(world);
 

@@ -3,7 +3,6 @@
 #include <sstream>
 
 #include "config_file.h"
-#include "gl.h"
 
 ConfigFile::ConfigFile(const std::string& file) {
 	parse(file);

@@ -58,7 +58,7 @@ void EntityRenderer::render(const std::vector<std::shared_ptr<ChunkModel>>& mode
 	GLC(glDisable(GL_CLIP_DISTANCE0));
 }
 
-void EntityRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>& models, Camera& camera, const std::shared_ptr<Light>& light, int cascade) {
+void EntityRenderer::render_depth(const std::vector<std::shared_ptr<ChunkModel>>& models, Camera&, const std::shared_ptr<Light>& light, int cascade) {
 	if (models.empty()) {
 		return;
 	}

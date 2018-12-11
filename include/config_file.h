@@ -3,6 +3,8 @@
 #include <map>
 #include <any>
 
+#include "gl.h"
+
 class ConfigFile {
 public:
 	using ValueType = std::string;

@@ -226,10 +226,6 @@ void World::generate_world_part(int n_workers, int id, const std::shared_ptr<ITe
 
 				block_map.set_global_height(y * CHUNK_SIZE);
 
-				int n_blocks = 0;
-
-
-
 				for (int cx = 0; cx < CHUNK_SIZE; cx++) {
 					for (int cz = 0; cz < CHUNK_SIZE; cz++) {
 						int noise = static_cast<int>(m_height_map->noise[x * CHUNK_SIZE + cx][z * CHUNK_SIZE + cz]);

@@ -11,7 +11,6 @@
 #endif
 
 #ifdef _WIN32
-//#include <glew/include/glew.h>
 #include <glad/include/glad.h>
 #include <gl/gl.h>
 #include <glfw/include/glfw3.h>
@@ -60,3 +59,4 @@ void check_framebuffer_status();
 
 
 #define UNUSED(x) (void)x;
+#define MAYBE_UNUSED(x) (void)x;
