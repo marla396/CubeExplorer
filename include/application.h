@@ -34,6 +34,7 @@ public:
 	static void register_resize_callback(const std::function<void(size_t, size_t)>& callback);
 	static void toggle_show_cursor();
 	static void add_time_warp_factor(float inc);
+	static float get_time_warp();
 private:
 	const size_t DEFAULT_WIDTH = 800;
 	const size_t DEFAULT_HEIGHT = 600;

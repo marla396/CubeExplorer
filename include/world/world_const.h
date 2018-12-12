@@ -3,12 +3,12 @@
 #include <glm/glm.hpp>
 
 constexpr int CHUNK_SIZE = 16;
-constexpr int WORLD_SIZE = 2;
+constexpr int WORLD_SIZE = 16;
 extern int WORLD_MAX_HEIGHT;
 extern float WORLD_WATER_HEIGHT;
 extern float WORLD_BEACH_HEIGHT;
-constexpr size_t WATER_FFT_DIMENSION = 256;
-constexpr size_t WATER_FFT_DIMENSION_LOG2 = 8;
+constexpr size_t WATER_FFT_DIMENSION = 1024;
+constexpr size_t WATER_FFT_DIMENSION_LOG2 = 10;
 extern int WATER_QUAD_DIMENSION;
 
 constexpr int WORLD_SHEEP_AMOUNT = 0;

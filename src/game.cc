@@ -137,6 +137,18 @@ void Game::on_update(float time, float dt) {
 		Application::add_time_warp_factor(-0.1f);
 	}
 
+	if (Application::key_down(GLFW_KEY_Z)) {
+		auto water_density = m_water_renderer->get_water_density();
+		m_water_renderer->set_water_density(water_density - 100);
+		m_water_renderer->compute_h0k();	
+	}
+
+	if (Application::key_down(GLFW_KEY_X)) {
+		auto water_density = m_water_renderer->get_water_density();
+		m_water_renderer->set_water_density(water_density + 100);
+		m_water_renderer->compute_h0k();
+	}
+
 	std::vector<std::pair<std::function<void(Camera&)>, std::function<void(const glm::vec4&)>>> render_delegates;
 
 	render_delegates.push_back(m_skybox_renderer->get_render_delegate({ skybox_model }, m_world->get_sun()));

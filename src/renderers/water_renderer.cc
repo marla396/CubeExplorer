@@ -5,7 +5,7 @@
 #include <thread>
 
 WaterRenderer::WaterRenderer(const std::shared_ptr<World>& world)
-	: m_generator(std::random_device{}()), m_time(0.0f), m_L(30250), m_amplitude(0.3f), m_wind_speed(50.0f),
+	: m_generator(std::random_device{}()), m_time(0.0f), m_water_density(30250), m_amplitude(0.3f), m_wind_speed(50.0f),
 	m_wind_direction({ 1.0f, 1.0f }), m_capillar_supress_factor(0.1f), m_wave_strength(0.3f), m_below_water(false){
 
 	m_depth_shader = std::make_unique<WaterShader>(true);
@@ -32,9 +32,14 @@ WaterRenderer::WaterRenderer(const std::shared_ptr<World>& world)
 	compute_twiddle();
 }
 
-void WaterRenderer::set_L(int L) {
-	m_L = L;
+void WaterRenderer::set_water_density(int density) {
+	m_water_density = density;
 }
+
+int WaterRenderer::get_water_density() const {
+	return m_water_density;
+}
+
 void WaterRenderer::set_amplitude(float amplitude) {
 	m_amplitude = amplitude;
 }
@@ -245,7 +250,7 @@ void WaterRenderer::compute_h0k() const {
 	m_h0k_shader->upload_tex_units({ 0, 1, 2, 3, 4, 5 });
 
 	m_h0k_shader->upload_N(WATER_FFT_DIMENSION);
-	m_h0k_shader->upload_L(m_L);
+	m_h0k_shader->upload_L(m_water_density);
 	m_h0k_shader->upload_amplitude(m_amplitude);
 	m_h0k_shader->upload_wind_speed(m_wind_speed);
 	m_h0k_shader->upload_wind_direction(m_wind_direction);
@@ -270,7 +275,7 @@ void WaterRenderer::compute_hkt() const {
 	m_hkt_shader->upload_tex_units({ 0, 1, 2, 3, 4 });
 
 	m_hkt_shader->upload_N(WATER_FFT_DIMENSION);
-	m_hkt_shader->upload_L(m_L);
+	m_hkt_shader->upload_L(m_water_density);
 	m_hkt_shader->upload_time(m_time);
 
 	m_tilde_hkt_dx->bind_image_texture(0, GL_WRITE_ONLY, GL_RGBA32F);
@@ -473,7 +478,7 @@ void WaterRenderer::render_refraction(Camera& camera) {
 void WaterRenderer::read_configuration(){
 	ConfigFile file(Resources::resolve_path("water_config.cfg"));
 
-	m_L = file.get<int>("WATER_DENSITY");
+	m_water_density = file.get<int>("WATER_DENSITY");
 	m_amplitude = file.get<float>("WATER_AMPLITUDE");
 	m_wind_speed = file.get<float>("WATER_WIND_SPEED");
 	m_capillar_supress_factor = file.get<float>("WATER_CAPILLAR_SUPRESS");

@@ -27,7 +27,9 @@ class WaterRenderer : public Renderer<WaterShader, WaterModel> {
 public:
 	WaterRenderer(const std::shared_ptr<World>& world);
 
-	void set_L(int L);
+	void set_water_density(int density);
+	int get_water_density() const;
+
 	void set_amplitude(float amplitude);
 	void set_wind_speed(float wind_speed);
 	void set_wind_direction(const glm::vec2& wind_direction);
@@ -109,7 +111,7 @@ private:
 	std::unique_ptr<MTexture<float>> m_noise_i1;
 
 	float m_time;
-	int m_L;
+	int m_water_density;
 	float m_amplitude;
 	float m_wind_speed;
 	glm::vec2 m_wind_direction;

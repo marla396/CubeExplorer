@@ -181,6 +181,10 @@ void Application::add_time_warp_factor(float inc) {
 	g_app->m_time_warp_factor += inc;
 }
 
+float Application::get_time_warp(){
+	return g_app->m_time_warp_factor;
+}
+
 bool Application::parse_arguments(const std::vector<std::string>& arguments) {
 
 	m_root_directory = ".";

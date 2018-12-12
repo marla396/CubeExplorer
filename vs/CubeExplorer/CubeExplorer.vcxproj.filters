@@ -640,5 +640,6 @@
       <Filter>res\shaders\ext</Filter>
     </None>
     <None Include="..\..\world_config.cfg" />
+    <None Include="..\..\water_config.cfg" />
   </ItemGroup>
 </Project>
