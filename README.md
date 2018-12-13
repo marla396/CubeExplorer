@@ -5,7 +5,7 @@ Minecraft-like game for the course TSBK03 at Linköping University
 
 ![Banner](images/theend.png)
 
-#Features
+# Features
 * Procedural world-generation
 * Chunk-mesh rendering on 16x16x16 blocks
 * Procedural ocean simulation with Compute Shaders (based on the works of https://github.com/fynnfluegge/oreon-engine)
@@ -13,7 +13,7 @@ Minecraft-like game for the course TSBK03 at Linköping University
 * Screen space ambient occlusion
 * FXAA
 
-#Dependencies
+# Dependencies
 * GLFW
 * GLM
 * Nanovg
