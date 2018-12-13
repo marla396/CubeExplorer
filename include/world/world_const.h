@@ -13,7 +13,7 @@ extern int WATER_QUAD_DIMENSION;
 
 constexpr int WORLD_SHEEP_AMOUNT = 0;
 
-constexpr int WORLD_GENERATOR_THREADS = 1;
+constexpr int WORLD_GENERATOR_THREADS = 4;
 
 constexpr int SHADOW_CASCADES = 6;
 

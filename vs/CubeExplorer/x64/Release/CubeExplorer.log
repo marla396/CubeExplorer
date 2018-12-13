@@ -1,5 +1,4 @@
-﻿L:\Visual Studio\Common7\IDE\VC\VCTargets\Microsoft.CppClean.targets(76,5): warning : The process cannot access the file 'l:\cubeexplorer\cubeexplorer\vs\cubeexplorer\x64\release\cubeexplorer.iobj' because it is being used by another process.
-  nanovg.c
+﻿  nanovg.c
   glad.c
   application.cc
   camera.cc
@@ -41,9 +40,9 @@
   water_renderer.cc
 ..\..\src\renderers\entity_renderer.cc(51): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 ..\..\src\renderers\entity_renderer.cc(85): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  resources.cc
 ..\..\src\renderers\postfx_renderer.cc(55): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 ..\..\src\renderers\postfx_renderer.cc(101): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  resources.cc
 L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\renderers\postfx_renderer.cc)
   L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(8): note: while compiling class template member function 'MTexture<float>::MTexture(::size_t,::size_t,const T *)'
           with
@@ -111,16 +110,16 @@ L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(10): warning C4267: '=':
   water_shader.cc
   ftexture.cc
   itexture.cc
-  cube_texture.cc
 ..\..\src\texture\itexture.cc(102): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 ..\..\src\texture\itexture.cc(106): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
 ..\..\src\texture\itexture.cc(110): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  cube_texture.cc
   block.cc
   block_map.cc
   light.cc
+  world.cc
 ..\..\src\texture\cube_texture.cc(4): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data
 ..\..\src\texture\cube_texture.cc(5): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data
-  world.cc
   world_const.cc
 ..\..\src\world\light.cc(92): warning C4101: 'corners_l': unreferenced local variable
 L:\CubeExplorer\CubeExplorer\include\texture/mtexture.h(9): warning C4267: '=': conversion from 'size_t' to 'int32_t', possible loss of data (compiling source file ..\..\src\world\world.cc)

@@ -36,10 +36,13 @@ void Camera::update(float time) {
 }
 
 void Camera::process_mouse(float dx, float dy) {
-	m_rotation.x += (dy / static_cast<float>(Application::get_height())) * MAX_PITCH * 2;
+
+	const float MOVEMENT_SPEED = 0.5f;
+
+	m_rotation.x += (dy / static_cast<float>(Application::get_height())) * MAX_PITCH * 2 * MOVEMENT_SPEED;
 	m_rotation.x = std::max(-MAX_PITCH, std::min(MAX_PITCH, m_rotation.x));
 
-	m_rotation.y += (dx / static_cast<float>(Application::get_width())) * PI * 2;
+	m_rotation.y += (dx / static_cast<float>(Application::get_width())) * PI * 2 * MOVEMENT_SPEED;
 
 	if (m_rotation.y > PI * 2)
 		m_rotation.y -= PI * 2;
@@ -53,33 +56,92 @@ void Camera::process_keyboard(float dt) {
 
 	UNUSED(dt);
 
+	const float MOVEMENT_SPEED = 0.25f;
+	const float RAMP_SPEED = 0.015f;
+	float speed_up = 1.0f;
+
 	float sin_rot_x = std::sin(m_rotation.x);
 	float cos_rot_x = std::cos(m_rotation.x);
 
 	float sin_rot_y = std::sin(m_rotation.y);
 	float cos_rot_y = std::cos(m_rotation.y);
 
-	if (Application::key_down(GLFW_KEY_W)) {
-		m_position.x += sin_rot_y *cos_rot_x;
-		m_position.y -= sin_rot_x;
-		m_position.z -= cos_rot_y *cos_rot_x;
+	if (Application::key_down(GLFW_KEY_LEFT_SHIFT)) {
+		speed_up = 5.0f;
 	}
+
+	static float forward_ramp = 0.0f;
+
+	if (Application::key_down(GLFW_KEY_W)) {
+		forward_ramp = std::min(forward_ramp + RAMP_SPEED, MOVEMENT_SPEED * speed_up);
+		m_position.x += sin_rot_y *cos_rot_x * forward_ramp;
+		m_position.y -= sin_rot_x * forward_ramp;
+		m_position.z -= cos_rot_y *cos_rot_x * forward_ramp;
+	}
+	else {
+		forward_ramp = std::max(forward_ramp - RAMP_SPEED, 0.0f);
+
+		m_position.x += sin_rot_y * cos_rot_x * forward_ramp;
+		m_position.y -= sin_rot_x * forward_ramp;
+		m_position.z -= cos_rot_y * cos_rot_x * forward_ramp;
+	}
+
+	static float back_ramp = 0.0f;
 
 	if (Application::key_down(GLFW_KEY_S)) {
-		m_position.x -= sin_rot_y *cos_rot_x;
-		m_position.y += sin_rot_x;
-		m_position.z += cos_rot_y *cos_rot_x;
+		back_ramp = std::min(back_ramp + RAMP_SPEED, MOVEMENT_SPEED * speed_up);
+		m_position.x -= sin_rot_y *cos_rot_x * back_ramp;
+		m_position.y += sin_rot_x * back_ramp;
+		m_position.z += cos_rot_y *cos_rot_x * back_ramp;
 	}
+	else {
+		back_ramp = std::max(back_ramp - RAMP_SPEED, 0.0f);
+		m_position.x -= sin_rot_y * cos_rot_x * back_ramp;
+		m_position.y += sin_rot_x * back_ramp;
+		m_position.z += cos_rot_y * cos_rot_x * back_ramp;
+	}
+
+	static float left_ramp = 0.0f;
 
 	if (Application::key_down(GLFW_KEY_A)) {
-		m_position.x -= cos_rot_y;
-		m_position.z -= sin_rot_y;
+		left_ramp = std::min(left_ramp + RAMP_SPEED, MOVEMENT_SPEED * 0.75f * speed_up);
+
+		m_position.x -= cos_rot_y * left_ramp;
+		m_position.z -= sin_rot_y * left_ramp;
+	}
+	else {
+		left_ramp = std::max(left_ramp - RAMP_SPEED, 0.0f);
+
+		m_position.x -= cos_rot_y * left_ramp;
+		m_position.z -= sin_rot_y * left_ramp;
 	}
 
+	static float right_ramp = 0.0f;
+
 	if (Application::key_down(GLFW_KEY_D)) {
-		m_position.x += cos_rot_y;
-		m_position.z += sin_rot_y;
+		right_ramp = std::min(right_ramp + RAMP_SPEED, MOVEMENT_SPEED * 0.75f * speed_up);
+		m_position.x += cos_rot_y * right_ramp;
+		m_position.z += sin_rot_y * right_ramp;
 	}
+	else {
+		right_ramp = std::max(right_ramp - RAMP_SPEED, 0.0f);
+		m_position.x += cos_rot_y * right_ramp;
+		m_position.z += sin_rot_y * right_ramp;
+	}
+
+	static float up_ramp = 0.0f;
+
+	if (Application::key_down(GLFW_KEY_SPACE)) {
+		up_ramp = std::min(up_ramp + RAMP_SPEED, MOVEMENT_SPEED * 0.65f * speed_up);
+		m_position.y += up_ramp * 0.5f;
+	}
+	else {
+		up_ramp = std::max(up_ramp - RAMP_SPEED, 0.0f);
+		m_position.y += up_ramp * 0.5f;
+	}
+
+
+
 
 	notify_view();
 }
